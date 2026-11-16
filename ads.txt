@@ -1,0 +1,6 @@
+# ads.txt — 수수수 웹툴 (soosoosupernova.github.io)
+#
+# 아직 광고 게시자 ID가 확정되지 않아 판매자 항목은 비어 있습니다.
+# Google AdSense/GAM 승인이 나오면 아래 형식으로 한 줄을 추가하고 커밋하세요.
+#
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

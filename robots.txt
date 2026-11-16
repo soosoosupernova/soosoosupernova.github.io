@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://soosoosupernova.github.io/sitemap.xml
