@@ -123,7 +123,7 @@ $('#unlock').onclick=startRewardedAd;$('#unlock').onclick=()=>{
 };
 $('#restart').onclick=()=>{answers=Array(16).fill(0);idx=0;try{sessionStorage.removeItem('relationshipReportAnswersV5')}catch(e){}show('landing')};
 /* 인쇄 / PDF 저장: 일반 브라우저는 인쇄 창, 카카오톡 등 앱 내부 브라우저는 기본 브라우저로 안내 */
-ReportSave.bind($('#print'),{printUrl:()=>ReportSave.url(true,answers.join(''))});
+if(typeof ReportSave!=='undefined'){ReportSave.bind($('#print'),{printUrl:()=>ReportSave.url(true,answers.join(''))});}else{$('#print').onclick=()=>window.print();}
 
 /* ---------- 문장 복사 (2026-11-17) ---------- */
 const C_LABELS=['달라진 반응을 거리감으로 해석','기대를 벗어난 행동을 배려 부족으로 해석','한 번의 문제를 반복될 일로 예상','부정적 해석에서 벗어나기 어려움'];
@@ -158,11 +158,11 @@ if(document.getElementById('copySummary')){
 }
 
 /* 다른 브라우저로 넘어와 PDF 저장을 누른 경우: 응답을 복원해 같은 리포트를 다시 그리고 인쇄 창을 연다 */
-const rsArrival=ReportSave.arrival();
+const rsArrival=(typeof ReportSave!=='undefined')?ReportSave.arrival():{save:false,state:null};
 if(rsArrival.save&&/^[1-5]{16}$/.test(String(rsArrival.state||''))){
   answers=String(rsArrival.state).split('').map(Number);
   try{sessionStorage.setItem('relationshipReportAnswersV5',JSON.stringify({answers:answers,savedAt:Date.now()}));}catch(e){}
   makeFree();show('result');
-  ReportSave.arrivalPrint({printUrl:()=>ReportSave.url(true,answers.join(''))});
+  if(typeof ReportSave!=='undefined'){ReportSave.arrivalPrint({printUrl:()=>ReportSave.url(true,answers.join(''))});}
 }
 </script></body></html>

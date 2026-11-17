@@ -112,7 +112,7 @@ try{
  }
 }catch(error){}
 if(!hasValidAnswers){
- const rsArrival=ReportSave.arrival();
+ const rsArrival=(typeof ReportSave!=='undefined')?ReportSave.arrival():{save:false,state:null};
  if(rsArrival.save&&/^[1-5]{16}$/.test(String(rsArrival.state||''))){answers=String(rsArrival.state).split('').map(Number);hasValidAnswers=true;}
 }
 if(!hasValidAnswers){location.replace('index.html');}
@@ -126,11 +126,11 @@ function makePaid(){let a=topItem(8),d=topItem(12),anx=mean(0),avo=mean(4);let i
 if(hasValidAnswers){
  makePaid();rrAddPracticeCopy();
  $('#paidcontent').classList.add('open');
- ReportSave.arrivalPrint({printUrl:()=>ReportSave.url(true,answers.join(''))});
+ if(typeof ReportSave!=='undefined'){ReportSave.arrivalPrint({printUrl:()=>ReportSave.url(true,answers.join(''))});}
 }
 $('#restart').onclick=()=>{location.href='index.html'};
 /* 인쇄 / PDF 저장: 일반 브라우저는 인쇄 창, 카카오톡 등 앱 내부 브라우저는 기본 브라우저로 안내 */
-ReportSave.bind($('#print'),{printUrl:()=>ReportSave.url(true,answers.join(''))});
+if(typeof ReportSave!=='undefined'){ReportSave.bind($('#print'),{printUrl:()=>ReportSave.url(true,answers.join(''))});}else{$('#print').onclick=()=>window.print();}
 
 /* ---------- 문장 복사 (2026-11-17) ---------- */
 const C_LABELS=['달라진 반응을 거리감으로 해석','기대를 벗어난 행동을 배려 부족으로 해석','한 번의 문제를 반복될 일로 예상','부정적 해석에서 벗어나기 어려움'];
