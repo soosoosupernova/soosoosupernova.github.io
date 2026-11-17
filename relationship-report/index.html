@@ -122,7 +122,6 @@ $('#unlock').onclick=startRewardedAd;$('#unlock').onclick=()=>{
  }
 };
 $('#restart').onclick=()=>{answers=Array(16).fill(0);idx=0;try{sessionStorage.removeItem('relationshipReportAnswersV5')}catch(e){}show('landing')};
-$('#print').onclick=()=>window.print();
 /* 인쇄 / PDF 저장: 일반 브라우저는 인쇄 창, 카카오톡 등 앱 내부 브라우저는 기본 브라우저로 안내 */
 ReportSave.bind($('#print'),{printUrl:()=>ReportSave.url(true,answers.join(''))});
 

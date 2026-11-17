@@ -129,7 +129,6 @@ if(hasValidAnswers){
  ReportSave.arrivalPrint({printUrl:()=>ReportSave.url(true,answers.join(''))});
 }
 $('#restart').onclick=()=>{location.href='index.html'};
-$('#print').onclick=()=>window.print();
 /* 인쇄 / PDF 저장: 일반 브라우저는 인쇄 창, 카카오톡 등 앱 내부 브라우저는 기본 브라우저로 안내 */
 ReportSave.bind($('#print'),{printUrl:()=>ReportSave.url(true,answers.join(''))});
 
