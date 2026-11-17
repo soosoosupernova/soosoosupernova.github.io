@@ -669,7 +669,7 @@
       return '직접 입력한 영문 표기를 그대로 넣었습니다. 대소문자와 띄어쓰기만 확인하세요.';
     }
     if (r.domain) {
-      return '직접 입력한 한글은 영문 헤드라인에 넣지 않았습니다. 영문 표기가 필요하면 M.A. in Psychology처럼 영문으로 직접 붙이세요.';
+      return '직접 입력한 한글은 영문 헤드라인에 넣지 않았습니다. 영문 표기가 필요하면 B.A. in Design처럼 영문 학위·전공 표기로 직접 붙이세요.';
     }
     return '한글 단어가 하나라도 섞이면 검색 노출이 갈립니다. 도메인을 넣지 않아 이 줄은 직무와 툴로만 끝냈습니다.';
   }
@@ -688,17 +688,17 @@
     var p = purposeOf(r);
     var h = '';
     h += '<div class="hl-card">' +
-      '<div class="card-head"><span class="hl-tag">국문 이력서 상단</span><span class="hint">한 줄</span></div>' +
+      '<div class="card-head"><span class="hl-tag">국문 이력서 상단</span><button type="button" class="copy-chip" data-copy="head1" aria-label="국문 이력서 헤드라인 복사">복사</button></div>' +
       '<p class="hl-text">' + esc(headlineKo(r)) + '</p>' +
       '<p class="hl-note">' + esc(p.hlNote) + '</p>' +
       '</div>';
     h += '<div class="hl-card">' +
-      '<div class="card-head"><span class="hl-tag">링크드인 영문 통일</span><span class="hint">한 줄</span></div>' +
+      '<div class="card-head"><span class="hl-tag">링크드인 영문 통일</span><button type="button" class="copy-chip" data-copy="head2" aria-label="링크드인 영문 헤드라인 복사">복사</button></div>' +
       '<p class="hl-text">' + esc(headlineEn(r)) + '</p>' +
       '<p class="hl-note">' + esc(enHeadNote(r)) + '</p>' +
       '</div>';
     h += '<div class="hl-card">' +
-      '<div class="card-head"><span class="hl-tag">외주 · 제안서 첫 줄</span><span class="hint">두 문장</span></div>' +
+      '<div class="card-head"><span class="hl-tag">외주 · 제안서 첫 줄</span><button type="button" class="copy-chip" data-copy="head3" aria-label="외주 제안서 첫 문장 복사">복사</button></div>' +
       '<p class="hl-text plain">' + esc(headlinePitch(r)) + '</p>' +
       '<p class="hl-note">상대가 고객일 때는 내 직함보다 내가 없애는 문제를 먼저 씁니다.</p>' +
       '</div>';
@@ -756,6 +756,8 @@
     var role = roleOf(r);
     var pairs = role.pairs;
     var h = '';
+    h += '<details class="pair-box">' +
+      '<summary><span class="pair-sum">예시 3쌍 보기</span><span class="pair-sum-note">내 문장 아님</span></summary>';
     h += '<div class="formula">' +
       '<p><b>공식</b> — [무엇이 막혀 있었는지] → [내가 바꾼 것] → [그래서 무엇이 달라졌는지]</p>' +
       '<p>숫자가 있으면 숫자로, 없으면 없앴다 · 줄였다 · 닫았다 같은 동사로 끝냅니다. 숫자가 없어도 문장은 성립합니다.</p>' +
@@ -767,12 +769,13 @@
         '<p class="pair-row after"><span class="k">After</span>' + esc(pairs[i].a) + '</p>' +
         '</div>';
     }
-    h += personalDraftsHTML(r);
-    h += careerDraftsHTML(r);
     h += '<div class="formula">' +
       '<p><b>주의</b> — 위 After의 숫자는 구조를 보여주기 위한 예시입니다. 본인 기록으로 바꿔 넣으세요. 없는 숫자를 쓰면 면접에서 한 번에 드러납니다.</p>' +
       (r.illusion === 'jobhop' ? '<p>짧은 근무에는 기간 옆에 <b>왜 끝났는지</b>를 꼭 붙이세요. 계약 만료, 조직 개편, 프로젝트 종료 — 이유가 있으면 방황이 아니라 이력이 됩니다.</p>' : '') +
       '</div>';
+    h += '</details>';
+    h += personalDraftsHTML(r);
+    h += careerDraftsHTML(r);
     return h;
   }
 
@@ -807,7 +810,8 @@
       '<p class="draft-note">고르신 직무·역량 2개·툴·목적을 그대로 조합했습니다. 수치와 기간만 본인 기록으로 바꿔 쓰세요.</p>';
     for (var i = 0; i < ds.length; i++) {
       h += '<div class="draft-item">' +
-        '<span class="draft-idx">초안 ' + (i + 1) + ' · ' + tags[i] + '</span>' +
+        '<div class="draft-top"><span class="draft-idx">초안 ' + (i + 1) + ' · ' + tags[i] + '</span>' +
+        '<button type="button" class="copy-chip" data-copy="draft' + (i + 1) + '" aria-label="초안 ' + (i + 1) + ' 문장만 복사">복사</button></div>' +
         '<p class="draft-text">' + esc(ds[i]) + '</p>' +
         '</div>';
     }
@@ -821,7 +825,9 @@
     var h = '<div class="draft-box career-draft"><div class="draft-head"><p class="label">내 경험으로 만든 경력기술 문장</p><span class="draft-idx">선택 기반</span></div>';
     h += '<p class="draft-note">선택한 업무와 확인한 변화만 반영했습니다. 실제 경험과 다른 표현이 있다면 제출 전에 수정해 주세요.</p>';
     for (var i = 0; i < result.sentences.length; i++) {
-      h += '<div class="draft-item"><span class="draft-idx">' + esc(CAREER_WORKS[result.details[i].work].label) + '</span><p class="draft-text">' + esc(result.sentences[i]) + '</p>' + (result.details[i].role ? '<p class="career-role-note">담당 역할 · ' + esc(result.details[i].role) + '</p>' : '') + '</div>';
+      h += '<div class="draft-item"><div class="draft-top"><span class="draft-idx">' + esc(CAREER_WORKS[result.details[i].work].label) + '</span>' +
+        '<button type="button" class="copy-chip" data-copy="career' + (i + 1) + '" aria-label="경력기술 문장 ' + (i + 1) + ' 복사">복사</button></div>' +
+        '<p class="draft-text">' + esc(result.sentences[i]) + '</p>' + (result.details[i].role ? '<p class="career-role-note">담당 역할 · ' + esc(result.details[i].role) + '</p>' : '') + '</div>';
     }
     h += '</div>';
     return h;
@@ -970,9 +976,9 @@
     h += '</section>';
 
     h += '<section class="sec"><div class="sec-head"><span class="sec-num">06</span><h3>전체 텍스트 한 번에 복사</h3></div>';
-    h += '<p class="sec-lead">위 다섯 섹션을 순서대로 붙여 넣을 수 있는 형태로 만듭니다. 메모장에 붙여 두고 하나씩 옮겨 쓰세요.</p>';
+    h += '<p class="sec-lead">위 다섯 섹션을 마크다운 제목(##)과 함께 묶어 복사합니다. 노션·옵시디언에 붙이면 목차가 살아나고, 예시 문장과 각주는 들어가지 않습니다.</p>';
     h += '<div class="copy-box"><p>복사한 텍스트에는 입력한 도메인 키워드가 포함됩니다. 공유 링크에는 포함되지 않습니다.</p>';
-    h += '<button type="button" class="btn btn-primary" data-copy="all">전체 텍스트 한 번에 복사하기</button></div>';
+    h += '<button type="button" class="btn btn-primary" data-copy="all">전체 리포트 복사 (마크다운)</button></div>';
     h += '</section>';
 
     return h;
@@ -1013,6 +1019,7 @@
 
       h += '<div class="report-foot">' +
         '<div class="foot-actions">' +
+        '<button type="button" class="btn btn-ghost" data-action="print">📄 PDF로 저장</button>' +
         '<button type="button" class="btn btn-ghost" data-action="share">링크 공유</button>' +
         '<button type="button" class="btn btn-ghost" data-action="restart">다시 진단하기</button>' +
         '</div>' +
@@ -1049,6 +1056,7 @@
       h += paidHTML(r);
       h += '<div class="report-foot">' +
         '<div class="foot-actions">' +
+        '<button type="button" class="btn btn-ghost" data-action="print">📄 PDF로 저장</button>' +
         '<button type="button" class="btn btn-ghost" data-action="share">링크 공유</button>' +
         '<button type="button" class="btn btn-ghost" data-action="restart">새로 진단하기</button>' +
         '</div>' +
@@ -1061,48 +1069,41 @@
   /* =========================================================
      10. 텍스트 복사본
      ========================================================= */
+  function headLines(r) {
+    return [headlineKo(r), headlineEn(r), headlinePitch(r)];
+  }
+
   function headText(r) {
-    var L = [];
-    L.push('[01 목적별 헤드라인 3종]');
-    L.push('· 국문 이력서 상단: ' + headlineKo(r));
-    L.push('· 링크드인 영문: ' + headlineEn(r));
-    L.push('· 외주 · 제안: ' + headlinePitch(r));
-    return L.join('\n');
+    return headLines(r).join('\n');
   }
 
   function aboutText(r) {
-    return '[02 1초 컷 소개글]\n' + aboutParagraphs(r).join('\n\n');
+    return aboutParagraphs(r).join('\n\n');
   }
 
-  function expText(r) {
-    var pairs = roleOf(r).pairs;
-    var L = ['[03 물경력 탈출 경력 리라이팅]'];
-    L.push('공식: [무엇이 막혀 있었는지] → [내가 바꾼 것] → [그래서 무엇이 달라졌는지]');
-    for (var i = 0; i < pairs.length; i++) {
-      L.push('');
-      L.push('변환 ' + (i + 1) + ' (' + pairTag(i) + ')');
-      L.push('Before: ' + pairs[i].b);
-      L.push('After: ' + pairs[i].a);
-    }
-    L.push('');
+  function careerSentences(r) {
+    return careerSentenceData(r.answers || {}).sentences;
+  }
+
+  /* key: draft1 / draft2 / careerN / exp(전체) */
+  function expText(r, key) {
     var drafts = personalDrafts(r);
-    L.push('내 설정 기반 초안 (직무·역량·툴·목적 조합)');
-    L.push('초안 1 (성과 축): ' + drafts[0]);
-    L.push('초안 2 (목적 축): ' + drafts[1]);
-    var career = careerSentenceData(r.answers || {});
-    if (career.sentences.length) {
-      L.push('');
-      L.push('내 경험 기반 경력기술 문장');
-      for (var ci = 0; ci < career.sentences.length; ci++) { L.push('· ' + career.sentences[ci]); if (career.details[ci].role) { L.push('  담당 역할: ' + career.details[ci].role); } }
+    var career = careerSentences(r);
+    if (key === 'draft1') { return drafts[0]; }
+    if (key === 'draft2') { return drafts[1]; }
+    if (key && key.indexOf('career') === 0) {
+      var n = parseInt(key.replace('career', ''), 10) - 1;
+      return career[n] || '';
     }
-    L.push('');
-    L.push('위 After의 숫자는 예시입니다. 본인 기록으로 바꿔 넣으세요.');
-    return L.join('\n');
+    var L = [];
+    for (var i = 0; i < drafts.length; i++) { L.push(drafts[i]); }
+    for (var ci = 0; ci < career.length; ci++) { L.push(career[ci]); }
+    return L.join('\n\n');
   }
 
   function checkText(r) {
     var il = illusionOf(r);
-    var L = ['[04 감점 피하는 제외·주의 체크리스트]'];
+    var L = [];
     L.push('· 안 해본 툴 — ' + toolCutAdvice(r));
     L.push('· 추상어 빼기 — 열정, 다양한, 소통 원활, 책임감, 성실');
     L.push('· 회사 자랑 빼기 — 회사 규모·매출·투자 유치');
@@ -1114,29 +1115,42 @@
     return L.join('\n');
   }
 
+  /* 키워드는 붙여넣을 칸(스킬·기술란)에 맞춰 쉼표로 구분 */
   function keysText(r) {
-    return '[05 검색용 핵심 키워드 8선]\n' + keyList(r).join(' · ');
+    return keyList(r).join(', ');
   }
 
   function freeText(r) {
-    return '[무료 샘플 헤드라인]\n' + freeHeadline(r);
+    return freeHeadline(r);
   }
 
   function buildPlainText(r) {
     var L = [];
-    L.push(SERVICE + ' — ' + TYPES[r.type].name);
-    L.push('직무: ' + roleOf(r).name + ' · 경력 ' + yearsOf(r).name + ' · 목적: ' + purposeOf(r).name);
+    L.push('# ' + SERVICE + ' — ' + TYPES[r.type].name);
     L.push('');
-    L.push(headText(r));
+    L.push('- 직무: ' + roleOf(r).name + ' · 경력 ' + yearsOf(r).name + ' · 목적: ' + purposeOf(r).name);
+    L.push('');
+    L.push('## 01 목적별 헤드라인 3종');
+    L.push('');
+    L.push(headLines(r).join('\n\n'));
+    L.push('');
+    L.push('## 02 1초 컷 소개글');
     L.push('');
     L.push(aboutText(r));
     L.push('');
+    L.push('## 03 경력 문장');
+    L.push('');
     L.push(expText(r));
+    L.push('');
+    L.push('## 04 감점 피하는 제외·주의 체크리스트');
     L.push('');
     L.push(checkText(r));
     L.push('');
+    L.push('## 05 검색용 핵심 키워드 8선');
+    L.push('');
     L.push(keysText(r));
     L.push('');
+    L.push('---');
     L.push('문구는 자체 제작한 템플릿으로 만들어졌습니다. 채용이나 계약 결과를 보장하지 않습니다.');
     return L.join('\n');
   }
@@ -1144,8 +1158,11 @@
   function sectionText(r, key) {
     if (key === 'free') { return freeText(r); }
     if (key === 'head') { return headText(r); }
+    if (key === 'head1') { return headLines(r)[0]; }
+    if (key === 'head2') { return headLines(r)[1]; }
+    if (key === 'head3') { return headLines(r)[2]; }
     if (key === 'about') { return aboutText(r); }
-    if (key === 'exp') { return expText(r); }
+    if (key === 'exp' || key === 'draft1' || key === 'draft2' || (key && key.indexOf('career') === 0)) { return expText(r, key); }
     if (key === 'check') { return checkText(r); }
     if (key === 'keys') { return keysText(r); }
     if (key === 'all') { return buildPlainText(r); }
@@ -1277,12 +1294,28 @@
     toast(done ? okMsg : failMsg);
   }
 
+  function clipLine(s, max) {
+    var t = String(s || '').replace(/\s+/g, ' ').replace(/^#+\s*/, '').replace(/^-\s*/, '').trim();
+    if (t.length > max) { t = t.slice(0, max) + '…'; }
+    return t;
+  }
+
+  function copyMessage(text) {
+    var lines = String(text).split('\n').filter(function (l) { return l.trim(); });
+    var msg = '복사됨 · "' + clipLine(lines[0] || '', 30) + '"';
+    if (lines.length > 1) { msg += ' 외 ' + (lines.length - 1) + '줄'; }
+    return msg;
+  }
+
   function copySection(r, shared, key) {
     if (!r || shared) { return; }
     var text = sectionText(r, key);
     if (!text) { return; }
-    var msg = key === 'all' ? '전체 리포트를 복사했어요' : '문구를 복사했어요';
-    copyClipboard(text, msg, '복사가 지원되지 않는 브라우저입니다. 길게 눌러 직접 선택해 주세요.');
+    copyClipboard(text, copyMessage(text), '복사가 지원되지 않는 브라우저입니다. 길게 눌러 직접 선택해 주세요.');
+  }
+
+  function printReport() {
+    if (typeof window !== 'undefined' && window.print) { window.print(); }
   }
 
   function shareResult(r, shared, base) {
@@ -1401,6 +1434,7 @@
       var action = el.getAttribute('data-action');
       if (copy) { copySection(r, false, copy); }
       else if (action === 'share') { shareResult(r, false, detailShareBase()); }
+      else if (action === 'print') { printReport(); }
       else if (action === 'restart') {
         clearState();
         if (typeof location !== 'undefined') { location.href = 'index.html?new=1'; }
@@ -1533,7 +1567,7 @@
           '<div class="group-head"><span class="group-label">직접 입력</span>' +
           '<span class="group-count">칩을 고르면 칩이 우선</span></div>' +
           '<div class="text-wrap"><textarea id="q-text-input" rows="2" maxlength="' + SHARE_MAX_DOMAIN + '" ' +
-          'placeholder="예: 심리학 석사 / M.A. in Psychology">' + esc(a.domainFree) + '</textarea>' +
+          'placeholder="예: 헬스케어 · 커머스 · B2B SaaS">' + esc(a.domainFree) + '</textarea>' +
           '<div class="text-meta"><span>선택 사항</span><span id="q-text-count">' + a.domainFree.length + ' / ' + SHARE_MAX_DOMAIN + '</span></div></div>' +
           '</div>' +
           '<p class="text-example">칩에 없는 분야는 직접 쓰세요. 한글로 쓰면 영문 헤드라인에서는 빠지고, 영문으로 쓰면 영문 헤드라인에도 들어갑니다.</p>';
@@ -1772,6 +1806,7 @@
       var copy = el.getAttribute('data-copy');
       if (copy) { copySection(state.result, state.shared, copy); }
       else if (action === 'share') { shareResult(state.result, state.shared); }
+      else if (action === 'print') { printReport(); }
       else if (action === 'restart') { restart(); }
       else if (action === 'detail') { openDetail(); }
     });

@@ -271,6 +271,25 @@
   .about-close{margin-top:12px}
 
   .pair{margin-top:12px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  .pair-box{margin-top:14px;padding:0 16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,0.62)}
+  .pair-box > summary{display:flex;align-items:baseline;gap:8px;padding:14px 0;font-size:13px;font-weight:600;color:var(--sub);list-style:none}
+  .pair-box > summary::-webkit-details-marker{display:none}
+  .pair-box > summary::after{content:"＋";margin-left:auto;color:var(--mute);font-weight:400;font-size:14px}
+  .pair-box[open] > summary::after{content:"−"}
+  .pair-box[open] > summary{border-bottom:1px solid var(--line-soft)}
+  .pair-sum-note{font-size:11.5px;font-weight:500;color:var(--mute);letter-spacing:0}
+  .pair-box .pair{margin-top:0;padding:12px 0;border:0;border-top:1px solid var(--line-soft);border-radius:0;background:transparent}
+  .pair-box .pair:first-of-type{border-top:0}
+  .pair-box > .formula{margin-top:12px}
+  .pair-box > .formula:last-child{margin-bottom:16px}
+  .copy-chip{
+    flex:none;font-size:12px;font-weight:600;letter-spacing:0.01em;
+    padding:5px 12px;border-radius:100px;border:1px solid rgba(169,83,61,0.32);
+    background:var(--card);color:var(--terra-deep);transition:background-color .18s ease,border-color .18s ease;
+  }
+  .copy-chip:hover{background:var(--terra-soft);border-color:var(--terra)}
+  .copy-chip:active{transform:translateY(1px)}
+  .draft-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
   .pair-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
   .pair-idx{font-size:12px;font-weight:600;color:var(--terra);letter-spacing:0.02em;font-variant-numeric:tabular-nums}
   .pair-tag{font-size:12px;color:var(--mute)}
@@ -400,10 +419,17 @@
     html{scroll-behavior:auto}
   }
   @media print{
-    .sticky-cta,.modal,.topbar,.toc-card,.foot-actions,.toast,.q-actions{display:none !important}
-    body{background:#fff}
+    @page{margin:14mm}
+    .sticky-cta,.modal,.topbar,.toc-card,.foot-actions,.toast,.q-actions,.copy-chip,.next-card,.landing-foot,.copy-box{display:none !important}
+    .pair-box > summary::after{content:""}
+    body{background:#fff;background-image:none}
     .shell{max-width:none;padding:0}
-    .sec{break-inside:avoid}
+    .card,.hl-card,.pair,.draft-box,.check-group,.about-box,.formula,.keys{box-shadow:none;break-inside:avoid}
+    .sec-head{break-after:avoid}
+    .sec{margin-top:22px}
+    .pair-box{background:#fff}
+    .draft-box{background:#fff}
+    a{color:var(--ink)}
   }
   /* 2페이지 공통 추가 */
   .brand-link{color:var(--ink);display:inline-flex;align-items:center;gap:6px}
