@@ -1314,7 +1314,21 @@
     copyClipboard(text, copyMessage(text), '복사가 지원되지 않는 브라우저입니다. 길게 눌러 직접 선택해 주세요.');
   }
 
-  function printReport() {
+  /* 앱 내부 브라우저에서 넘어올 주소: 현재 페이지 + 인쇄 플래그 + 선택값(#s=) */
+  function printUrl(enc) {
+    var path = String((typeof location !== 'undefined' && location.pathname) || '');
+    var target = /detail\.html$/.test(path) ? path : path + '?view=summary';
+    var origin = (typeof location !== 'undefined' && location.origin && location.origin !== 'null') ? location.origin : '';
+    return origin + target + (target.indexOf('?') > -1 ? '&' : '?') + 'rs=1' + (enc ? '#s=' + encodeURIComponent(enc) : '');
+  }
+
+  function printReport(answers) {
+    var enc = '';
+    try { enc = JSON.stringify(answers || {}); } catch (e) { enc = ''; }
+    if (window.ReportSave) {
+      window.ReportSave.save({ printUrl: function () { return printUrl(enc); } });
+      return;
+    }
     if (typeof window !== 'undefined' && window.print) { window.print(); }
   }
 
@@ -1385,6 +1399,16 @@
   }
 
   function loadState() {
+    /* 다른 브라우저(앱 내부 → 기본 브라우저)로 넘어온 경우: 주소 #s= 에 담긴 선택값을 더 먼저 복원한다. */
+    try {
+      if (window.ReportSave) {
+        var arr = window.ReportSave.arrival();
+        if (arr && arr.state) {
+          var restored = JSON.parse(arr.state);
+          if (restored && typeof restored === 'object') { saveState(restored); }
+        }
+      }
+    } catch (e0) {}
     var stores = [];
     try { stores.push(window.localStorage); } catch (e) {}
     try { stores.push(window.sessionStorage); } catch (e2) {}
@@ -1426,6 +1450,11 @@
 
     var r = computeResult(answers);
     root.innerHTML = buildDetailHTML(r);
+    try {
+      if (window.ReportSave) {
+        window.ReportSave.arrivalPrint({ printUrl: function () { return printUrl(JSON.stringify(answers)); } });
+      }
+    } catch (e0) {}
 
     root.addEventListener('click', function (e) {
       var el = e.target.closest ? e.target.closest('[data-action], [data-copy]') : null;
@@ -1434,7 +1463,7 @@
       var action = el.getAttribute('data-action');
       if (copy) { copySection(r, false, copy); }
       else if (action === 'share') { shareResult(r, false, detailShareBase()); }
-      else if (action === 'print') { printReport(); }
+      else if (action === 'print') { printReport(answers); }
       else if (action === 'restart') {
         clearState();
         if (typeof location !== 'undefined') { location.href = 'index.html?new=1'; }
@@ -1806,7 +1835,7 @@
       var copy = el.getAttribute('data-copy');
       if (copy) { copySection(state.result, state.shared, copy); }
       else if (action === 'share') { shareResult(state.result, state.shared); }
-      else if (action === 'print') { printReport(); }
+      else if (action === 'print') { printReport(state.answers); }
       else if (action === 'restart') { restart(); }
       else if (action === 'detail') { openDetail(); }
     });
@@ -1847,6 +1876,11 @@
         state.shared = false;
         render();
         showScreen('result');
+        try {
+          if (window.ReportSave) {
+            window.ReportSave.arrivalPrint({ printUrl: function () { return printUrl(JSON.stringify(saved)); } });
+          }
+        } catch (e0) {}
       } else {
         showScreen('landing');
       }
