@@ -4,4 +4,5 @@
 `robots.txt`, `sitemap.xml`, `ads.txt`로 구성됩니다.
 
 - 관계 패턴 리포트: https://soosoosupernova.github.io/relationship-report/
+- 이력서·링크드인 한 줄 개조기: https://soosoosupernova.github.io/resume-rebuilder/ (index.html + detail.html + engine.js + styles.css)
 - 연차 정산 계산기: https://soosoosupernova.github.io/leave-calculator/
