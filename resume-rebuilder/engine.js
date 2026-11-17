@@ -1312,12 +1312,20 @@
     copyClipboard(url, '결과 링크를 복사했어요 · 입력 내용은 담기지 않습니다', '링크를 복사하지 못했어요. 주소창의 URL을 복사해 주세요.');
   }
 
-  function wantsNew(search) {
+  function hasParam(search, key, value) {
     var raw = String(search || '');
     if (raw.charAt(0) === '?') { raw = raw.slice(1); }
     if (!raw) { return false; }
-    return raw.split('&').indexOf('new=1') >= 0;
+    var pairs = raw.split('&');
+    for (var i = 0; i < pairs.length; i++) {
+      if (pairs[i] === key + '=' + value) { return true; }
+    }
+    return false;
   }
+
+  function wantsNew(search) { return hasParam(search, 'new', '1'); }
+
+  function wantsSummary(search) { return hasParam(search, 'view', 'summary'); }
 
   /* =========================================================
      10-C. 페이지 사이 상태 (2시간)
@@ -1785,9 +1793,10 @@
     });
 
     /* ---- 공유 링크 또는 랜딩 ---- */
+    var search = typeof location !== 'undefined' ? location.search : '';
     var shared = null;
     try {
-      shared = parseShareParams(typeof location !== 'undefined' ? location.search : '');
+      shared = parseShareParams(search);
     } catch (e) { shared = null; }
 
     if (shared) {
@@ -1795,7 +1804,18 @@
       state.result = sharedResult(shared);
       render();
       showScreen('result');
-    } else if (wantsNew(typeof location !== 'undefined' ? location.search : '')) {
+    } else if (wantsSummary(search)) {
+      var saved = loadState();
+      if (saved) {
+        state.answers = saved;
+        state.result = computeResult(saved);
+        state.shared = false;
+        render();
+        showScreen('result');
+      } else {
+        showScreen('landing');
+      }
+    } else if (wantsNew(search)) {
       startQuiz();
     } else {
       showScreen('landing');
@@ -1855,6 +1875,7 @@
     clearState: clearState,
     detailShareBase: detailShareBase,
     wantsNew: wantsNew,
+    wantsSummary: wantsSummary,
     bootDetail: bootDetail
   };
 
