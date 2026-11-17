@@ -948,7 +948,7 @@
     h += '<section class="sec"><div class="sec-head"><span class="sec-num">01</span><h3>목적별 헤드라인 3종 세트</h3></div>';
     h += '<p class="sec-lead">같은 사람이라도 이력서 상단, 링크드인, 제안서에서 다르게 읽힙니다. 세 자리에 맞춰 세 문장을 만들었습니다.</p>';
     h += sectionHeadHTML(r);
-    h += '<button type="button" class="btn btn-ghost btn-copy" data-copy="head">01 헤드라인 3종 복사하기</button>';
+    h += '<button type="button" class="btn btn-ghost btn-copy" data-copy="head">01 헤드라인 3줄 복사하기</button>';
     h += '</section>';
 
     h += '<section class="sec"><div class="sec-head"><span class="sec-num">02</span><h3>1초 컷 소개글 완성본</h3></div>';
@@ -958,9 +958,9 @@
     h += '</section>';
 
     h += '<section class="sec"><div class="sec-head"><span class="sec-num">03</span><h3>물경력 탈출 경력 리라이팅</h3></div>';
-    h += '<p class="sec-lead">경력을 지우지 않고 문장만 바꿉니다. 같은 일을 했어도 무엇이 달라졌는지가 앞에 오면 읽는 방식이 바뀝니다. 아래 초안 2개는 지금 고르신 조합으로 바로 만든 문장입니다.</p>';
+    h += '<p class="sec-lead">경력을 지우지 않고 문장만 바꿉니다. 같은 일을 했어도 무엇이 달라졌는지가 앞에 오면 읽는 방식이 바뀝니다. 아래 초안 2개는 지금 고르신 조합으로 바로 만든 문장입니다. 남의 예시 문장은 접어 두었고, 복사되지 않습니다.</p>';
     h += sectionExpHTML(r);
-    h += '<button type="button" class="btn btn-ghost btn-copy" data-copy="exp">03 경력 문장 복사하기</button>';
+    h += '<button type="button" class="btn btn-ghost btn-copy" data-copy="exp">03 내 초안·경력 문장만 복사</button>';
     h += '</section>';
 
     h += '<section class="sec"><div class="sec-head"><span class="sec-num">04</span><h3>감점 피하는 제외·주의 체크리스트</h3></div>';
@@ -972,10 +972,10 @@
     h += '<section class="sec"><div class="sec-head"><span class="sec-num">05</span><h3>검색용 핵심 키워드 8선</h3></div>';
     h += '<p class="sec-lead">헤드라인에 다 넣을 수 없으니, 나머지는 기술란에 둡니다. 아래 8개를 같은 표기로 쓰세요.</p>';
     h += sectionKeysHTML(r);
-    h += '<button type="button" class="btn btn-ghost btn-copy" data-copy="keys">05 키워드 복사하기</button>';
+    h += '<button type="button" class="btn btn-ghost btn-copy" data-copy="keys">05 키워드 8개 복사하기</button>';
     h += '</section>';
 
-    h += '<section class="sec"><div class="sec-head"><span class="sec-num">06</span><h3>전체 텍스트 한 번에 복사</h3></div>';
+    h += '<section class="sec sec-copy"><div class="sec-head"><span class="sec-num">06</span><h3>전체 텍스트 한 번에 복사</h3></div>';
     h += '<p class="sec-lead">위 다섯 섹션을 마크다운 제목(##)과 함께 묶어 복사합니다. 노션·옵시디언에 붙이면 목차가 살아나고, 예시 문장과 각주는 들어가지 않습니다.</p>';
     h += '<div class="copy-box"><p>복사한 텍스트에는 입력한 도메인 키워드가 포함됩니다. 공유 링크에는 포함되지 않습니다.</p>';
     h += '<button type="button" class="btn btn-primary" data-copy="all">전체 리포트 복사 (마크다운)</button></div>';

@@ -420,7 +420,7 @@
   }
   @media print{
     @page{margin:14mm}
-    .sticky-cta,.modal,.topbar,.toc-card,.foot-actions,.toast,.q-actions,.copy-chip,.next-card,.landing-foot,.copy-box{display:none !important}
+    .sticky-cta,.modal,.topbar,.toc-card,.foot-actions,.toast,.q-actions,.copy-chip,.next-card,.landing-foot,.copy-box,.btn-copy,.sec-copy,.copy-box .btn{display:none !important}
     .pair-box > summary::after{content:""}
     body{background:#fff;background-image:none}
     .shell{max-width:none;padding:0}
