@@ -54,9 +54,13 @@
   @media print{
     .top,.actions,.copy-bar,.copy-chip,.unlock,.pillnote,.rr-toast,.btn,.practice-hero{display:none!important}
     body{background:#fff}
-    .shell{padding:0}
-    .card{box-shadow:none;break-inside:avoid}
-    .script{break-inside:avoid}
+    .shell{padding:0;max-width:none}
+    /* 섹션 카드가 페이지 경계에서 통째로 밀려 아래가 비던 문제 → 카드 상자는 인쇄에서 선으로 바꾸고 내용은 흐르게 */
+    .card{background:#fff;border:0;border-top:1px solid #e8e6f0;border-radius:0;box-shadow:none;padding:16px 0 2px;margin:0;break-inside:auto}
+    .report-head{padding:0 0 14px}
+    .section-title{break-after:avoid;break-inside:avoid}
+    .callout,.script,.step,.barrow,.chart-wrap,.practice-card,.practice-takeaway,.copy-bar{break-inside:avoid}
+    .bodycopy{orphans:2;widows:2}
   }
   @page{margin:14mm}
 </style></head><body class="advanced-page"><main class="shell"><div class="top"><span class="brand">관계 패턴 리포트</span><span class="meta">SELF-UNDERSTANDING TOOL · v5.0</span></div>
