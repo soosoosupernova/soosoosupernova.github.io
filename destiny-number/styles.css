@@ -11,7 +11,7 @@
   /* text */
   --ink:#2D2724;         /* deep brown / charcoal */
   --ink2:#6A5A4E;
-  --mute:#9A8A7B;
+  --mute:#8A7A6C;
   /* line */
   --line:#E9DFCC;
   --line2:#DCCFB6;
@@ -117,7 +117,7 @@ select:invalid{color:var(--mute);font-weight:500}
 .btn-block{display:flex;width:100%;margin-top:16px}
 .btn svg{width:16px;height:16px;flex:none}
 
-.fine{font-size:11.5px;line-height:1.75;color:var(--mute);margin:14px 0 0}
+.fine{font-size:11.5px;line-height:1.75;color:#77685C;margin:14px 0 0}
 .fine b{color:var(--ink2);font-weight:600}
 
 /* ---------- 예고 목록 ---------- */
