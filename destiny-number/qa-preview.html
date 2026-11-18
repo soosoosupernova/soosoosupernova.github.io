@@ -20,7 +20,13 @@
   if (w) { f.width = w; }
   if (h) { f.height = h; }
   if (url) { f.src = url; }
-  function jump() { try { f.contentWindow.scrollTo(0, y); } catch (e) {} }
+  function jump() {
+    try {
+      var c = f.contentDocument && f.contentDocument.querySelector('canvas');
+      if (c && c.getBoundingClientRect().height > 100) { c.scrollIntoView({ block: 'start' }); return; }
+      f.contentWindow.scrollTo(0, y);
+    } catch (e) {}
+  }
   f.addEventListener('load', function () {
     jump(); setTimeout(jump, 700); setTimeout(jump, 1600); setTimeout(jump, 2600);
   });
