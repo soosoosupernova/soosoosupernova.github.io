@@ -516,12 +516,12 @@
 
     /* ---------- 운명 수 + 고양이 ---------- */
     var heroTop = y;
-    pxLabel(ctx, '운명 수', PX, heroTop + 12, MUTE, 17);
     ctx.fillStyle = PINK; ctx.font = '170px ' + F_PX;
     ctx.fillText(String(r.lp), PX, heroTop + 148);
     var numW = ctx.measureText(String(r.lp)).width;
     ctx.fillStyle = INK2; ctx.font = '32px ' + F_PX;
     ctx.fillText('번', PX + numW + 16, heroTop + 138);
+    pxLabel(ctx, '운명 수', PX + numW + 18, heroTop + 172, MUTE, 16);
 
     if (r.master) {
       var sx = PX + numW + 100, sy = heroTop + 26;
