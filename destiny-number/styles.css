@@ -251,9 +251,9 @@ ul.list.sky li::before{background:var(--sky-deep);opacity:.8}
 .avoid-box p{font-size:13px;line-height:1.72;color:#6A3A34}
 
 /* ---------- 타로 ---------- */
-.tarot{display:grid;grid-template-columns:112px 1fr;gap:16px;align-items:center}
+.tarot{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center}
 .tarot-art{display:block;width:100%;height:auto;mix-blend-mode:multiply}
-.tarot-meta .k{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+.tarot-meta .k{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
 .tarot-meta .n{font-family:var(--serif);font-size:20px;line-height:1.35;margin:5px 0 2px;letter-spacing:-.03em}
 .tarot-meta .e{font-size:9.5px;font-weight:600;letter-spacing:.16em;color:var(--mute);text-transform:uppercase;margin-bottom:8px}
 .tarot-meta p{font-size:13px;line-height:1.78;color:var(--ink2)}
