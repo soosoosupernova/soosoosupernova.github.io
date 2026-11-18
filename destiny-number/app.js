@@ -147,26 +147,33 @@
     // 계산 과정
     var lines = [];
     function step(label, num, red) {
-      var txt;
       if (isMaster(num)) {
-        txt = num + ' → 마스터 수라 그대로 둬요';
-      } else {
-        var cur = num;
-        txt = String(cur);
-        while (cur > 9 && !isMaster(cur)) {
-          var nx = dsum(cur);
-          txt += ' → ' + String(cur).split('').join(' + ') + ' = ' + nx;
-          cur = nx;
-        }
-        txt += ' = <b>' + red.value + '</b>';
-        return '<div class="calc-line"><span class="calc-k">' + label + '</span><span>' + txt + '</span></div>';
+        return '<div class="calc-line"><span class="calc-k">' + label + '</span><span>' + num + ' → 마스터 수라 줄이지 않아요 → <b>' + red.value + '</b></span></div>';
       }
-      return '<div class="calc-line"><span class="calc-k">' + label + '</span><span>' + txt + ' = <b>' + red.value + ' (마스터)</b></span></div>';
+      var segs = [String(num)], cur = num;
+      while (cur > 9 && !isMaster(cur)) {
+        var nx = dsum(cur);
+        segs.push(String(cur).split('').join(' + ') + ' = ' + nx);
+        cur = nx;
+      }
+      var html = segs.map(function (s, i) {
+        return i === segs.length - 1 ? '<b>' + s + '</b>' : s;
+      }).join(' → ');
+      return '<div class="calc-line"><span class="calc-k">' + label + '</span><span>' + html + '</span></div>';
     }
     lines.push(step('해', r.y, r.ry));
     lines.push(step('달', r.m, r.rm));
     lines.push(step('일', r.d, r.rd));
-    lines.push('<div class="calc-line"><span class="calc-k">합</span><span>' + r.ry.value + ' + ' + r.rm.value + ' + ' + r.rd.value + ' = ' + r.sum + (r.sum > 9 ? ' → ' + String(r.sum).split('').join(' + ') : '') + ' = <b>' + r.lp + (r.master ? ' (마스터 수)' : '') + '</b></span></div>');
+    lines.push((function () {
+      var segs = [r.ry.value + ' + ' + r.rm.value + ' + ' + r.rd.value + ' = ' + r.sum], cur2 = r.sum;
+      while (cur2 > 9 && !isMaster(cur2)) {
+        var nx2 = dsum(cur2);
+        segs.push(String(cur2).split('').join(' + ') + ' = ' + nx2 + (isMaster(nx2) ? ' (마스터 수)' : ''));
+        cur2 = nx2;
+      }
+      var html2 = segs.map(function (s, i) { return i === segs.length - 1 ? '<b>' + s + '</b>' : s; }).join(' → ');
+      return '<div class="calc-line"><span class="calc-k">합</span><span>' + html2 + '</span></div>';
+    })());
     lines.push('<div class="calc-line"><span class="calc-k">2027</span><span>2+0+2+7 = 11, 여기에 ' + r.m + '월(' + dsum(r.m) + ') + ' + r.d + '일(' + dsum(r.d) + ') = ' + r.pyRaw + ' → <b>' + r.py + '</b></span></div>');
     lines.push('<div class="calc-line"><span class="calc-k">카드</span><span>' + r.m + ' + ' + r.d + ' + ' + r.y + ' = ' + (r.m + r.d + r.y) + ' → <b>' + r.card + '번</b></span></div>');
 
@@ -219,6 +226,21 @@
       else { line += ch; }
     }
     if (line) { out.push(line); }
+    // 마지막 줄이 너무 짧으면(예: "요.") 두 줄 폭이 비슷해지도록 다시 나눈다
+    if (out.length === 2 && ctx.measureText(out[1]).width < maxW * 0.28) {
+      var mid = Math.floor(text.length / 2), best = null;
+      for (var d = 0; d < text.length / 2; d++) {
+        [mid + d, mid - d].forEach(function (k) {
+          if (best || k < 4 || k > text.length - 4) { return; }
+          var a = text.slice(0, k), b = text.slice(k);
+          if (ctx.measureText(a).width <= maxW && ctx.measureText(b).width <= maxW) {
+            if (text[k - 1] === ' ' || text[k] === ' ' || d > 6) { best = [a, b]; }
+          }
+        });
+        if (best) { break; }
+      }
+      if (best) { out = best; }
+    }
     return out;
   }
 
@@ -349,7 +371,7 @@
     ctx.fillStyle = '#3A302B'; ctx.font = '54px ' + F_ROUND;
     ctx.fillText(L.nick, cx + 52, cy + 432);
     ctx.fillStyle = '#6B5D54'; ctx.font = '30px ' + F_BODY;
-    var tagLines = wrapText(ctx, L.tag, cw - 120);
+    var tagLines = wrapText(ctx, L.tag, cw - 110);
     tagLines.forEach(function (ln, i) { ctx.fillText(ln, cx + 54, cy + 492 + i * 46); });
 
     // 생일 칩
@@ -373,7 +395,7 @@
       var ry2 = sy + 104 + i * 42;
       ctx.fillStyle = '#4E5B3B'; ctx.font = '22px ' + F_MONO;
       ctx.fillText(row[0], cx + 44, ry2);
-      for (var k = 0; k < 5; k++) { heartPath(ctx, cx + 260 + k * 42, ry2 - 22, 30, k < row[1], '#E2748F'); }
+      for (var k = 0; k < 5; k++) { heartPath(ctx, cx + 612 + k * 42, ry2 - 22, 30, k < row[1], '#E2748F'); }
       ctx.fillStyle = '#6C7A4F'; ctx.textAlign = 'right'; ctx.font = '18px ' + F_MONO;
       ctx.fillText(row[1] + '/5', cx + cw - 44, ry2); ctx.textAlign = 'left';
     });
