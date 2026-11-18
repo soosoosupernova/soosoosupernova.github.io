@@ -91,7 +91,7 @@
 
   function sync() {
     var ok = $('by').value && $('bm').value && $('bd').value;
-    $('btn-go').disabled = !ok;
+    $('btn-go').classList.toggle('is-ready', !!ok);
   }
 
   /* ---------------- 결과 렌더 ---------------- */
@@ -667,7 +667,11 @@
     $('form').addEventListener('submit', function (e) {
       e.preventDefault();
       var y = +$('by').value, m = +$('bm').value, day = +$('bd').value;
-      if (!y || !m || !day) { return; }
+      if (!y || !m || !day) {
+        toast('생년월일을 먼저 골라 주세요.');
+        $('by').focus();
+        return;
+      }
       if (day > daysIn(y, m)) { toast('그 달에는 그 날이 없어요. 날짜를 다시 골라 주세요.'); return; }
       show(calc(y, m, day));
     });

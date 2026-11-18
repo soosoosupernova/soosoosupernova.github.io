@@ -78,14 +78,14 @@ body.is-result .shell{padding-bottom:84px}
 /* ---------- 게임기 ---------- */
 .device{
   position:relative;
-  background:linear-gradient(180deg,#EDF5BE 0%,#DCE9A0 62%,#D3E293 100%);
+  background:linear-gradient(180deg,#F4FACB 0%,#DFEDA3 62%,#D5E596 100%);
   border:3px solid var(--ink);
   border-radius:16px;
   padding:8px;
   box-shadow:6px 6px 0 var(--hard);
 }
 .bezel{
-  background:#C9DA8C;
+  background:#CBDD89;
   border:3px solid var(--ink);
   border-radius:10px;
   padding:6px;
