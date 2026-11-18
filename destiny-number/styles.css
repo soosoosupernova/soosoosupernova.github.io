@@ -227,14 +227,15 @@ ul.list.butter li::before{background:var(--butter2)}
 .avoid-box p{font-size:13.5px;line-height:1.65;color:#6C3730}
 
 /* ---------- 타로 ---------- */
-.tarot{display:grid;grid-template-columns:96px 1fr;gap:13px;align-items:center}
-.tarot-card{position:relative;width:96px;height:146px;border-radius:12px;border:2px solid var(--line2);
-  background:linear-gradient(168deg,#FFF4D9,#F6E7F0 55%,#DDEEF8);display:grid;grid-template-rows:auto 1fr auto;
-  align-items:center;justify-items:center;padding:8px 6px;box-shadow:0 6px 14px rgba(94,70,48,.12)}
-.tarot-card .rn{font:10px/1 var(--mono);letter-spacing:.12em;color:#8A6A3E}
-.tarot-card .mot{width:44px;height:44px;color:#5C4A6E;opacity:.9}
-.tarot-card .mot svg{width:100%;height:100%}
-.tarot-card .nm{font-family:var(--round);font-size:11.5px;color:#5C4A6E;line-height:1.2;text-align:center}
+.tarot{display:grid;grid-template-columns:106px 1fr;gap:14px;align-items:center}
+.tarot-card{position:relative;width:106px;height:158px;border-radius:13px;border:2px solid #E3D3BF;
+  background:linear-gradient(168deg,#FFF2CF 0%,#F7E4EE 52%,#D9ECF8 100%);display:grid;grid-template-rows:auto 1fr auto;
+  align-items:center;justify-items:center;padding:9px 7px;box-shadow:0 6px 14px rgba(94,70,48,.14)}
+.tarot-card::before{content:"";position:absolute;inset:6px;border:1.5px dashed rgba(122,106,95,.35);border-radius:9px;pointer-events:none}
+.tarot-card .rn{font:10px/1 var(--mono);letter-spacing:.14em;color:#8A6A3E}
+.tarot-card .mot{width:50px;height:50px;color:#4B3F63}
+.tarot-card .mot svg{width:100%;height:100%;stroke-width:1.5}
+.tarot-card .nm{font-family:var(--round);font-size:13px;color:#4B3F63;line-height:1.2;text-align:center}
 .tarot-meta .k{font:10px/1 var(--mono);letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
 .tarot-meta .n{font-family:var(--round);font-size:20px;line-height:1.3;margin:4px 0 2px;letter-spacing:-.02em}
 .tarot-meta .e{font:9.5px/1.3 var(--mono);letter-spacing:.1em;color:var(--mute);text-transform:uppercase;margin-bottom:7px}
