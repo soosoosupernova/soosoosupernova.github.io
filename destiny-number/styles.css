@@ -148,7 +148,7 @@ select:invalid{color:var(--mute);font-weight:500}
   letter-spacing:-.06em;color:var(--sky-deep);display:block;flex:none;
 }
 .num-big small{font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--mute);margin-left:6px;vertical-align:6px}
-.num-art{width:88px;height:auto;flex:none;margin:-6px 0 0 auto;mix-blend-mode:multiply}
+.num-art{width:96px;height:auto;flex:none;margin:-6px 0 0 auto;mix-blend-mode:multiply}
 .stamp{
   flex:none;width:66px;height:66px;margin:6px 0 0 2px;border:1.5px dashed var(--cherry);border-radius:50%;
   display:grid;place-items:center;text-align:center;transform:rotate(-8deg);color:var(--cherry);
@@ -291,7 +291,7 @@ ul.list.sky li::before{background:var(--sky-deep);opacity:.8}
   .hero{padding:26px 24px 24px}
   .hero-art{max-width:320px}
   .half{grid-template-columns:1fr 1fr}
-  .num-art{width:104px}
+  .num-art{width:116px}
   .tarot{grid-template-columns:130px 1fr;gap:22px}
 }
 @media (min-width:900px){
