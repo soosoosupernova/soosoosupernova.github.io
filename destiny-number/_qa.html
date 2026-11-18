@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<title>QA viewport</title>
+<style>html,body{margin:0;background:#4a4a4a;overflow:hidden}iframe{border:0;display:block;transform-origin:0 0}</style>
+<div id="wrap"></div>
+<script>
+var p = new URLSearchParams(location.search);
+var w = +(p.get('w') || 375), h = +(p.get('h') || 812), s = parseFloat(p.get('s') || '1');
+var u = p.get('u') || './';
+var f = document.createElement('iframe');
+f.width = w; f.height = h; f.src = u;
+f.style.transform = 'scale(' + s + ')';
+document.getElementById('wrap').appendChild(f);
+</script>
+</html>
