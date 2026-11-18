@@ -229,8 +229,8 @@ ul.list.sky li::before{background:var(--sky-deep);opacity:.8}
 .half-card p{font-size:13px;line-height:1.78;color:var(--ink)}
 .py-tip{display:flex;gap:8px;margin-top:14px;font-size:13px;line-height:1.78;color:var(--ink2)}
 .py-tip b{
-  flex:none;font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--cherry);
-  border-top:1px solid var(--cherry);padding-top:3px;margin-top:4px;align-self:flex-start;
+  flex:none;font-size:9.5px;font-weight:700;letter-spacing:.14em;color:var(--cherry);
+  margin-top:5px;align-self:flex-start;border:0;padding:0;
 }
 
 /* ---------- 일·돈·관계 ---------- */
@@ -254,7 +254,6 @@ ul.list.sky li::before{background:var(--sky-deep);opacity:.8}
 .tarot{display:grid;grid-template-columns:112px 1fr;gap:16px;align-items:center}
 .tarot-art{display:block;width:100%;height:auto;mix-blend-mode:multiply}
 .tarot-meta .k{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
-.tarot-meta .k svg{width:14px;height:14px;color:var(--sky-deep);flex:none}
 .tarot-meta .n{font-family:var(--serif);font-size:20px;line-height:1.35;margin:5px 0 2px;letter-spacing:-.03em}
 .tarot-meta .e{font-size:9.5px;font-weight:600;letter-spacing:.16em;color:var(--mute);text-transform:uppercase;margin-bottom:8px}
 .tarot-meta p{font-size:13px;line-height:1.78;color:var(--ink2)}
