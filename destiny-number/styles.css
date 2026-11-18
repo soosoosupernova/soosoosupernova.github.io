@@ -73,7 +73,7 @@ img{max-width:100%}
 }
 .hero-title em{
   font-style:normal;
-  background:linear-gradient(transparent 68%, var(--sky-soft) 68%, var(--sky-soft) 96%, transparent 96%);
+  background:linear-gradient(transparent 58%, var(--sky-soft) 58%, var(--sky-soft) 94%, transparent 94%);
   padding:0 1px;
 }
 .hero-art{display:block;width:100%;height:auto;max-width:296px;margin:8px auto 0;mix-blend-mode:multiply}
