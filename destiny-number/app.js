@@ -549,11 +549,11 @@
 
     // 고양이 이름 + 한 줄
     pxLabel(ctx, cat.name, PX, y + 22, N.THEME[r.lp].accent, 23);
-    y += 36;
+    y += 30;
     ctx.font = '23px ' + F_BODY; ctx.fillStyle = MUTE;
     var catLines = wrapText(ctx, cat.line, CW, 2);
-    for (var j = 0; j < catLines.length; j++) { ctx.fillText(catLines[j], PX, y + j * 32); }
-    y += catLines.length * 32 + 16;
+    for (var j = 0; j < catLines.length; j++) { ctx.fillText(catLines[j], PX, y + 24 + j * 32); }
+    y += 24 + catLines.length * 32 + 12;
 
     // 생일 칩
     ctx.font = '26px ' + F_PX;
@@ -645,7 +645,7 @@
 
       /* 조합 해석 */
       pxLabel(ctx, '수비학 × 타로 조합', PX, y + 20, N.THEME[r.lp].accent, 20);
-      y += 42;
+      y += 48;
       ctx.font = '26px ' + F_BODY; ctx.fillStyle = INK;
       var sLines = wrapText(ctx, cb.syn, CW, 3);
       for (var s = 0; s < sLines.length; s++) { ctx.fillText(sLines[s], PX, y + s * 38); }
@@ -656,14 +656,14 @@
       y += yLines.length * 38 + 22;
 
       ctx.font = '25px ' + F_BODY;
-      var wLines = wrapText(ctx, cb.watch, CW - 120, 2);
+      var wLines = wrapText(ctx, cb.watch, CW - 106, 2);
       var wh = 32 + wLines.length * 36 + 18;
       rect(ctx, PX, y, CW, wh, '#EAF4F8');
       ctx.strokeStyle = '#BFDCEA'; ctx.lineWidth = 3;
       ctx.strokeRect(PX + 1.5, y + 1.5, CW - 3, wh - 3);
       pxLabel(ctx, '주의', PX + 22, y + 32, SKY, 17);
       ctx.fillStyle = INK2; ctx.font = '25px ' + F_BODY;
-      for (var w = 0; w < wLines.length; w++) { ctx.fillText(wLines[w], PX + 92, y + 32 + w * 36); }
+      for (var w = 0; w < wLines.length; w++) { ctx.fillText(wLines[w], PX + 78, y + 32 + w * 36); }
       y += wh + 28;
     }
 
