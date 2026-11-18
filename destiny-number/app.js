@@ -476,7 +476,7 @@
     var r = current, L = N.LIFE[r.lp], PY = N.PY[r.py], tarot = N.TAROT[r.card];
     var cat = N.CAT[r.lp] || { name: '고양이', line: '' };
     var cb = comboParts(r);
-    var W = 1080, HMAX = 3400;
+    var W = 1080, HMAX = 3600;
     var cv = d.createElement('canvas');
     cv.width = W; cv.height = HMAX;
     var ctx = cv.getContext('2d');
@@ -504,25 +504,26 @@
       ctx.strokeStyle = INK; ctx.lineWidth = 3.5; ctx.stroke();
     });
 
-    var y = M + 51 + 58;
+    var y = M + 51 + 46;
 
     // 머리
     pxLabel(ctx, '수수수 웹툴', PX, y + 26, INK, 30);
     ctx.fillStyle = MUTE; ctx.font = '16px ' + F_PX; ctx.textAlign = 'right';
     ctx.fillText('MY LITTLE DESTINY', PX + CW, y + 22);
     ctx.textAlign = 'left';
-    rule(ctx, PX, y + 46, CW);
-    y += 92;
+    rule(ctx, PX, y + 44, CW);
+    y += 76;
 
-    /* ---------- ② 운명 수 + ① 고양이 ---------- */
-    ctx.fillStyle = PINK; ctx.font = '190px ' + F_PX;
-    ctx.fillText(String(r.lp), PX, y + 160);
+    /* ---------- 운명 수 + 고양이 ---------- */
+    var heroTop = y;
+    ctx.fillStyle = PINK; ctx.font = '170px ' + F_PX;
+    ctx.fillText(String(r.lp), PX, heroTop + 148);
     var numW = ctx.measureText(String(r.lp)).width;
-    ctx.fillStyle = INK2; ctx.font = '34px ' + F_PX;
-    ctx.fillText('번', PX + numW + 14, y + 152);
+    ctx.fillStyle = INK2; ctx.font = '32px ' + F_PX;
+    ctx.fillText('번', PX + numW + 16, heroTop + 138);
 
     if (r.master) {
-      var sx = PX + numW + 92, sy = y + 34;
+      var sx = PX + numW + 100, sy = heroTop + 26;
       ctx.strokeStyle = PINK; ctx.lineWidth = 4; ctx.setLineDash([10, 8]);
       ctx.strokeRect(sx, sy, 132, 84);
       ctx.setLineDash([]);
@@ -532,92 +533,93 @@
     }
 
     if (catImg) {
-      var cw = 208, ch = cw;
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(catImg, PX + CW - cw, y + 4, cw, ch);
+      ctx.drawImage(catImg, PX + CW - 210, heroTop - 2, 210, 210);
     }
 
-    y += 196;
-    ctx.fillStyle = INK; ctx.font = '50px ' + F_PX;
+    y = heroTop + 232;
+    ctx.fillStyle = INK; ctx.font = '46px ' + F_PX;
     ctx.fillText(L.nick, PX, y);
-    y += 46;
-    ctx.fillStyle = INK2; ctx.font = '28px ' + F_BODY;
+    y += 34;
+
+    ctx.font = '28px ' + F_BODY; ctx.fillStyle = INK2;
     var tagLines = wrapText(ctx, L.tag, CW - 10, 2);
-    tagLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 40); });
+    for (var i = 0; i < tagLines.length; i++) { ctx.fillText(tagLines[i], PX, y + i * 40); }
     y += tagLines.length * 40 + 10;
 
-    // 고양이 한 줄
-    ctx.fillStyle = N.THEME[r.lp].accent; ctx.font = '24px ' + F_PX;
-    ctx.fillText(cat.name, PX, y + 24);
-    y += 44;
-    ctx.fillStyle = MUTE; ctx.font = '24px ' + F_BODY;
+    // 고양이 이름 + 한 줄
+    pxLabel(ctx, cat.name, PX, y + 22, N.THEME[r.lp].accent, 23);
+    y += 36;
+    ctx.font = '23px ' + F_BODY; ctx.fillStyle = MUTE;
     var catLines = wrapText(ctx, cat.line, CW, 2);
-    catLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 34); });
-    y += catLines.length * 34 + 12;
+    for (var j = 0; j < catLines.length; j++) { ctx.fillText(catLines[j], PX, y + j * 32); }
+    y += catLines.length * 32 + 16;
 
     // 생일 칩
-    var chipTxt = r.y + '.' + pad(r.m) + '.' + pad(r.d) + '  양력';
     ctx.font = '26px ' + F_PX;
+    var chipTxt = r.y + '.' + pad(r.m) + '.' + pad(r.d) + '  양력';
     var chipW = ctx.measureText(chipTxt).width + 40;
     rect(ctx, PX, y, chipW, 50, CREAM);
     ctx.strokeStyle = LINE; ctx.lineWidth = 4; ctx.strokeRect(PX + 2, y + 2, chipW - 4, 46);
-    ctx.fillStyle = INK2; ctx.fillText(chipTxt, PX + 20, y + 35);
-    y += 86;
+    ctx.fillStyle = INK2; ctx.fillText(chipTxt, PX + 20, y + 34);
+    y += 50 + 30;
 
-    /* ---------- ④ 성향 요약 ---------- */
-    rule(ctx, PX, y, CW); y += 34;
-    pxLabel(ctx, '성향 요약', PX, y, N.THEME[r.lp].accent, 20); y += 44;
+    /* ---------- 성향 요약 ---------- */
+    rule(ctx, PX, y, CW); y += 26;
+    pxLabel(ctx, '성향 요약', PX, y + 20, N.THEME[r.lp].accent, 20);
+    y += 44;
     [L.traits[0], L.traits[1]].forEach(function (t) {
       ctx.fillStyle = N.THEME[r.lp].accent;
-      ctx.fillRect(PX + 2, y - 16, 12, 12);
+      ctx.fillRect(PX, y + 6, 12, 12);
       ctx.strokeStyle = INK; ctx.lineWidth = 2.5;
-      ctx.strokeRect(PX + 2, y - 16, 12, 12);
-      ctx.fillStyle = INK; ctx.font = '26px ' + F_BODY;
-      var ls = wrapText(ctx, t, CW - 40, 2);
-      ls.forEach(function (ln, i) { ctx.fillText(ln, PX + 34, y + i * 38); });
-      y += ls.length * 38 + 16;
+      ctx.strokeRect(PX, y + 6, 12, 12);
+      ctx.font = '26px ' + F_BODY; ctx.fillStyle = INK;
+      var ls = wrapText(ctx, t, CW - 44, 2);
+      for (var k = 0; k < ls.length; k++) { ctx.fillText(ls[k], PX + 34, y + 22 + k * 38); }
+      y += ls.length * 38 + 18;
     });
 
-    /* ---------- ③ 2027 개인년수 + 키워드 ---------- */
-    y += 10;
-    rule(ctx, PX, y, CW); y += 34;
-    ctx.fillStyle = SKY; ctx.font = '116px ' + F_PX;
-    ctx.fillText(String(r.py), PX, y + 92);
+    /* ---------- 2027 개인년수 ---------- */
+    y += 6;
+    rule(ctx, PX, y, CW); y += 26;
+    ctx.fillStyle = SKY; ctx.font = '112px ' + F_PX;
+    ctx.fillText(String(r.py), PX, y + 88);
     var pyW = ctx.measureText(String(r.py)).width;
-    var cx0 = PX + pyW + 28;
-    pxLabel(ctx, '2027 개인년수', cx0, y + 20, SKY, 18);
-    ctx.fillStyle = INK; ctx.font = '36px ' + F_PX;
-    ctx.fillText(PY.title, cx0, y + 66);
+    var cx0 = PX + pyW + 30;
+    pxLabel(ctx, '2027 개인년수', cx0, y + 18, SKY, 18);
+    ctx.fillStyle = INK; ctx.font = '34px ' + F_PX;
+    ctx.fillText(PY.title, cx0, y + 62);
     var kx = cx0;
-    kx += pill(ctx, PY.kw1, kx, y + 84, CREAM, INK, LINE) + 10;
-    pill(ctx, PY.kw2, kx, y + 84, CREAM, INK, LINE);
-    y += 152;
-    ctx.fillStyle = INK2; ctx.font = '28px ' + F_BODY;
-    var pyLines = wrapText(ctx, PY.theme, CW, 2);
-    pyLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 40); });
-    y += pyLines.length * 40 + 26;
+    kx += pill(ctx, PY.kw1, kx, y + 78, CREAM, INK, LINE) + 10;
+    pill(ctx, PY.kw2, kx, y + 78, CREAM, INK, LINE);
+    y += 148;
 
-    /* ---------- ⑤ 타로 3장 ---------- */
-    rule(ctx, PX, y, CW); y += 34;
-    pxLabel(ctx, 'TODAY · 2027 · ADVICE', PX, y, INK2, 18);
-    y += 26;
+    ctx.font = '28px ' + F_BODY; ctx.fillStyle = INK2;
+    var pyLines = wrapText(ctx, PY.theme, CW, 2);
+    for (var m = 0; m < pyLines.length; m++) { ctx.fillText(pyLines[m], PX, y + m * 40); }
+    y += pyLines.length * 40 + 24;
+
+    /* ---------- 타로 3장 ---------- */
+    rule(ctx, PX, y, CW); y += 26;
+    pxLabel(ctx, 'TODAY · 2027 · ADVICE', PX, y + 18, INK2, 18);
+    y += 32;
     var gap = 20, tw = (CW - gap * 2) / 3, th = 300;
-    for (var i = 0; i < 3; i++) {
-      var bx = PX + i * (tw + gap), by = y;
-      var pick = picks[i];
+    for (var n2 = 0; n2 < 3; n2++) {
+      var bx = PX + n2 * (tw + gap), by = y;
+      var pick = picks[n2];
       var tint = pick ? N.TINT[pick.card % N.TINT.length] : '#F3EBDC';
       rect(ctx, bx, by, tw, th, tint);
       ctx.strokeStyle = INK; ctx.lineWidth = 4;
       ctx.strokeRect(bx + 2, by + 2, tw - 4, th - 4);
-      ctx.fillStyle = INK2; ctx.font = '20px ' + F_PX;
-      ctx.fillText(POS[i], bx + 18, by + 34);
+      ctx.font = '20px ' + F_PX; ctx.fillStyle = INK2; ctx.textAlign = 'left';
+      ctx.fillText(POS[n2], bx + 18, by + 34);
       if (pick) {
         var tt = N.TAROT[pick.card];
         drawGlyphCanvas(ctx, N.ART[pick.card], bx + tw / 2 - 44, by + 92, 88, INK);
         ctx.fillStyle = INK; ctx.font = '28px ' + F_PX; ctx.textAlign = 'center';
-        ctx.fillText(tt.name, bx + tw / 2, by + th - 64);
+        ctx.fillText(tt.name, bx + tw / 2, by + th - 66);
         ctx.fillStyle = INK2; ctx.font = '17px ' + F_PX;
-        ctx.fillText(tt.kw, bx + tw / 2, by + th - 34);
+        ctx.fillText(tt.kw, bx + tw / 2, by + th - 36);
         ctx.textAlign = 'left';
       } else {
         ctx.fillStyle = MUTE; ctx.font = '26px ' + F_PX; ctx.textAlign = 'center';
@@ -627,73 +629,74 @@
     }
     y += th + 26;
 
-    // 한 줄 총평
+    /* ---------- 한 줄 총평 ---------- */
     if (cb) {
-      var pbox = wrapText(ctx, cb.punch, CW - 60, 3);
-      var ph = 52 + pbox.length * 38 + 22;
+      ctx.font = '26px ' + F_BODY;
+      var pbox = wrapText(ctx, cb.punch, CW - 64, 3);
+      var ph = 58 + pbox.length * 38 + 22;
       rect(ctx, PX, y, CW, ph, '#FDF0F5');
       rect(ctx, PX, y, 10, ph, PINK);
       ctx.strokeStyle = LINE; ctx.lineWidth = 3;
       ctx.strokeRect(PX + 1.5, y + 1.5, CW - 3, ph - 3);
-      pxLabel(ctx, '한 줄 총평', PX + 32, y + 36, PINK, 18);
+      pxLabel(ctx, '한 줄 총평', PX + 32, y + 34, PINK, 18);
       ctx.fillStyle = INK; ctx.font = '26px ' + F_BODY;
-      pbox.forEach(function (ln, i) { ctx.fillText(ln, PX + 32, y + 76 + i * 38); });
-      y += ph + 30;
-    }
+      for (var p = 0; p < pbox.length; p++) { ctx.fillText(pbox[p], PX + 32, y + 74 + p * 38); }
+      y += ph + 28;
 
-    /* ---------- 조합 해석 ---------- */
-    if (cb) {
-      pxLabel(ctx, '수비학 × 타로 조합', PX, y, N.THEME[r.lp].accent, 20); y += 40;
-      ctx.fillStyle = INK; ctx.font = '26px ' + F_BODY;
+      /* 조합 해석 */
+      pxLabel(ctx, '수비학 × 타로 조합', PX, y + 20, N.THEME[r.lp].accent, 20);
+      y += 42;
+      ctx.font = '26px ' + F_BODY; ctx.fillStyle = INK;
       var sLines = wrapText(ctx, cb.syn, CW, 3);
-      sLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 38); });
-      y += sLines.length * 38 + 16;
+      for (var s = 0; s < sLines.length; s++) { ctx.fillText(sLines[s], PX, y + s * 38); }
+      y += sLines.length * 38 + 14;
       ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
       var yLines = wrapText(ctx, cb.year, CW, 3);
-      yLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 38); });
-      y += yLines.length * 38 + 16;
-      var wLines = wrapText(ctx, cb.watch, CW - 40, 2);
-      var wh = 26 + wLines.length * 36 + 16;
+      for (var v = 0; v < yLines.length; v++) { ctx.fillText(yLines[v], PX, y + v * 38); }
+      y += yLines.length * 38 + 22;
+
+      ctx.font = '25px ' + F_BODY;
+      var wLines = wrapText(ctx, cb.watch, CW - 120, 2);
+      var wh = 32 + wLines.length * 36 + 18;
       rect(ctx, PX, y, CW, wh, '#EAF4F8');
       ctx.strokeStyle = '#BFDCEA'; ctx.lineWidth = 3;
       ctx.strokeRect(PX + 1.5, y + 1.5, CW - 3, wh - 3);
-      pxLabel(ctx, '주의', PX + 22, y + 30, SKY, 17);
+      pxLabel(ctx, '주의', PX + 22, y + 32, SKY, 17);
       ctx.fillStyle = INK2; ctx.font = '25px ' + F_BODY;
-      wLines.forEach(function (ln, i) { ctx.fillText(ln, PX + 82, y + 30 + i * 36); });
+      for (var w = 0; w < wLines.length; w++) { ctx.fillText(wLines[w], PX + 92, y + 32 + w * 36); }
       y += wh + 28;
     }
 
-    /* ---------- ⑥ 2027 행운 포인트 ---------- */
-    rule(ctx, PX, y, CW); y += 34;
-    pxLabel(ctx, '2027 행운 포인트', PX, y, SKY, 20); y += 30;
+    /* ---------- 2027 행운 포인트 ---------- */
+    rule(ctx, PX, y, CW); y += 26;
+    pxLabel(ctx, '2027 행운 포인트', PX, y + 20, SKY, 20);
+    y += 36;
     rect(ctx, PX, y, 62, 62, N.PYCOLOR[r.py].hex);
     ctx.strokeStyle = INK; ctx.lineWidth = 3.5;
     ctx.strokeRect(PX + 1.5, y + 1.5, 59, 59);
-    ctx.fillStyle = INK; ctx.font = '30px ' + F_PX;
-    ctx.fillText(N.PYCOLOR[r.py].name, PX + 84, y + 40);
-    pxLabel(ctx, '행운 컬러', PX + 84, y + 64, MUTE, 16);
-    ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
-    var lLines = wrapText(ctx, N.LUCKACT[r.lp], CW - 84, 2);
-    lLines.forEach(function (ln, i) { ctx.fillText(ln, PX + 84, y + 100 + i * 34); });
-    y += 62 + 18 + lLines.length * 34 + 24;
+    ctx.fillStyle = INK; ctx.font = '28px ' + F_PX;
+    ctx.fillText(N.PYCOLOR[r.py].name, PX + 82, y + 34);
+    pxLabel(ctx, '행운 컬러', PX + 82, y + 60, MUTE, 16);
+    ctx.font = '25px ' + F_BODY; ctx.fillStyle = INK2;
+    var lLines = wrapText(ctx, N.LUCKACT[r.lp], CW - 82, 2);
+    for (var z = 0; z < lLines.length; z++) { ctx.fillText(lLines[z], PX + 82, y + 96 + z * 34); }
+    y += Math.max(62, 96 + lLines.length * 34) + 26;
 
     /* ---------- 탄생 카드 ---------- */
-    ctx.fillStyle = MUTE; ctx.font = '18px ' + F_PX;
-    ctx.fillText('BIRTH CARD', PX, y);
-    y += 34;
-    ctx.fillStyle = INK; ctx.font = '28px ' + F_PX;
-    ctx.fillText(tarot.name + '  ·  ' + tarot.en, PX, y);
-    y += 44;
+    pxLabel(ctx, 'BIRTH CARD', PX, y + 16, MUTE, 17);
+    y += 30;
+    ctx.fillStyle = INK; ctx.font = '27px ' + F_PX;
+    ctx.fillText(tarot.name + '  ·  ' + tarot.en, PX, y + 26);
+    y += 26 + 30;
 
     // 푸터
-    rule(ctx, PX, y, CW); y += 36;
-    ctx.fillStyle = MUTE; ctx.font = '20px ' + F_PX;
-    ctx.fillText('soosoosupernova.github.io/destiny-number', PX, y);
+    rule(ctx, PX, y, CW); y += 30;
+    pxLabel(ctx, 'soosoosupernova.github.io/destiny-number', PX, y + 18, MUTE, 20);
     y += 40;
     ctx.fillStyle = MUTE; ctx.font = '18px ' + F_BODY;
-    ctx.fillText('수비학·타로는 재미로 보는 참고용이에요.', PX, y);
+    ctx.fillText('수비학·타로는 재미로 보는 참고용이에요.', PX, y + 16);
 
-    var panelH = y + 56 - M;
+    var panelH = y + 60 - M;
     var bottom = M + panelH;
     if (bottom < HMAX) {
       rect(ctx, 0, bottom, W, HMAX - bottom, '#FFF9EC');
