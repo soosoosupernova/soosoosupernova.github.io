@@ -8,10 +8,13 @@
 <script>
 var p = new URLSearchParams(location.search);
 var w = +(p.get('w') || 375), h = +(p.get('h') || 812), s = parseFloat(p.get('s') || '1');
-var u = p.get('u') || './';
+var u = p.get('u') || './', y = +(p.get('y') || 0);
 var f = document.createElement('iframe');
 f.width = w; f.height = h; f.src = u;
 f.style.transform = 'scale(' + s + ')';
+f.addEventListener('load', function () {
+  if (y) { try { f.contentWindow.scrollTo(0, y); } catch (e) {} }
+});
 document.getElementById('wrap').appendChild(f);
 </script>
 </html>
