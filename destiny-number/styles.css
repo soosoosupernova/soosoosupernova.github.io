@@ -159,19 +159,19 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;
   min-height:44px;padding:0 16px;
-  border:3px solid var(--ink);border-radius:2px;
+  border:3px solid var(--ink);border-radius:0;
   font-family:var(--f-px);font-size:13px;letter-spacing:.02em;
   background:var(--paper);
-  box-shadow:4px 4px 0 rgba(75,58,82,.2);
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.75), inset -3px -3px 0 rgba(75,58,82,.13), 4px 4px 0 rgba(75,58,82,.2);
   transition:transform .06s linear, box-shadow .06s linear;
 }
-.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--hard)}
+.btn:active{transform:translate(2px,2px);box-shadow:inset 3px 3px 0 rgba(75,58,82,.13), inset -3px -3px 0 rgba(255,255,255,.4), 1px 1px 0 var(--hard)}
 .btn:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .btn-block{display:flex;width:100%}
 .btn-primary{
   background:var(--pink);color:var(--ink);
   min-height:56px;font-size:15px;font-weight:700;
-  box-shadow:5px 5px 0 rgba(75,58,82,.24);
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.8), inset -3px -3px 0 rgba(75,58,82,.16), 5px 5px 0 rgba(75,58,82,.24);
 }
 .btn-primary:disabled{
   background:#E4E4DA;color:#9C97A0;border-color:#A9A2AC;
@@ -205,8 +205,8 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .card{
   background:var(--paper);
   border:3px solid var(--ink);
-  border-radius:2px;
-  box-shadow:4px 4px 0 rgba(75,58,82,.14);
+  border-radius:0;
+  box-shadow:inset 3px 3px 0 rgba(255,255,255,.7), 4px 4px 0 rgba(75,58,82,.14);
   padding:16px 15px;
   margin:12px 0 0;
 }
@@ -277,8 +277,9 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
 .chip{
   font-size:11px;line-height:1.4;
-  padding:3px 8px;border:2px solid var(--line);border-radius:2px;
+  padding:3px 8px;border:2px solid var(--line);border-radius:0;
   background:var(--cream);color:var(--ink2);
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.7);
 }
 .chip.on{border-color:var(--ink);background:var(--lcd);color:var(--ink)}
 
@@ -317,7 +318,7 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .py-meta .t{font-family:var(--f-px);font-size:14px;font-weight:700;line-height:1.5;margin-top:2px}
 .py-theme{font-size:13.5px;line-height:1.7;color:var(--ink2);margin-bottom:11px}
 .half{display:grid;gap:8px}
-.half-card{background:var(--cream);border:2px solid var(--line);border-radius:2px;padding:9px 11px 10px}
+.half-card{background:var(--cream);border:2px solid var(--line);border-radius:0;padding:9px 11px 10px;box-shadow:inset 2px 2px 0 rgba(255,255,255,.75)}
 .half-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
 .half-when{font-family:var(--f-px);font-size:9.5px;letter-spacing:.05em;color:var(--mute)}
 .half-kw{
@@ -345,8 +346,9 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .slots{display:flex;gap:6px;margin:12px 0}
 .slot{
   flex:1;min-width:0;text-align:center;
-  background:var(--cream);border:2px solid var(--line);border-radius:2px;
+  background:var(--cream);border:2px solid var(--line);border-radius:0;
   padding:6px 4px 7px;
+  box-shadow:inset 2px 2px 0 rgba(255,255,255,.75);
   transition:background .15s,border-color .15s;
 }
 .slot-k{display:block;font-family:var(--f-px);font-size:9.5px;letter-spacing:.06em;color:var(--pink2)}
