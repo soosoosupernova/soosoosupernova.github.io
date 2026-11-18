@@ -447,7 +447,7 @@
     "끝낼 일을 끝내고, 빈자리를 다음 일에 내주세요."
   ];
 
-  var TINT = ["#FCE0EA", "#DFF0FA", "#FBF0D6", "#E8E0F8", "#DFF0E2", "#FBE3D5"];
+  var TINT = ["#F9C8DC", "#C9E6F7", "#F8E6B4", "#DBCFF3", "#CCE8D2", "#F8D3BE"];
 
   /* 12x12 픽셀 글리프. #이 칠해지는 칸. */
   var GLYPH = {
