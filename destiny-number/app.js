@@ -400,10 +400,23 @@
     for (var gy = 0; gy < 2400; gy += 36) { ctx.fillRect(0, gy, W, 1); }
 
     var M = 40, PW = W - M * 2, PX = M + 44, CW = PW - 96;
-    var y = 90;
 
     // 패널
     rect(ctx, M, M, PW, 2200, PAPER);
+
+    // 창 제목바
+    rect(ctx, M + 3, M + 3, PW - 6, 48, '#F8AFC8');
+    rect(ctx, M + 3, M + 47, PW - 6, 4, INK);
+    ctx.fillStyle = INK; ctx.font = '18px ' + F_PX; ctx.textAlign = 'left';
+    ctx.fillText('MY_NUMBER.EXE', M + 26, M + 32);
+    ['#F8DE9A', '#CFE79A', '#FFFDF6'].forEach(function (cc, i) {
+      var cx = M + PW - 40 - i * 30;
+      ctx.beginPath(); ctx.arc(cx, M + 27, 9, 0, Math.PI * 2);
+      ctx.fillStyle = cc; ctx.fill();
+      ctx.strokeStyle = INK; ctx.lineWidth = 3.5; ctx.stroke();
+    });
+
+    var y = M + 3 + 48 + 62;
 
     // 머리
     ctx.fillStyle = INK; ctx.font = '30px ' + F_PX; ctx.textAlign = 'left';
