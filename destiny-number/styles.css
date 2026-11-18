@@ -76,7 +76,7 @@ img{max-width:100%}
   background:linear-gradient(transparent 68%, var(--sky-soft) 68%, var(--sky-soft) 96%, transparent 96%);
   padding:0 1px;
 }
-.hero-art{display:block;width:100%;max-width:296px;margin:8px auto 0;mix-blend-mode:multiply}
+.hero-art{display:block;width:100%;height:auto;max-width:296px;margin:8px auto 0;mix-blend-mode:multiply}
 .lede{font-size:14.5px;line-height:1.8;color:var(--ink2);margin:14px 0 0}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
 .tagpill{
@@ -150,7 +150,7 @@ select:invalid{color:var(--mute);font-weight:500}
   letter-spacing:-.06em;color:var(--sky-deep);display:block;flex:none;
 }
 .num-big small{font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--mute);margin-left:6px;vertical-align:6px}
-.num-art{width:88px;flex:none;margin:-6px 0 0 auto;mix-blend-mode:multiply}
+.num-art{width:88px;height:auto;flex:none;margin:-6px 0 0 auto;mix-blend-mode:multiply}
 .stamp{
   flex:none;width:66px;height:66px;margin:6px 0 0 2px;border:1.5px dashed var(--cherry);border-radius:50%;
   display:grid;place-items:center;text-align:center;transform:rotate(-8deg);color:var(--cherry);
@@ -251,7 +251,7 @@ ul.list.sky li::before{background:var(--sky-deep);opacity:.8}
 
 /* ---------- 타로 ---------- */
 .tarot{display:grid;grid-template-columns:112px 1fr;gap:16px;align-items:center}
-.tarot-art{width:100%;display:block;mix-blend-mode:multiply}
+.tarot-art{display:block;width:100%;height:auto;mix-blend-mode:multiply}
 .tarot-meta .k{display:flex;align-items:center;gap:6px;font-size:9.5px;font-weight:650;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
 .tarot-meta .k svg{width:14px;height:14px;color:var(--sky-deep);flex:none}
 .tarot-meta .n{font-family:var(--serif);font-size:20px;line-height:1.35;margin:5px 0 2px;letter-spacing:-.03em}
