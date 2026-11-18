@@ -239,6 +239,21 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 }
 
 /* ---------- 결과: 상단 ---------- */
+.winbar{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  margin:-16px -15px 13px;
+  padding:4px 9px;
+  background:var(--pink);
+  border-bottom:2px solid var(--ink);
+  border-radius:3px 3px 0 0;
+}
+.draw .winbar{background:var(--sky)}
+.wb-t{font-family:var(--f-px);font-size:9px;letter-spacing:.1em;color:var(--ink)}
+.wb-d{display:flex;gap:4px}
+.wb-d i{width:7px;height:7px;border:2px solid var(--ink);border-radius:50%;background:var(--sun)}
+.wb-d i:nth-child(2){background:#CFE79A}
+.wb-d i:nth-child(3){background:#FFFDF6}
+
 .out-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 0 10px}
 .backbtn{
   display:inline-flex;align-items:center;
@@ -253,10 +268,11 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .num-card{padding:16px 15px 15px;background:linear-gradient(180deg,#FFFDF6 0%,#FFF8EA 100%)}
 .num-row{display:flex;align-items:flex-end;gap:6px;position:relative;margin-top:2px}
 .num-big{
-  font-family:var(--f-px);font-size:84px;line-height:.92;
+  display:flex;align-items:flex-end;gap:4px;
+  font-family:var(--f-px);font-size:84px;line-height:.86;
   color:var(--pink2);letter-spacing:-.03em;
 }
-.num-big small{font-family:var(--f-px);font-size:15px;color:var(--ink2);margin-left:5px;letter-spacing:0}
+.num-big small{font-family:var(--f-px);font-size:14px;color:var(--ink2);margin-bottom:10px;letter-spacing:0}
 .num-cat{width:68px;height:76px;margin-left:auto;image-rendering:pixelated;align-self:flex-end}
 .stamp{
   position:absolute;left:96px;top:2px;
@@ -385,7 +401,7 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
   padding:7px 4px 8px;
   text-align:center;
 }
-.tc-num{font-family:var(--f-px);font-size:9px;letter-spacing:.06em;color:var(--ink2);opacity:.75}
+.tc-num{font-family:var(--f-px);font-size:10px;letter-spacing:.06em;color:var(--ink2);opacity:.8}
 .tc-art{display:block;line-height:0}
 .tc-name{font-family:var(--f-px);font-size:11px;line-height:1.3;color:var(--ink)}
 .tcard:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
