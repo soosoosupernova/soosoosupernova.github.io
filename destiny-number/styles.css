@@ -261,7 +261,7 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
   color:var(--pink2);letter-spacing:-.03em;
 }
 .num-big small{font-family:var(--f-px);font-size:14px;color:var(--ink2);margin-bottom:10px;letter-spacing:0}
-.num-cat{width:68px;height:76px;margin-left:auto;image-rendering:pixelated;align-self:flex-end}
+.num-cat{width:96px;height:96px;margin-left:auto;image-rendering:pixelated;align-self:flex-end;margin-bottom:-6px}
 .stamp{
   position:absolute;left:96px;top:2px;
   padding:3px 7px;
@@ -282,6 +282,51 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
   box-shadow:inset 2px 2px 0 rgba(255,255,255,.7);
 }
 .chip.on{border-color:var(--ink);background:var(--lcd);color:var(--ink)}
+
+/* 숫자 고양이 소개 */
+.catbox{
+  margin-top:13px;padding:9px 11px 10px;
+  background:var(--cream);border:2px solid var(--line);border-left:5px solid var(--pink2);
+}
+.catbox-k{
+  display:block;font-family:var(--f-px);font-size:10.5px;letter-spacing:.04em;color:var(--pink2);
+}
+.catbox-t{font-size:12.5px;line-height:1.65;color:var(--ink2);margin-top:3px}
+
+/* ---------- 수비학 × 타로 조합 ---------- */
+.combo-empty{
+  font-size:12.5px;line-height:1.7;color:var(--mute);
+  padding:11px 12px;background:var(--cream);border:2px dashed var(--line);
+}
+.combo-empty b{color:var(--ink2)}
+.combo-punch{
+  padding:11px 12px 12px;margin-bottom:12px;
+  background:#FDF0F5;border:2px solid var(--ink);border-left:6px solid var(--pink2);
+  box-shadow:3px 3px 0 rgba(75,58,82,.12);
+}
+.cp-k{
+  display:block;font-family:var(--f-px);font-size:10px;letter-spacing:.08em;color:var(--pink2);margin-bottom:5px;
+}
+.combo-punch p{font-size:13px;line-height:1.72;color:var(--ink);font-weight:600}
+.combo-item{padding:10px 0 0;margin-top:8px;border-top:2px dashed var(--line)}
+.combo-item:first-of-type{border-top:0;padding-top:0;margin-top:0}
+.ci-k{display:block;font-family:var(--f-px);font-size:10px;letter-spacing:.05em;color:var(--mute)}
+.ci-t{display:block;font-family:var(--f-px);font-size:12.5px;font-weight:700;color:var(--ink);margin:1px 0 4px}
+.combo-item p{font-size:13px;line-height:1.72;color:var(--ink2)}
+.combo-watch{
+  margin-top:13px;padding:9px 11px 10px;
+  background:#EAF4F8;border:2px solid #BFDCEA;
+}
+.cw-k{display:block;font-family:var(--f-px);font-size:10px;letter-spacing:.05em;color:var(--sky2);margin-bottom:3px}
+.combo-watch p{font-size:12.5px;line-height:1.7;color:var(--ink2)}
+.combo-luck{
+  display:flex;gap:10px;align-items:flex-start;
+  margin-top:11px;padding:10px 11px;
+  background:var(--cream);border:2px solid var(--line);
+}
+.cl-sw{flex:0 0 auto;width:26px;height:26px;border:2px solid var(--ink);margin-top:2px}
+.cl-k{display:block;font-family:var(--f-px);font-size:10px;letter-spacing:.04em;color:var(--ink2)}
+.combo-luck p{font-size:12.5px;line-height:1.65;color:var(--ink2);margin-top:3px}
 
 /* 스탯 */
 .lcd-card{background:var(--lcd);border-color:var(--ink)}

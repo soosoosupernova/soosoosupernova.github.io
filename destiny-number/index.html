@@ -40,7 +40,7 @@
   font-weight:700; font-style:normal; font-display:swap;
 }
 </style>
-<link rel="stylesheet" href="styles.css?v=20261118o">
+<link rel="stylesheet" href="styles.css?v=20261119a">
 </head>
 <body>
 
@@ -101,7 +101,7 @@
       <p class="eyebrow">HOW IT WORKS</p>
       <ol class="steps">
         <li><span class="step-no">1</span><span><b>생년월일을 고르면</b> 운명 수와 2027년 개인년수, 하트 스탯이 바로 나와요.</span></li>
-        <li><span class="step-no">2</span><span><b>뒤집힌 카드 6장 중 3장을 골라요.</b> 순서대로 오늘 · 2027 · 조언이에요.</span></li>
+        <li><span class="step-no">2</span><span><b>뒤집힌 카드 6장 중 3장을 골라요.</b> 오늘 · 2027 · 조언으로 읽고, 내 숫자와 엮은 조합 해석까지 나와요.</span></li>
         <li><span class="step-no">3</span><span><b>PNG로 저장하거나 공유해요.</b> 생일은 이미지에 담기지 않아요.</span></li>
       </ol>
     </article>
@@ -125,11 +125,15 @@
       <div class="num-row">
         <span class="num-big" id="num-big"></span>
         <span class="stamp" id="stamp" hidden></span>
-        <img class="num-cat" src="assets/pixel-cat.webp" width="136" height="152" alt="">
+        <img class="num-cat" id="num-cat" src="assets/pixel-cat.webp" width="192" height="192" alt="">
       </div>
       <h2 class="nick" id="num-nick"></h2>
       <p class="num-tag" id="num-tag"></p>
       <div class="chips" id="num-chips"></div>
+      <div class="catbox" id="cat-box">
+        <span class="catbox-k" id="cat-name"></span>
+        <p class="catbox-t" id="cat-line"></p>
+      </div>
     </article>
 
     <!-- 스탯 -->
@@ -181,7 +185,7 @@
         <span class="sec-no">02</span>
         <h2 class="sec-title">타로 카드 뽑기</h2>
       </div>
-      <p class="draw-hint">마음이 가는 카드 <b>3장</b>을 골라 주세요. 고른 순서대로 <b>오늘 · 2027 · 조언</b>이 돼요.</p>
+      <p class="draw-hint" id="draw-hint">마음이 가는 카드 <b>3장</b>을 골라 주세요. 고른 순서대로 <b>오늘 · 2027 · 조언</b>이 돼요.</p>
 
       <ol class="slots" id="slots">
         <li class="slot" data-pos="0"><span class="slot-k">오늘</span><span class="slot-v" id="slot-0">—</span></li>
@@ -198,10 +202,19 @@
       </button>
     </section>
 
-    <!-- 03 기질 -->
-    <section class="card">
+    <!-- 03 수비학 × 타로 조합 -->
+    <section class="card combo" id="combo-card">
       <div class="sec-head">
         <span class="sec-no">03</span>
+        <h2 class="sec-title">수비학 × 타로 조합</h2>
+      </div>
+      <div id="combo-body"></div>
+    </section>
+
+    <!-- 04 기질 -->
+    <section class="card">
+      <div class="sec-head">
+        <span class="sec-no">04</span>
         <h2 class="sec-title">타고난 기질과 숨은 강점</h2>
       </div>
       <span class="sub-label"><i></i>이런 게 강해요</span>
@@ -211,10 +224,10 @@
       <ul class="list sky" id="shadow"></ul>
     </section>
 
-    <!-- 04 일·돈·관계 -->
+    <!-- 05 일·돈·관계 -->
     <section class="card">
       <div class="sec-head">
-        <span class="sec-no">04</span>
+        <span class="sec-no">05</span>
         <h2 class="sec-title">일하고, 벌고, 만나는 일</h2>
       </div>
       <div class="tr3">
@@ -240,10 +253,10 @@
       </div>
     </section>
 
-    <!-- 05 탄생 카드 -->
+    <!-- 06 탄생 카드 -->
     <section class="card birth">
       <div class="sec-head">
-        <span class="sec-no">05</span>
+        <span class="sec-no">06</span>
         <h2 class="sec-title">태어난 날의 카드</h2>
       </div>
       <div class="birth-row">
@@ -293,7 +306,7 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="data.js?v=20261118o"></script>
-<script src="app.js?v=20261118o"></script>
+<script src="data.js?v=20261119a"></script>
+<script src="app.js?v=20261119a"></script>
 </body>
 </html>
