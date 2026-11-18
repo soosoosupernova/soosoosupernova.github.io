@@ -10,7 +10,7 @@
   .row{display:flex;gap:18px;padding:18px;align-items:flex-start}
   figure{margin:0}
   figcaption{font:12px monospace;color:#ffe08a;padding:4px 2px 6px}
-  iframe{width:375px;height:812px;border:2px solid #ffe08a;background:#fff}
+  iframe{width:375px;height:812px;border:2px solid #ffe08a;background:#fff;display:block}
 </style>
 </head>
 <body>
@@ -28,6 +28,9 @@
           var cards = f.contentDocument.querySelectorAll('.tcard');
           for (var i = 0; i < 3 && i < cards.length; i++) { cards[i].click(); }
         }
+        var st = f.contentDocument.createElement('style');
+        st.textContent = 'html{scrollbar-width:none}::-webkit-scrollbar{width:0;height:0}';
+        f.contentDocument.head.appendChild(st);
       } catch (e) { console.log('qa', e); }
     });
     f.src = f.dataset.src;

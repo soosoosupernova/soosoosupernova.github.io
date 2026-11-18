@@ -300,8 +300,7 @@
     return {
       punch: punch,
       syn: N.SIG[lp] + ' ' + pair.syn,
-      today: N.TAROT[c[0]].line,
-      year: N.PYPAIR[py][N.CFAM[c[1]]] + ' ' + N.TAROT[c[1]].line,
+      year: N.PYPAIR[py][N.CFAM[c[1]]],
       act: N.ADV[c[2]] + ' ' + N.FRAME[lp],
       watch: pair.watch,
       cards: c,
@@ -322,7 +321,7 @@
     }
     var t = function (i) { return N.TAROT[i]; };
     var rows = [
-      ['내 숫자 × 오늘 카드', t(d.cards[0]).name + ' · ' + t(d.cards[0]).kw, d.syn + ' ' + d.today],
+      ['내 숫자 × 오늘 카드', t(d.cards[0]).name + ' · ' + t(d.cards[0]).kw, d.syn],
       ['2027 개인년수 × 2027 카드', t(d.cards[1]).name + ' · ' + t(d.cards[1]).kw, d.year],
       ['조언 카드로 2027 실행', t(d.cards[2]).name + ' · ' + t(d.cards[2]).kw, d.act]
     ];
