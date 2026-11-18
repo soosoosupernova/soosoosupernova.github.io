@@ -27,6 +27,11 @@
 <meta name="theme-color" content="#FAF8F5">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FAF8F5'/%3E%3Cpath d='M9 11h14M9 16h14M9 21h8' stroke='%23A9533D' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="styles.css?v=7dc6fa8b">
+<style>
+  .adfit-wrap{display:flex;justify-content:center;width:100%;max-width:100%;margin:18px auto 4px;overflow:hidden}
+  .adfit-wrap .kakao_ad_area{flex:none;max-width:100%}
+  @media print{.adfit-wrap{display:none!important}}
+</style>
 </head>
 <body>
 
@@ -56,6 +61,11 @@
       <div class="hero-cta">
         <button type="button" class="btn btn-primary btn-lg" id="btn-start">내 한 줄 개조하기</button>
         <p class="hero-fine fine">회원가입 없이, 이 브라우저 안에서만 만들어집니다.</p>
+      </div>
+
+      <div class="adfit-wrap">
+        <ins class="kakao_ad_area" style="display:none;"
+          data-ad-unit="DAN-ARZwEHgIdCiBCBbL" data-ad-width="320" data-ad-height="100"></ins>
       </div>
 
       <div class="type-strip" aria-hidden="true">
@@ -103,5 +113,7 @@
 
 <script src="../assets/report-save.js?v=20261117a"></script>
 <script src="engine.js?v=20261117a"></script>
+<!-- 애드핏 하단 배너 -->
+<script src="https://t1.daumcdn.net/kas/static/ba.min.js" async></script>
 </body>
 </html>

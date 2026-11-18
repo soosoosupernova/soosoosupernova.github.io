@@ -48,8 +48,10 @@
   .script + .copy-chip{margin-top:10px}
   .rr-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,12px);z-index:90;max-width:90vw;padding:11px 16px;border-radius:12px;background:#242338;color:#fff;font-size:12.5px;line-height:1.5;opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease;text-align:center;box-shadow:0 8px 24px rgba(36,35,56,.22)}
   .rr-toast.show{opacity:1;transform:translate(-50%,0)}
+  .adfit-wrap{display:flex;justify-content:center;width:100%;max-width:100%;margin:16px auto 4px;overflow:hidden}
+  .adfit-wrap .kakao_ad_area{flex:none;max-width:100%}
   @media print{
-    .top,.actions,.copy-bar,.copy-chip,.unlock,.pillnote,.rr-toast,.btn,.practice-hero{display:none!important}
+    .top,.actions,.copy-bar,.copy-chip,.unlock,.pillnote,.rr-toast,.btn,.practice-hero,.adfit-wrap{display:none!important}
     body{background:#fff}
     .shell{padding:0;max-width:none}
     /* 섹션 카드가 페이지 경계에서 통째로 밀려 아래가 비던 문제 → 카드 상자는 인쇄에서 선으로 바꾸고 내용은 흐르게 */
@@ -61,7 +63,7 @@
   }
   @page{margin:14mm}
 </style></head><body><main class="shell"><div class="top"><span class="brand">관계 패턴 리포트</span><span class="meta">SELF-UNDERSTANDING TOOL · v5.0</span></div>
-<section id="landing" class="screen active"><div class="hero"><span class="kicker">16 QUESTIONS · ABOUT 4 MIN</span><h1>관계에서 반복되는<br>나의 반응을 살펴봅니다.</h1><p class="lead">가까운 관계에서 내가 무엇을 걱정하고, 어떤 순간에 거리를 두며, 상황을 어떻게 해석하고 대응하는지 살펴보는 자기이해 리포트입니다.</p><div class="hero-grid"><div class="mini"><b>애착불안 · 애착회피</b><span>관계의 가까움과 거리감</span></div><div class="mini"><b>관계 해석 습관</b><span>상대의 행동에 의미를 붙이는 방식</span></div><div class="mini"><b>갈등 대응 행동</b><span>불편한 순간에 실제로 하는 행동</span></div></div><button class="btn" id="start">내 관계 반응 살펴보기</button><p class="fine" style="margin-top:14px">정답은 없습니다. 특정한 한 번의 사건보다 최근의 관계 경험 전반을 떠올려 주세요.</p></div></section>
+<section id="landing" class="screen active"><div class="hero"><span class="kicker">16 QUESTIONS · ABOUT 4 MIN</span><h1>관계에서 반복되는<br>나의 반응을 살펴봅니다.</h1><p class="lead">가까운 관계에서 내가 무엇을 걱정하고, 어떤 순간에 거리를 두며, 상황을 어떻게 해석하고 대응하는지 살펴보는 자기이해 리포트입니다.</p><div class="hero-grid"><div class="mini"><b>애착불안 · 애착회피</b><span>관계의 가까움과 거리감</span></div><div class="mini"><b>관계 해석 습관</b><span>상대의 행동에 의미를 붙이는 방식</span></div><div class="mini"><b>갈등 대응 행동</b><span>불편한 순간에 실제로 하는 행동</span></div></div><button class="btn" id="start">내 관계 반응 살펴보기</button><p class="fine" style="margin-top:14px">정답은 없습니다. 특정한 한 번의 사건보다 최근의 관계 경험 전반을 떠올려 주세요.</p><div class="adfit-wrap"><ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-6X87hM1bRR1wGDBF" data-ad-width="320" data-ad-height="100"></ins></div></div></section>
 <section id="quiz" class="screen"><div class="quiz-head"><span class="q-count" id="qcount">01 / 16</span><span class="fine" id="dimlabel">애착불안</span></div><div class="progress"><i id="progress"></i></div><div class="q-card"><div class="q-title" id="qtext"></div><div class="options" id="options"></div></div><div class="nav"><button class="btn ghost" id="prev">이전</button><button class="btn" id="next" disabled>다음</button></div></section>
 <section id="result" class="screen"><header class="report-head"><span class="kicker">YOUR RELATIONSHIP REPORT</span><h2 class="report-title">나의 관계 반응<br>한눈에 보기</h2><p class="bodycopy">이 결과는 정답이나 유형을 판정하지 않습니다. 이번 응답에서 나타난 경향을 살펴보고, 실제 경험과 맞는지 확인하는 출발점으로 활용해 주세요.</p></header><div id="freecontent"></div><div class="copy-bar"><button class="btn ghost" id="copySummary" type="button">내 결과 요약 복사</button></div><div class="card unlock"><span class="kicker">FULL REPORT</span><h3>이 반응은 관계에서<br>어떻게 이어질까요?</h3><p class="bodycopy">나와 상대의 반응이 엇갈리는 지점, 반복되는 관계의 흐름, 다음에 시도할 수 있는 구체적인 선택까지 이어서 살펴봅니다.</p><div class="toc"><div><b>01 · 나의 관계 반응 이해하기</b><span>두 축 지도와 개별 응답</span></div><div><b>02 · 반응은 어떻게 엇갈릴까?</b><span>상호작용의 가능성 살펴보기</span></div><div><b>03 · 왜 비슷한 문제가 반복될까?</b><span>관계의 순환 구조</span></div><div><b>04 · 패턴을 바꾸는 작은 실천</b><span>상황별 대안과 대화 예시</span></div></div><button class="btn" id="unlock">심화 리포트 보기</button><p class="pillnote" id="adstatus" aria-live="polite">버튼을 누르면 심화 리포트 페이지로 이동합니다.</p></div><div class="actions"><button class="btn ghost" id="restart">다시 응답하기</button><button class="btn ghost" id="print">인쇄 / PDF 저장</button></div><footer class="foot"><p class="fine">본 리포트는 자체 구성 문항을 활용한 자기이해용 콘텐츠이며, 타당화된 심리검사·의학적 진단·치료를 대신하지 않습니다. 각 영역의 점수는 이번 응답을 단순 요약한 탐색적 지표이며, 다른 사람과의 비교나 임상적 기준을 의미하지 않습니다.</p><p class="fine">특히 관계 해석 습관과 갈등 대응 행동은 문항별 응답으로 제시하며, 단일 점수로 성격이나 고정된 특성을 판단하지 않습니다.</p><p class="care-note">힘든 상태가 계속되면 자살예방상담전화 <b>109</b>, 정신건강상담전화 <b>1577-0199</b>에서 24시간 상담할 수 있습니다.</p></footer></section></main>
 <script src="../assets/report-save.js?v=20261117a"></script>
@@ -165,4 +167,4 @@ if(rsArrival.save&&/^[1-5]{16}$/.test(String(rsArrival.state||''))){
   makeFree();show('result');
   if(typeof ReportSave!=='undefined'){ReportSave.arrivalPrint({printUrl:()=>ReportSave.url(true,answers.join(''))});}
 }
-</script></body></html>
+</script><!-- 애드핏 하단 배너 --><script src="https://t1.daumcdn.net/kas/static/ba.min.js" async></script></body></html>
