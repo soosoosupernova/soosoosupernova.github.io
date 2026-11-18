@@ -1,11 +1,16 @@
 /*!
- * app.js — 생년월일 수비학 리포트 (2026-11-18)
- * 계산: 라이프 패스(운명 수, 마스터 수 11·22·33 보존), 2027 개인년수, 탄생 타로 카드
+ * app.js — 생년월일 수비학 + 타로 뽑기 (픽셀 도트 개편, 2026-11-18)
+ * 계산: 운명 수(마스터 11·22·33 보존), 2027 개인년수, 탄생 카드
+ * 뽑기: 뒤집힌 6장 중 3장을 골라 오늘 · 2027 · 조언으로 읽기
  * 저장: 의존성 없는 canvas PNG 생성 → 다운로드/공유
  */
 (function (w, d) {
   'use strict';
   var N = w.NUM;
+  var POS = ['오늘', '2027', '조언'];
+  var MAX_PICK = 3;
+  var ROMAN = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X',
+    'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
 
   /* ---------------- 계산 ---------------- */
   function dsum(n) { return String(n).split('').reduce(function (a, c) { return a + (+c); }, 0); }
@@ -41,9 +46,25 @@
     };
   }
 
-  /* ---------------- 화면 ---------------- */
+  /* ---------------- 픽셀 글리프 ---------------- */
+  function glyph(name, size, color, cls) {
+    var g = N.GLYPH[name];
+    if (!g) { return ''; }
+    var rects = '', r, c;
+    for (r = 0; r < g.length; r++) {
+      for (c = 0; c < g[r].length; c++) {
+        if (g[r].charAt(c) === '#') {
+          rects += '<rect x="' + c + '" y="' + r + '" width="1" height="1"/>';
+        }
+      }
+    }
+    return '<svg class="' + (cls || '') + '" viewBox="0 0 12 12" width="' + size + '" height="' + size +
+      '" fill="' + color + '" shape-rendering="crispEdges" aria-hidden="true">' + rects + '</svg>';
+  }
+
+  /* ---------------- 화면 도구 ---------------- */
   var $ = function (id) { return d.getElementById(id); };
-  var R = {};
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   function buildSelects() {
     var by = $('by'), bm = $('bm'), bd = $('bd');
@@ -73,13 +94,13 @@
     $('btn-go').disabled = !ok;
   }
 
-  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  /* ---------------- 결과 렌더 ---------------- */
+  var current = null;
 
   function render(r) {
-    var L = N.LIFE[r.lp], T = N.THEME[r.lp], PY = N.PY[r.py];
+    var L = N.LIFE[r.lp], PY = N.PY[r.py];
     var tarot = N.TAROT[r.card];
 
-    // 카드
     $('num-big').innerHTML = r.lp + '<small>번</small>';
     $('out-date').textContent = r.y + '.' + pad(r.m) + '.' + pad(r.d) + ' 양력';
     $('num-nick').textContent = L.nick;
@@ -91,22 +112,23 @@
       stamp.innerHTML = 'MASTER<span>' + r.lp + '</span>';
     } else { stamp.hidden = true; }
 
-    var chips = [];
-    chips.push('<span class="chip on">2027년 · ' + r.py + '의 해</span>');
-    chips.push('<span class="chip">탄생 카드 · ' + tarot.name + '</span>');
+    var chips = ['<span class="chip on">2027년 · ' + r.py + '의 해</span>',
+      '<span class="chip">태어난 날 카드 · ' + tarot.name + '</span>'];
     r.hiddenMasters.forEach(function (v) {
       chips.push('<span class="chip">숨은 ' + v + ' 기운</span>');
     });
     $('num-chips').innerHTML = chips.join('');
 
     // 스탯
-    var names = [['intuition', '직관력', 'INTUITION'], ['drive', '행동력', 'DRIVE'], ['love', '애정운', 'HEART'], ['money', '재물감각', 'MONEY']];
+    var names = [['intuition', '직관력'], ['drive', '행동력'], ['love', '애정운'], ['money', '재물감각']];
     $('stat-rows').innerHTML = names.map(function (n) {
       var v = L.stats[n[0]], hearts = '';
       for (var k = 0; k < 5; k++) {
-        hearts += '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.2S4 15.1 4 9.9A4.5 4.5 0 0 1 12 6.7 4.5 4.5 0 0 1 20 9.9c0 5.2-8 10.3-8 10.3Z" fill="' + (k < v ? '#B93B3B' : '#E9DFCC') + '"/></svg>';
+        hearts += glyph('heart', 13, k < v ? '#D96E97' : '#C6D5A4', 'heart');
       }
-      return '<div class="stat-row"><span class="stat-name" title="' + n[2] + '">' + n[1] + '</span><span class="hearts" aria-hidden="true">' + hearts + '</span><span class="stat-val">' + v + '/5</span></div>';
+      return '<div class="stat-row"><span class="stat-name">' + n[1] + '</span>' +
+        '<span class="hearts" aria-hidden="true">' + hearts + '</span>' +
+        '<span class="stat-val2">' + v + '/5</span></div>';
     }).join('');
 
     // 기질
@@ -124,17 +146,24 @@
     $('py-tip').textContent = PY.tip;
 
     // 일·돈·관계
+    $('ic-work').innerHTML = glyph('brief', 18, '#4B3A52');
+    $('ic-money').innerHTML = glyph('coin', 18, '#4B3A52');
+    $('ic-love').innerHTML = glyph('heart', 18, '#D96E97');
     $('tr-work').textContent = L.work;
     $('tr-money').textContent = L.money;
     $('tr-love').textContent = L.love;
     $('match-row').innerHTML = L.match.map(function (n) {
-      return '<span class="numdot best">' + n + '</span>';
-    }).join('') + '<span class="fine" style="margin:0">이 숫자들과 특히 잘 통해요</span>';
+      return '<span class="numdot">' + n + '</span>';
+    }).join('') + '<span class="fine">이 숫자들과 특히 잘 통해요</span>';
     $('avoid').textContent = L.avoid;
 
-    // 타로
-    var roman = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
-    $('tarot-rn').textContent = roman[tarot.n];
+    // 태어난 날 카드
+    $('birth-card').innerHTML =
+      '<span class="tc-num">' + ROMAN[tarot.n] + '</span>' +
+      '<span class="tc-art">' + glyph(N.ART[r.card], 40, '#4B3A52') + '</span>' +
+      '<span class="tc-name">' + tarot.name + '</span>';
+    $('birth-card').style.background = N.TINT[r.card % N.TINT.length];
+    $('tarot-rn').textContent = ROMAN[tarot.n];
     $('tarot-name').textContent = tarot.name;
     $('tarot-en').textContent = tarot.en;
     $('tarot-line').textContent = tarot.line;
@@ -143,7 +172,8 @@
     var lines = [];
     function step(label, num, red) {
       if (isMaster(num)) {
-        return '<div class="calc-line"><span class="calc-k">' + label + '</span><span>' + num + ' → 마스터 수라 줄이지 않아요 → <b>' + red.value + '</b></span></div>';
+        return '<div class="calc-line"><span class="calc-k">' + label + '</span><span>' + num +
+          ' → 마스터 수라 줄이지 않아요 → <b>' + red.value + '</b></span></div>';
       }
       var segs = [String(num)], cur = num;
       while (cur > 9 && !isMaster(cur)) {
@@ -169,256 +199,360 @@
       var html2 = segs.map(function (s, i) { return i === segs.length - 1 ? '<b>' + s + '</b>' : s; }).join(' → ');
       return '<div class="calc-line"><span class="calc-k">합</span><span>' + html2 + '</span></div>';
     })());
-    lines.push('<div class="calc-line"><span class="calc-k">2027</span><span>2+0+2+7 = 11, 여기에 ' + r.m + '월(' + dsum(r.m) + ') + ' + r.d + '일(' + dsum(r.d) + ') = ' + r.pyRaw + ' → <b>' + r.py + '</b></span></div>');
-    lines.push('<div class="calc-line"><span class="calc-k">카드</span><span>' + r.m + ' + ' + r.d + ' + ' + r.y + ' = ' + (r.m + r.d + r.y) + ' → <b>' + r.card + '번</b></span></div>');
+    lines.push('<div class="calc-line"><span class="calc-k">2027</span><span>2+0+2+7 = 11, 여기에 ' + r.m + '월(' +
+      dsum(r.m) + ') + ' + r.d + '일(' + dsum(r.d) + ') = ' + r.pyRaw + ' → <b>' + r.py + '</b></span></div>');
+    lines.push('<div class="calc-line"><span class="calc-k">카드</span><span>' + r.m + ' + ' + r.d + ' + ' + r.y +
+      ' = ' + (r.m + r.d + r.y) + ' → 22 이하로 줄이면 <b>' + r.card + '번</b> (' + tarot.name + ')</span></div>');
 
-    var notes = ['11·22·33이 나오면 더 줄이지 않고 그대로 둬요. 이걸 마스터 수라고 해요.'];
-    notes.push('2027년 개인년수는 1~9로만 봐요. 2027은 2+0+2+7 = 11이라 기준값이 2예요.');
+    var notes = ['11·22·33이 나오면 더 줄이지 않고 그대로 둬요. 이걸 마스터 수라고 해요.',
+      '2027년 개인년수는 1~9로만 봐요. 2027은 2+0+2+7 = 11이라 기준값이 2예요.'];
     r.hiddenMasters.forEach(function (v) {
-      notes.push('태어난 ' + (v === r.ry.value ? '해' : v === r.rm.value ? '달' : '날') + '에 ' + v + '가 있어서 ' + r.lp + '의 기질 위에 ' + v + '의 기운이 살짝 얹혀 있어요.');
+      notes.push('태어난 ' + (v === r.ry.value ? '해' : v === r.rm.value ? '달' : '날') + '에 ' + v +
+        '가 있어서 ' + r.lp + '의 기질 위에 ' + v + '의 기운이 살짝 얹혀 있어요.');
     });
-    notes.push('탄생 카드는 0~21번 메이저 아르카나로 맞춰요. 22가 나오면 0번(바보)이 돼요.');
+    notes.push('태어난 날 카드는 0~21번 메이저 아르카나로 맞춰요. 22가 나오면 0번(바보)이 돼요.');
     $('calc-body').innerHTML = lines.join('') + '<p class="calc-note">' + notes.join(' ') + '</p>';
   }
 
-  var current = null;
+  /* ---------------- 타로 뽑기 ---------------- */
+  var deck = [];       // spread에 깔린 6장의 타로 번호
+  var picks = [];      // [{slot:0..2, card:n}]
 
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function dealDeck() {
+    var all = [], i;
+    for (i = 0; i < N.TAROT.length; i++) { all.push(i); }
+    shuffle(all);
+    return all.slice(0, 6);
+  }
+
+  function cardFaceHTML(card) {
+    var t = N.TAROT[card];
+    return '<span class="tc-num">' + ROMAN[t.n] + '</span>' +
+      '<span class="tc-art">' + glyph(N.ART[card], 34, '#4B3A52') + '</span>' +
+      '<span class="tc-name">' + t.name + '</span>';
+  }
+
+  function buildSpread() {
+    var box = $('spread'), html = '', i;
+    for (i = 0; i < deck.length; i++) {
+      html += '<button type="button" class="tcard" data-i="' + i + '" aria-label="' + (i + 1) + '번째 카드 뽑기">' +
+        '<span class="tc-inner">' +
+        '<span class="tc-face tc-back"><img src="assets/pixel-card-back.webp" width="176" height="292" alt=""></span>' +
+        '<span class="tc-face tc-front" style="background:' + N.TINT[deck[i] % N.TINT.length] + '">' +
+        cardFaceHTML(deck[i]) + '</span>' +
+        '</span></button>';
+    }
+    box.innerHTML = html;
+  }
+
+  function resetSlots() {
+    for (var p = 0; p < MAX_PICK; p++) {
+      var li = $('slots').children[p];
+      li.classList.remove('done');
+      $('slot-' + p).textContent = '—';
+    }
+  }
+
+  function renderReadings() {
+    var html = '';
+    picks.forEach(function (pick) {
+      var t = N.TAROT[pick.card];
+      var text = pick.slot === 2 ? N.ADV[pick.card] : t.line;
+      html += '<div class="reading">' +
+        '<div class="r-head"><span class="r-pos">' + POS[pick.slot] + '</span>' +
+        '<span class="r-name">' + t.name + '</span>' +
+        '<span class="r-kw">' + t.kw + '</span></div>' +
+        '<p class="r-text">' + text + '</p></div>';
+    });
+    if (!html) {
+      html = '<p class="r-empty">카드를 고르면 순서대로 해석이 나와요.</p>';
+    }
+    $('readings').innerHTML = html;
+  }
+
+  function pickCard(i, btn) {
+    if (picks.length >= MAX_PICK || !btn) { return; }
+    if (btn.classList.contains('picked') || btn.classList.contains('spent')) { return; }
+    var slot = picks.length;
+    picks.push({ slot: slot, card: deck[i] });
+    btn.classList.add('picked');
+    btn.setAttribute('aria-pressed', 'true');
+    btn.disabled = true;
+    var slotLi = $('slots').children[slot];
+    slotLi.classList.add('done');
+    $('slot-' + slot).textContent = N.TAROT[deck[i]].name;
+    renderReadings();
+    if (picks.length === MAX_PICK) {
+      Array.prototype.forEach.call($('spread').children, function (el) {
+        if (!el.classList.contains('picked')) { el.classList.add('spent'); }
+        el.disabled = true;
+      });
+    }
+  }
+
+  function newDraw(preset) {
+    deck = dealDeck();
+    picks = [];
+    buildSpread();
+    resetSlots();
+    renderReadings();
+    if (preset) {
+      preset.forEach(function (card, k) {
+        if (k < MAX_PICK && deck.indexOf(card) > -1) {
+          pickCard(deck.indexOf(card), $('spread').children[deck.indexOf(card)]);
+        }
+      });
+    }
+  }
+
+  /* ---------------- 화면 전환 ---------------- */
   function show(r) {
     current = r;
     render(r);
+    newDraw();
     $('screen-in').classList.remove('is-on');
     $('screen-out').classList.add('is-on');
     d.body.classList.add('is-result');
-    w.scrollTo({ top: 0, behavior: 'instant' in w ? 'instant' : 'auto' });
+    w.scrollTo(0, 0);
+    watchBar();
   }
 
   function back() {
     $('screen-out').classList.remove('is-on');
     $('screen-in').classList.add('is-on');
     d.body.classList.remove('is-result');
-    w.scrollTo({ top: 0, behavior: 'auto' });
+    w.scrollTo(0, 0);
   }
 
   /* ---------------- PNG 카드 ---------------- */
   var F_BODY = '"Pretendard Variable", Pretendard, -apple-system, sans-serif';
-  var F_SERIF = '"Gowun Dodum", "Pretendard Variable", Pretendard, sans-serif';
-  var F_HAND = 'Caveat, "Gowun Dodum", cursive';
-  var F_MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
+  var F_PX = '"Galmuri11", monospace';
+  var INK = '#4B3A52', INK2 = '#63516B', MUTE = '#8E7C93', PAPER = '#FFFDF6',
+    CREAM = '#FFF7E7', LINE = '#E3D3BA', LCD = '#E9F2D4', PINK = '#D96E97', SKY = '#4E93B4';
 
-  function rr(ctx, x, y, w2, h2, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w2, y, x + w2, y + h2, r);
-    ctx.arcTo(x + w2, y + h2, x, y + h2, r);
-    ctx.arcTo(x, y + h2, x, y, r);
-    ctx.arcTo(x, y, x + w2, y, r);
-    ctx.closePath();
+  function rect(ctx, x, y, ww, hh, color) { ctx.fillStyle = color; ctx.fillRect(x, y, ww, hh); }
+
+  function pxFrame(ctx, x, y, ww, hh, bg, border) {
+    rect(ctx, x + 10, y + 10, ww, hh, 'rgba(75,58,82,.13)');
+    rect(ctx, x, y, ww, hh, bg);
+    ctx.strokeStyle = border; ctx.lineWidth = 6;
+    ctx.strokeRect(x + 3, y + 3, ww - 6, hh - 6);
   }
 
-  function wrapText(ctx, text, maxW) {
-    var out = [], line = '';
-    for (var i = 0; i < text.length; i++) {
-      var ch = text[i];
+  function wrapText(ctx, text, maxW, maxLines) {
+    var out = [], line = '', i;
+    for (i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
       if (ch === '\n') { out.push(line); line = ''; continue; }
       if (ctx.measureText(line + ch).width > maxW && line) { out.push(line); line = ch; }
       else { line += ch; }
     }
     if (line) { out.push(line); }
-    // 마지막 줄이 너무 짧으면(예: "요.") 두 줄 폭이 비슷해지도록 다시 나눈다
-    if (out.length === 2 && ctx.measureText(out[1]).width < maxW * 0.28) {
-      var mid = Math.floor(text.length / 2), best = null;
-      for (var d = 0; d < text.length / 2; d++) {
-        [mid + d, mid - d].forEach(function (k) {
-          if (best || k < 4 || k > text.length - 4) { return; }
-          var a = text.slice(0, k), b = text.slice(k);
-          if (ctx.measureText(a).width <= maxW && ctx.measureText(b).width <= maxW) {
-            if (text[k - 1] === ' ' || text[k] === ' ' || d > 6) { best = [a, b]; }
-          }
-        });
-        if (best) { break; }
-      }
-      if (best) { out = best; }
+    if (maxLines && out.length > maxLines) {
+      out = out.slice(0, maxLines);
+      out[maxLines - 1] = out[maxLines - 1].replace(/.$/, '…');
     }
     return out;
   }
 
-  function heartPath(ctx, x, y, s, filled, color) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.scale(s / 24, s / 24);
-    ctx.beginPath();
-    ctx.moveTo(12, 20.2);
-    ctx.bezierCurveTo(9, 17.6, 4, 14.6, 4, 9.9);
-    ctx.bezierCurveTo(4, 7.4, 6, 5.5, 8.4, 5.5);
-    ctx.bezierCurveTo(10, 5.5, 11.3, 6.4, 12, 7.6);
-    ctx.bezierCurveTo(12.7, 6.4, 14, 5.5, 15.6, 5.5);
-    ctx.bezierCurveTo(18, 5.5, 20, 7.4, 20, 9.9);
-    ctx.bezierCurveTo(20, 14.6, 15, 17.6, 12, 20.2);
-    ctx.closePath();
-    ctx.fillStyle = filled ? color : 'rgba(120,132,96,.22)';
-    ctx.fill();
-    ctx.restore();
-  }
-
-  /* 자간을 직접 벌려 그린다 (ctx.letterSpacing 미지원 브라우저 대비) */
-  function spaced(ctx, text, x, y, gap) {
-    var cur = x;
-    for (var i = 0; i < text.length; i++) {
-      ctx.fillText(text[i], cur, y);
-      cur += ctx.measureText(text[i]).width + gap;
+  function drawGlyphCanvas(ctx, name, x, y, size, color) {
+    var g = N.GLYPH[name];
+    if (!g) { return; }
+    var cell = size / 12;
+    ctx.fillStyle = color;
+    for (var r = 0; r < g.length; r++) {
+      for (var c = 0; c < g[r].length; c++) {
+        if (g[r].charAt(c) === '#') { ctx.fillRect(x + c * cell, y + r * cell, cell, cell); }
+      }
     }
-    return cur - x;
-  }
-  function spacedW(ctx, text, gap) {
-    var w = 0;
-    for (var i = 0; i < text.length; i++) { w += ctx.measureText(text[i]).width + gap; }
-    return w - gap;
   }
 
-  var MASCOT_SRC = 'assets/cat-mascot.webp';
-  var mascotImg = null;
-  function loadMascot() {
-    if (!mascotImg) { mascotImg = new Image(); mascotImg.src = MASCOT_SRC; }
-    if (mascotImg.complete && mascotImg.naturalWidth) { return Promise.resolve(mascotImg); }
+  var catImg = null;
+  function loadCat() {
+    if (!catImg) { catImg = new Image(); catImg.src = 'assets/pixel-cat.webp'; }
+    if (catImg.complete && catImg.naturalWidth) { return Promise.resolve(catImg); }
     return new Promise(function (res) {
-      mascotImg.onload = function () { res(mascotImg); };
-      mascotImg.onerror = function () { res(null); };
+      catImg.onload = function () { res(catImg); };
+      catImg.onerror = function () { res(null); };
     });
   }
 
   function makeCard() {
     var r = current, L = N.LIFE[r.lp], PY = N.PY[r.py], tarot = N.TAROT[r.card];
-    var W = 1080, H = 2000;
+    var W = 1080;
     var cv = d.createElement('canvas');
-    cv.width = W; cv.height = H;
+    cv.width = W; cv.height = 2400;
     var ctx = cv.getContext('2d');
-    var M = 72, CW = W - M * 2;
-    var INK = '#2D2724', INK2 = '#6A5A4E', MUTE = '#9A8A7B', LINE = '#E9DFCC',
-      SKY = '#4C7E9B', SKY_SOFT = '#E3EEF5', CHERRY = '#B93B3B',
-      PAPER = '#FFFDF7', BLOCK = '#F7F1E3';
-
-    ctx.fillStyle = '#FAF6EC'; ctx.fillRect(0, 0, W, H);
     ctx.textBaseline = 'alphabetic';
 
-    // 헤더
+    // 배경 + 모눈
+    rect(ctx, 0, 0, W, 2400, '#FFF9EC');
+    ctx.fillStyle = 'rgba(126,158,116,.13)';
+    for (var gx = 0; gx < W; gx += 36) { ctx.fillRect(gx, 0, 1, 2400); }
+    for (var gy = 0; gy < 2400; gy += 36) { ctx.fillRect(0, gy, W, 1); }
+
+    var M = 40, PW = W - M * 2, PX = M + 44, CW = PW - 96;
+    var y = 90;
+
+    // 패널
+    rect(ctx, M, M, PW, 2200, PAPER);
+
+    // 머리
+    ctx.fillStyle = INK; ctx.font = '30px ' + F_PX; ctx.textAlign = 'left';
+    ctx.fillText('수수수 웹툴', PX, y + 30);
+    ctx.fillStyle = MUTE; ctx.font = '16px ' + F_PX; ctx.textAlign = 'right';
+    ctx.fillText('MY LITTLE DESTINY', PX + CW, y + 26);
     ctx.textAlign = 'left';
-    ctx.fillStyle = INK; ctx.font = '34px ' + F_SERIF;
-    ctx.fillText('수수수 웹툴', M, 102);
-    ctx.font = '17px ' + F_BODY; ctx.fillStyle = MUTE;
-    spaced(ctx, 'MY LITTLE DESTINY', W - M - spacedW(ctx, 'MY LITTLE DESTINY', 3.4), 100, 3.4);
-    ctx.strokeStyle = LINE; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(M, 132); ctx.lineTo(W - M, 132); ctx.stroke();
+    ctx.strokeStyle = INK; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(PX, y + 56); ctx.lineTo(PX + CW, y + 56); ctx.stroke();
+    y += 100;
 
-    // 운명 수 카드
-    var cy = 168, chh = 648;
-    rr(ctx, M, cy, CW, chh, 44);
-    ctx.fillStyle = PAPER; ctx.fill();
-    ctx.strokeStyle = LINE; ctx.lineWidth = 2; ctx.stroke();
-
-    ctx.fillStyle = MUTE; ctx.font = '17px ' + F_BODY;
-    spaced(ctx, 'MY NUMBER', M + 44, cy + 66, 3.2);
-
-    ctx.fillStyle = SKY; ctx.font = '182px ' + F_SERIF;
-    ctx.fillText(String(r.lp), M + 40, cy + 244);
+    // 운명 수
+    ctx.fillStyle = PINK; ctx.font = '200px ' + F_PX;
+    ctx.fillText(String(r.lp), PX, y + 168);
     var numW = ctx.measureText(String(r.lp)).width;
+    ctx.fillStyle = INK2; ctx.font = '34px ' + F_PX;
+    ctx.fillText('번', PX + numW + 12, y + 160);
 
-    // 고양이 (흰 배경은 multiply로 종이에 얹는다)
-    var mw = 226;
-    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth) {
-      var mh = mw * mascotImg.naturalHeight / mascotImg.naturalWidth;
-      ctx.save();
-      ctx.globalCompositeOperation = 'multiply';
-      ctx.drawImage(mascotImg, M + CW - mw - 30, cy + 68, mw, mh);
-      ctx.restore();
+    if (catImg) {
+      var cw = 210, ch = cw * 152 / 136;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(catImg, PX + CW - cw, y + 10, cw, ch);
     }
 
     if (r.master) {
-      var sx = M + 56 + numW + 56, sy = cy + 118;
-      ctx.save();
-      ctx.translate(sx, sy);
-      ctx.rotate(-0.13);
-      ctx.beginPath(); ctx.arc(0, 0, 54, 0, Math.PI * 2);
-      ctx.setLineDash([6, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = CHERRY; ctx.stroke();
+      var sx = PX + numW + 96, sy = y + 24;
+      ctx.strokeStyle = PINK; ctx.lineWidth = 4; ctx.setLineDash([10, 8]);
+      ctx.strokeRect(sx, sy, 132, 84);
       ctx.setLineDash([]);
-      ctx.fillStyle = CHERRY; ctx.textAlign = 'center';
-      ctx.font = '13px ' + F_BODY; ctx.fillText('MASTER', 0, -4);
-      ctx.font = '28px ' + F_SERIF; ctx.fillText(String(r.lp), 0, 30);
-      ctx.textAlign = 'left';
-      ctx.restore();
+      ctx.fillStyle = PINK; ctx.font = '16px ' + F_PX;
+      ctx.fillText('MASTER', sx + 18, sy + 32);
+      ctx.font = '36px ' + F_PX;
+      ctx.fillText(String(r.lp), sx + 18, sy + 72);
     }
 
-    ctx.fillStyle = INK; ctx.font = '54px ' + F_SERIF;
-    ctx.fillText(L.nick, M + 40, cy + 356);
-    ctx.fillStyle = INK2; ctx.font = '29px ' + F_BODY;
-    var tagLines = wrapText(ctx, L.tag, CW - 210).slice(0, 3);
-    tagLines.forEach(function (ln, i) { ctx.fillText(ln, M + 44, cy + 416 + i * 46); });
+    y += 240;
+    ctx.fillStyle = INK; ctx.font = '52px ' + F_PX;
+    ctx.fillText(L.nick, PX, y);
+    y += 52;
+    ctx.fillStyle = INK2; ctx.font = '30px ' + F_BODY;
+    wrapText(ctx, L.tag, CW - 20, 2).forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 44); });
+    y += 44 * Math.min(2, wrapText(ctx, L.tag, CW - 20, 2).length) + 6;
 
     // 생일 칩
-    var chipY = cy + chh - 78;
-    rr(ctx, M + 44, chipY, 348, 48, 24);
-    ctx.fillStyle = BLOCK; ctx.fill();
-    ctx.fillStyle = INK2; ctx.font = '22px ' + F_BODY;
-    ctx.fillText(r.y + '.' + pad(r.m) + '.' + pad(r.d) + '  양력', M + 70, chipY + 32);
+    var chipTxt = r.y + '.' + pad(r.m) + '.' + pad(r.d) + '  양력';
+    ctx.font = '28px ' + F_PX;
+    var chipW = ctx.measureText(chipTxt).width + 40;
+    rect(ctx, PX, y, chipW, 52, CREAM);
+    ctx.strokeStyle = LINE; ctx.lineWidth = 4; ctx.strokeRect(PX + 2, y + 2, chipW - 4, 48);
+    ctx.fillStyle = INK2;
+    ctx.fillText(chipTxt, PX + 20, y + 36);
+    y += 84;
 
-    // 스탯
-    var sty = cy + chh + 40, sh = 272;
-    rr(ctx, M, sty, CW, sh, 36);
-    ctx.fillStyle = BLOCK; ctx.fill();
-    ctx.fillStyle = INK; ctx.font = '27px ' + F_SERIF;
-    ctx.fillText('내 스탯', M + 44, sty + 58);
-    ctx.fillStyle = MUTE; ctx.font = '16px ' + F_BODY;
-    spaced(ctx, 'MY STATS', M + CW - 44 - spacedW(ctx, 'MY STATS', 2.6), sty + 54, 2.6);
-    var rows = [['직관력', L.stats.intuition], ['행동력', L.stats.drive], ['애정운', L.stats.love], ['재물감각', L.stats.money]];
-    rows.forEach(function (row, i) {
-      var ry = sty + 116 + i * 38;
-      ctx.fillStyle = INK2; ctx.font = '23px ' + F_BODY;
-      ctx.fillText(row[0], M + 44, ry);
-      for (var k = 0; k < 5; k++) {
-        heartPath(ctx, M + 566 + k * 38, ry - 19, 27, k < row[1], CHERRY);
-      }
-      ctx.fillStyle = MUTE; ctx.font = '18px ' + F_BODY; ctx.textAlign = 'right';
-      ctx.fillText(row[1] + '/5', M + CW - 44, ry);
-      ctx.textAlign = 'left';
-    });
+    // 스탯 패널
+    var statH = 74 + 5 * 56;
+    rect(ctx, PX, y, CW, statH, LCD);
+    ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.strokeRect(PX + 2, y + 2, CW - 4, statH - 4);
+    ctx.fillStyle = INK2; ctx.font = '18px ' + F_PX;
+    ctx.fillText('MY STATS', PX + 26, y + 40);
+    ctx.fillStyle = MUTE; ctx.font = '16px ' + F_PX; ctx.textAlign = 'right';
+    ctx.fillText('5점 만점', PX + CW - 26, y + 40);
+    ctx.textAlign = 'left';
+    [['직관력', L.stats.intuition], ['행동력', L.stats.drive], ['애정운', L.stats.love], ['재물감각', L.stats.money]]
+      .forEach(function (row, i) {
+        var ry = y + 86 + i * 56;
+        ctx.fillStyle = INK; ctx.font = '24px ' + F_BODY;
+        ctx.fillText(row[0], PX + 26, ry + 14);
+        for (var k = 0; k < 5; k++) {
+          drawGlyphCanvas(ctx, 'heart', PX + 300 + k * 42, ry - 8, 30, k < row[1] ? PINK : '#C6D5A4');
+        }
+        ctx.fillStyle = INK2; ctx.font = '20px ' + F_PX; ctx.textAlign = 'right';
+        ctx.fillText(row[1] + '/5', PX + CW - 26, ry + 12);
+        ctx.textAlign = 'left';
+      });
+    y += statH + 50;
 
     // 2027
-    var py = sty + sh + 44;
-    var pyChip = '2027 · ' + r.py + '의 해';
-    ctx.font = '25px ' + F_SERIF;
-    var chipW = ctx.measureText(pyChip).width + 58;
-    rr(ctx, M, py, chipW, 54, 27);
-    ctx.fillStyle = SKY_SOFT; ctx.fill();
-    ctx.fillStyle = SKY;
-    ctx.fillText(pyChip, M + 29, py + 36);
-    ctx.fillStyle = INK; ctx.font = '36px ' + F_SERIF;
-    ctx.fillText(PY.title, M + chipW + 32, py + 40);
-    ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
-    var pyLines = wrapText(ctx, PY.theme, CW).slice(0, 2);
-    pyLines.forEach(function (ln, i) { ctx.fillText(ln, M, py + 108 + i * 42); });
+    rect(ctx, PX, y, CW, 8, PINK);
+    y += 34;
+    ctx.fillStyle = SKY; ctx.font = '26px ' + F_PX;
+    ctx.fillText('2027 · ' + r.py + '의 해', PX, y);
+    y += 46;
+    ctx.fillStyle = INK; ctx.font = '38px ' + F_PX;
+    ctx.fillText(PY.title, PX, y);
+    y += 44;
+    ctx.fillStyle = INK2; ctx.font = '28px ' + F_BODY;
+    var pyLines = wrapText(ctx, PY.theme, CW, 2);
+    pyLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 42); });
+    y += pyLines.length * 42 + 48;
 
-    // 탄생 타로
-    var ty = py + 108 + pyLines.length * 42 + 34;
-    ctx.fillStyle = MUTE; ctx.font = '16px ' + F_BODY;
-    spaced(ctx, 'BIRTH TAROT CARD', M, ty, 2.6);
-    ctx.fillStyle = INK; ctx.font = '34px ' + F_SERIF;
-    ctx.fillText(tarot.name + ' · ' + tarot.en, M, ty + 46);
+    // 직접 뽑은 카드
+    if (picks.length) {
+      ctx.fillStyle = INK2; ctx.font = '18px ' + F_PX;
+      ctx.fillText('TODAY · 2027 · ADVICE', PX, y);
+      y += 22;
+      var gap = 22, cw2 = (CW - gap * 2) / 3, ch2 = cw2 * 73 / 44;
+      picks.forEach(function (pick, i) {
+        var t = N.TAROT[pick.card], bx = PX + i * (cw2 + gap), by = y + 8;
+        rect(ctx, bx, by, cw2, ch2, N.TINT[pick.card % N.TINT.length]);
+        ctx.strokeStyle = INK; ctx.lineWidth = 4; ctx.strokeRect(bx + 2, by + 2, cw2 - 4, ch2 - 4);
+        ctx.fillStyle = INK2; ctx.font = '18px ' + F_PX;
+        ctx.fillText(POS[pick.slot], bx + 16, by + 34);
+        drawGlyphCanvas(ctx, N.ART[pick.card], bx + cw2 / 2 - 45, by + ch2 / 2 - 62, 90, INK);
+        ctx.fillStyle = INK; ctx.font = '26px ' + F_PX; ctx.textAlign = 'center';
+        ctx.fillText(t.name, bx + cw2 / 2, by + ch2 - 42);
+        ctx.fillStyle = INK2; ctx.font = '15px ' + F_PX;
+        ctx.fillText(t.kw, bx + cw2 / 2, by + ch2 - 16);
+        ctx.textAlign = 'left';
+      });
+      y += ch2 + 46;
+    }
+
+    // 태어난 날 카드
+    ctx.fillStyle = MUTE; ctx.font = '18px ' + F_PX;
+    ctx.fillText('BIRTH CARD', PX, y);
+    y += 40;
+    ctx.fillStyle = INK; ctx.font = '32px ' + F_PX;
+    ctx.fillText(tarot.name + '  ·  ' + tarot.en, PX, y);
+    y += 40;
     ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
-    var tLines = wrapText(ctx, tarot.line, CW).slice(0, 2);
-    tLines.forEach(function (ln, i) { ctx.fillText(ln, M, ty + 96 + i * 40); });
+    var tLines = wrapText(ctx, tarot.line, CW, 2);
+    tLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 40); });
+    y += tLines.length * 40 + 40;
 
     // 푸터
-    var fy = ty + 96 + tLines.length * 40 + 30;
-    ctx.strokeStyle = LINE; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(M, fy); ctx.lineTo(W - M, fy); ctx.stroke();
+    ctx.strokeStyle = LINE; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(PX, y); ctx.lineTo(PX + CW, y); ctx.stroke();
+    y += 40;
+    ctx.fillStyle = MUTE; ctx.font = '20px ' + F_PX;
+    ctx.fillText('soosoosupernova.github.io/destiny-number', PX, y);
+    y += 44;
     ctx.fillStyle = MUTE; ctx.font = '18px ' + F_BODY;
-    ctx.fillText('soosoosupernova.github.io/destiny-number', M, fy + 40);
-    ctx.fillStyle = CHERRY; ctx.font = '30px ' + F_HAND; ctx.textAlign = 'right';
-    ctx.fillText('made with care', W - M, fy + 40);
-    ctx.textAlign = 'left';
+    ctx.fillText('수비학·타로는 재미로 보는 참고용이에요.', PX, y);
 
-    var cropH = Math.min(H, fy + 80);
+    var panelH = y + 60 - M;
+    var bottom = M + panelH;
+    if (bottom < 2400) {
+      rect(ctx, 0, bottom, W, 2400 - bottom, '#FFF9EC');
+      ctx.fillStyle = 'rgba(126,158,116,.13)';
+      var gx2, gy2;
+      for (gx2 = 0; gx2 < W; gx2 += 36) { ctx.fillRect(gx2, bottom, 1, 2400 - bottom); }
+      for (gy2 = Math.ceil(bottom / 36) * 36; gy2 < 2400; gy2 += 36) { ctx.fillRect(0, gy2, W, 1); }
+    }
+    ctx.strokeStyle = INK; ctx.lineWidth = 6;
+    ctx.strokeRect(M + 3, M + 3, PW - 6, panelH - 6);
+
+    var H = Math.ceil(M + panelH + 40);
     var out = d.createElement('canvas');
-    out.width = W; out.height = cropH;
+    out.width = W; out.height = H;
     out.getContext('2d').drawImage(cv, 0, 0);
     return out;
   }
@@ -437,8 +571,19 @@
     t._tm = setTimeout(function () { t.classList.remove('on'); }, ttl || 2600);
   }
 
+  function fontsReady() {
+    if (!d.fonts || !d.fonts.ready) { return Promise.resolve(); }
+    var jobs = [];
+    try {
+      jobs.push(d.fonts.load('400 40px "Galmuri11"'));
+      jobs.push(d.fonts.load('400 30px "Pretendard Variable"'));
+      jobs.push(d.fonts.load('600 30px "Pretendard Variable"'));
+    } catch (e) {}
+    return Promise.all(jobs).then(function () { return d.fonts.ready; }).catch(function () {});
+  }
+
   function savePng() {
-    Promise.all([fontsReady(), loadMascot()]).then(function () {
+    Promise.all([fontsReady(), loadCat()]).then(function () {
       var cv = makeCard();
       canvasToBlob(cv).then(function (bin) {
         if (!bin) { toast('이미지를 만들지 못했어요. 화면을 캡처해 주세요.'); return; }
@@ -452,39 +597,32 @@
     });
   }
 
-  function fontsReady() {
-    if (!d.fonts || !d.fonts.ready) { return Promise.resolve(); }
-    var jobs = [];
-    try {
-      jobs.push(d.fonts.load('400 100px "Gowun Dodum"'));
-      jobs.push(d.fonts.load('600 30px Caveat'));
-      jobs.push(d.fonts.load('400 30px "Pretendard Variable"'));
-      jobs.push(d.fonts.load('650 30px "Pretendard Variable"'));
-    } catch (e) {}
-    return Promise.all(jobs).then(function () { return d.fonts.ready; }).catch(function () {});
-  }
-
   function shareText() {
-    var L = N.LIFE[current.lp], PY = N.PY[current.py], tarot = N.TAROT[current.card];
-    var head = current.master ? '마스터 수 ' : '';
-    return '내 운명 수는 ' + head + current.lp + ' · ' + L.nick + '\n'
-      + '2027년은 ' + current.py + '의 해 (' + PY.title + ')\n'
-      + '탄생 타로는 ' + tarot.name + '\n'
-      + '— 수수수 웹툴 수비학 리포트\n'
-      + 'https://soosoosupernova.github.io/destiny-number/';
+    var L = N.LIFE[current.lp], PY = N.PY[current.py];
+    var lines = [];
+    lines.push('내 운명 수는 ' + (current.master ? '마스터 수 ' : '') + current.lp + ' · ' + L.nick);
+    lines.push('2027년은 ' + current.py + '의 해 (' + PY.title + ')');
+    if (picks.length === MAX_PICK) {
+      lines.push('뽑은 카드 — 오늘 ' + N.TAROT[picks[0].card].name +
+        ' / 2027 ' + N.TAROT[picks[1].card].name +
+        ' / 조언 ' + N.TAROT[picks[2].card].name);
+    }
+    lines.push('— 수수수 웹툴 수비학·타로');
+    lines.push('https://soosoosupernova.github.io/destiny-number/');
+    return lines.join('\n');
   }
 
   function share() {
     var txt = shareText();
-    Promise.all([fontsReady(), loadMascot()]).then(function () { return makeCard(); }).then(function (cv) {
+    Promise.all([fontsReady(), loadCat()]).then(function () { return makeCard(); }).then(function (cv) {
       return canvasToBlob(cv).then(function (bin) {
         var file = bin ? new File([bin], fileName(), { type: 'image/png' }) : null;
         if (file && navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-          navigator.share({ files: [file], text: txt, title: '내 수비학 리포트' }).catch(function () { copyText(txt); });
+          navigator.share({ files: [file], text: txt, title: '내 수비학·타로 리포트' }).catch(function () { copyText(txt); });
           return;
         }
         if (navigator.share) {
-          navigator.share({ title: '내 수비학 리포트', text: txt, url: 'https://soosoosupernova.github.io/destiny-number/' })
+          navigator.share({ title: '내 수비학·타로 리포트', text: txt, url: 'https://soosoosupernova.github.io/destiny-number/' })
             .catch(function () { copyText(txt); });
           return;
         }
@@ -512,6 +650,13 @@
     ta.remove();
   }
 
+  /* ---------------- 고정 바 ---------------- */
+  function watchBar() {
+    var bar = $('actionbar');
+    if (!bar || !d.body.classList.contains('is-result')) { return; }
+    bar.classList.toggle('is-shown', (w.scrollY || 0) > 220);
+  }
+
   /* ---------------- 초기화 ---------------- */
   function init() {
     var search = w.location.search || '';
@@ -527,39 +672,54 @@
       show(calc(y, m, day));
     });
 
+    $('spread').addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.tcard') : null;
+      if (!btn || !$('spread').contains(btn)) { return; }
+      pickCard(+btn.getAttribute('data-i'), btn);
+    });
+
+    $('btn-redraw').addEventListener('click', function () {
+      newDraw();
+      toast('새로 섞었어요. 카드 3장을 골라 주세요.');
+    });
+
     $('btn-back').addEventListener('click', back);
     $('btn-save').addEventListener('click', savePng);
     $('btn-share').addEventListener('click', share);
     $('btn-copy').addEventListener('click', function () { copyText(shareText()); });
 
-    // 결과를 훑어보는 동안에는 저장 바가 시야를 가리지 않게, 첫 카드를 지나면 나타난다
-    var bar = d.querySelector('.actions');
-    function watchBar() {
-      if (!bar) { return; }
-      bar.classList.toggle('is-shown', (w.scrollY || 0) > 420);
-    }
     w.addEventListener('scroll', watchBar, { passive: true });
-    watchBar();
 
-    // 테스트/확인용: ?d=1990-04-27 로 결과를 바로 열 수 있다 (주소에 남지 않게 지운다)
+    // 확인용: ?d=1990-04-27 (주소에 남지 않게 지운다)
     var q = search.match(/[?&]d=(\d{4})-(\d{2})-(\d{2})/);
     if (q) {
       var yy = +q[1], mm = +q[2], dd = +q[3];
       if (daysIn(yy, mm) >= dd) {
         $('by').value = yy; fillDays(); $('bm').value = mm; fillDays(); $('bd').value = dd; sync();
         show(calc(yy, mm, dd));
+        var cq = search.match(/[?&]cards=([\d,]+)/);
+        if (cq) {
+          var cs = cq[1].split(',').map(Number).slice(0, MAX_PICK);
+          cs.forEach(function (card, k) {
+            var idx = deck.indexOf(card);
+            if (idx > -1) { pickCard(idx, $('spread').children[idx]); }
+          });
+          if (cs.length === MAX_PICK) { watchBar(); }
+        }
         try { w.history.replaceState(null, d.title, w.location.pathname); } catch (err) {}
       }
     }
 
     // PNG 미리보기 (?pngprev=1) — 확인용
     if (/[?&]pngprev=1/.test(search) && current) {
-      Promise.all([fontsReady(), loadMascot()]).then(function () {
+      Promise.all([fontsReady(), loadCat()]).then(function () {
         var cv = makeCard();
-        cv.style.cssText = 'width:100%;max-width:420px;height:auto;display:block;margin:16px auto;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.15)';
-        d.getElementById('screen-out').appendChild(cv);
+        cv.style.cssText = 'width:100%;max-width:420px;height:auto;display:block;margin:16px auto;border:2px solid #4B3A52';
+        $('screen-out').appendChild(cv);
       });
     }
+
+    watchBar();
   }
 
   w.NUMCALC = calc;

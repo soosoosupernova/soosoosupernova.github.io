@@ -3,257 +3,273 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>생년월일 수비학 리포트 | 운명 수·2027년 개인년수·탄생 타로 | 수수수 웹툴</title>
-<meta name="description" content="생년월일만 고르면 운명 수(1~9, 마스터 수 11·22·33), 2027년 개인년수 흐름, 탄생 타로 카드까지 한 장에 나오는 무료 수비학 리포트. 3초 입력, 회원가입 없이 브라우저 안에서만 계산해요.">
+<title>생년월일 수비학 + 타로 뽑기 | 운명 수·2027년 개인년수 | 수수수 웹툴</title>
+<meta name="description" content="생년월일을 고르면 운명 수(1~9, 마스터 수 11·22·33)와 2027년 개인년수 흐름이 나오고, 이어서 타로 카드 3장을 직접 뽑아요. 회원가입 없이 브라우저 안에서만 계산하는 무료 도구.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://soosoosupernova.github.io/destiny-number/">
-<meta name="theme-color" content="#FAF6EC">
+<meta name="theme-color" content="#E9F2E4">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="수수수 웹툴">
-<meta property="og:title" content="생년월일 수비학 리포트 — 운명 수와 2027년 흐름">
-<meta property="og:description" content="생일만 고르면 운명 수(1~9 + 마스터 수 11·22·33), 2027년 개인년수, 탄생 타로 카드가 한 장에 나와요. 3초 입력, 전부 무료.">
+<meta property="og:title" content="생년월일 수비학 + 타로 뽑기 — 운명 수와 2027년 흐름">
+<meta property="og:description" content="생일만 고르면 운명 수와 2027년 개인년수, 탄생 카드가 나오고 타로 카드 3장은 직접 뽑아요. 3초 입력, 전부 무료.">
 <meta property="og:url" content="https://soosoosupernova.github.io/destiny-number/">
 <meta property="og:image" content="https://soosoosupernova.github.io/destiny-number/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="밀크크림 배경에 흰 고양이와 강아지 손그림이 있는 생년월일 수비학 리포트 카드">
+<meta property="og:image:alt" content="파스텔 픽셀 게임기 화면에 앉은 도트 고양이와 타로 카드가 그려진 생년월일 수비학 리포트 카드">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="생년월일 수비학 리포트 — 운명 수와 2027년 흐름">
-<meta name="twitter:description" content="생일만 고르면 운명 수, 2027년 개인년수, 탄생 타로 카드가 바로 나와요. 3초 입력, 전부 무료.">
+<meta name="twitter:title" content="생년월일 수비학 + 타로 뽑기">
+<meta name="twitter:description" content="생일만 고르면 운명 수, 2027년 개인년수, 탄생 카드가 나오고 타로 3장은 직접 뽑아요.">
 <meta name="twitter:image" content="https://soosoosupernova.github.io/destiny-number/og-image.png">
 <meta name="google-adsense-account" content="ca-pub-1054740103416682">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1054740103416682" crossorigin="anonymous"></script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23FAF6EC'/%3E%3Cpath d='M9 15.2 7.6 8.4l5.2 3.6M23 15.2l1.4-6.8-5.2 3.6' fill='none' stroke='%232D2724' stroke-width='1.5' stroke-linejoin='round' stroke-linecap='round'/%3E%3Cpath d='M16 11.4c-4.4 0-7.6 3.2-7.6 7.4s3.2 7.4 7.6 7.4 7.6-3.2 7.6-7.4-3.2-7.4-7.6-7.4Z' fill='%23FFFDF7' stroke='%232D2724' stroke-width='1.5'/%3E%3Ccircle cx='13' cy='18.4' r='1.2' fill='%232D2724'/%3E%3Ccircle cx='19' cy='18.4' r='1.2' fill='%232D2724'/%3E%3Cpath d='M15 21.4q1 1.1 2 0' stroke='%232D2724' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/pixel-cat-32.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/pixel-cat-32.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Caveat:wght@500;600&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261118z">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<style>
+@font-face{
+  font-family:"Galmuri11";
+  src:url("https://cdn.jsdelivr.net/gh/quiple/galmuri/dist/Galmuri11.woff2") format("woff2");
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:"Galmuri11";
+  src:url("https://cdn.jsdelivr.net/gh/quiple/galmuri/dist/Galmuri11-Bold.woff2") format("woff2");
+  font-weight:700; font-style:normal; font-display:swap;
+}
+</style>
+<link rel="stylesheet" href="styles.css?v=20261118a">
 </head>
 <body>
 
 <div class="shell">
   <header class="sitebar">
     <a class="brand" href="../">수수수 웹툴</a>
-    <span class="brand-sub">My Little Destiny</span>
+    <span class="brand-sub">MY LITTLE DESTINY</span>
   </header>
 
   <main>
   <!-- ============ 입력 화면 ============ -->
-  <section class="screen is-on landing" id="screen-in" aria-labelledby="hero-title">
-    <article class="card hero">
-      <p class="eyebrow">Birthday Report</p>
-      <h1 class="hero-title" id="hero-title">숫자로 보는<br>내 <em>2027년</em></h1>
-      <img class="hero-art" src="assets/cat-hero.webp" width="620" height="655" fetchpriority="high"
-           alt="케이크와 티컵이 놓인 하늘색 테이블에 앉은 흰 고양이와, 옆에서 올려다보는 강아지 손그림">
-      <p class="lede">생일 여덟 자리에 담긴 운명 수, 2027년의 흐름, 태어날 때 뽑힌 타로 카드까지 한 장에 담았어요.</p>
-      <div class="tags">
-        <span class="tagpill">운명 수 <b>1~9</b></span>
-        <span class="tagpill">마스터 수 <b>11·22·33</b></span>
-        <span class="tagpill"><b>2027</b> 개인년수</span>
-        <span class="tagpill">탄생 타로 <b>1장</b></span>
+  <section class="screen is-on" id="screen-in" aria-labelledby="hero-title">
+
+    <div class="device">
+      <div class="bezel">
+        <div class="lcd">
+
+          <div class="scene" aria-hidden="true">
+            <img class="scene-art" src="assets/pixel-scene.webp" width="344" height="112" alt="">
+            <span class="hud"><i class="hud-heart"></i> 2027</span>
+            <img class="scene-cat" src="assets/pixel-cat.webp" width="136" height="152" alt="">
+          </div>
+
+          <div class="hero-copy">
+            <p class="eyebrow">BIRTHDAY NUMEROLOGY · TAROT</p>
+            <h1 class="hero-title" id="hero-title">숫자로 2027 읽고<br>타로 카드 뽑기</h1>
+            <p class="lede">생년월일 여덟 자리를 고르면 운명 수랑 2027년 개인년수가 나와요. 이어서 카드 3장을 직접 뽑고요.</p>
+          </div>
+
+          <form class="form" id="form" novalidate>
+            <div class="pickers">
+              <label class="pick" for="by">
+                <span class="pick-label">태어난 해</span>
+                <span class="sel"><select id="by" name="by" required aria-label="태어난 해"></select></span>
+              </label>
+              <label class="pick" for="bm">
+                <span class="pick-label">월</span>
+                <span class="sel"><select id="bm" name="bm" required aria-label="태어난 달"></select></span>
+              </label>
+              <label class="pick" for="bd">
+                <span class="pick-label">일</span>
+                <span class="sel"><select id="bd" name="bd" required aria-label="태어난 날"></select></span>
+              </label>
+            </div>
+            <p class="hint">음력 생일이면 양력으로 바꿔서 골라 주세요.</p>
+            <button type="submit" class="btn btn-primary btn-block" id="btn-go" disabled>
+              내 숫자 보고 타로 뽑기
+            </button>
+          </form>
+
+          <ul class="gets" aria-label="결과에 담기는 것">
+            <li><b>운명 수</b>1~9 · 11·22·33</li>
+            <li><b>2027</b>개인년수 흐름</li>
+            <li><b>타로</b>카드 3장 뽑기</li>
+          </ul>
+
+        </div>
       </div>
+      <span class="device-dot" aria-hidden="true"></span>
+    </div>
+
+    <p class="fine">생일은 <b>서버로 보내지 않고</b> 브라우저 안에서만 계산해요. 저장도, 전송도 없어요.</p>
+
+    <article class="card about">
+      <p class="eyebrow">HOW IT WORKS</p>
+      <ol class="steps">
+        <li><span class="step-no">1</span><span><b>생년월일을 고르면</b> 운명 수와 2027년 개인년수, 하트 스탯이 바로 나와요.</span></li>
+        <li><span class="step-no">2</span><span><b>뒤집힌 카드 6장 중 3장을 골라요.</b> 순서대로 오늘 · 2027 · 조언이에요.</span></li>
+        <li><span class="step-no">3</span><span><b>PNG로 저장하거나 공유해요.</b> 생일은 이미지에 담기지 않아요.</span></li>
+      </ol>
     </article>
 
-    <form class="card" id="form" novalidate>
-      <p class="eyebrow">My Birthday</p>
-      <div class="pickers">
-        <label class="pick" for="by">
-          <span class="pick-label">태어난 해</span>
-          <span class="select-wrap"><select id="by" name="by" required aria-label="태어난 해"></select></span>
-        </label>
-        <label class="pick" for="bm">
-          <span class="pick-label">월</span>
-          <span class="select-wrap"><select id="bm" name="bm" required aria-label="태어난 달"></select></span>
-        </label>
-        <label class="pick" for="bd">
-          <span class="pick-label">일</span>
-          <span class="select-wrap"><select id="bd" name="bd" required aria-label="태어난 날"></select></span>
-        </label>
-      </div>
-      <p class="pick-note">음력 생일이라면 양력으로 바꾼 뒤 골라 주세요.</p>
-      <button type="submit" class="btn btn-primary btn-block" id="btn-go">
-        내 숫자 보기
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
-      </button>
-      <p class="fine">입력한 생일은 <b>서버로 보내지 않고</b> 브라우저 안에서만 계산해요. 저장도, 전송도 없어요.</p>
-    </form>
-
-    <article class="card">
-      <p class="eyebrow">In This Report</p>
-      <div class="teasers">
-        <div class="teaser">
-          <span class="teaser-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c1 4 2.3 5.3 6.3 6.3-4 1-5.3 2.3-6.3 6.3-1-4-2.3-5.3-6.3-6.3 4-1 5.3-2.3 6.3-6.3Z"/><path d="M18 15.5c.4 1.6.9 2.1 2.5 2.5-1.6.4-2.1.9-2.5 2.5-.4-1.6-.9-2.1-2.5-2.5 1.6-.4 2.1-.9 2.5-2.5Z"/></svg></span>
-          <span><b>운명 수</b><span class="d">1~9, 그리고 11·22·33 마스터 수</span></span>
-        </div>
-        <div class="teaser">
-          <span class="teaser-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4.5 19.5v-6M12 19.5v-11M19.5 19.5v-4"/></svg></span>
-          <span><b>2027년 흐름</b><span class="d">개인년수로 보는 상반기와 하반기</span></span>
-        </div>
-        <div class="teaser">
-          <span class="teaser-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="4.5" width="15" height="15" rx="3"/><path d="M12 9.5v.01M12 12v2.5"/></svg></span>
-          <span><b>탄생 타로</b><span class="d">메이저 아르카나 카드 1장</span></span>
-        </div>
-      </div>
-    </article>
-
-    <p class="fine">수비학은 생년월일 숫자로 성향과 흐름을 읽는 서양 점술이에요. 재미로 보는 참고용이고, 인생의 결정을 대신하지 않아요.</p>
+    <p class="fine">수비학과 타로는 재미로 보는 참고용이에요. 결과가 사람을 정하지는 않아요.</p>
   </section>
 
   <!-- ============ 결과 화면 ============ -->
-  <section class="screen" id="screen-out" aria-label="수비학 리포트 결과">
+  <section class="screen" id="screen-out" aria-label="수비학과 타로 결과">
     <div class="out-top">
-      <button type="button" class="backbtn" id="btn-back" aria-label="생일 다시 고르기">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"/></svg>
-        다시 고르기
+      <button type="button" class="backbtn" id="btn-back">
+        ← 다시 고르기
       </button>
       <span class="out-date" id="out-date"></span>
     </div>
 
-    <div class="out-grid">
-      <div class="col-left">
-        <!-- 운명 수 카드 -->
-        <article class="card result-hero">
-          <p class="eyebrow">My Number</p>
-          <div class="num-row">
-            <span class="num-big" id="num-big"></span>
-            <span class="stamp" id="stamp" hidden></span>
-            <img class="num-art" src="assets/cat-mascot.webp" width="340" height="490" alt="" aria-hidden="true">
-          </div>
-          <p class="eyebrow num-label">Destiny Number</p>
-          <h2 class="nick" id="num-nick"></h2>
-          <p class="num-tag" id="num-tag"></p>
-          <div class="chips" id="num-chips"></div>
-        </article>
-
-        <!-- 스탯 -->
-        <article class="card panel">
-          <div class="stat-head">
-            <p class="stat-title">내 스탯</p>
-            <span class="stat-val">5점 만점</span>
-          </div>
-          <div id="stat-rows"></div>
-        </article>
-
-        <!-- 계산 과정 -->
-        <details class="card calc" id="calc">
-          <summary>계산 과정 보기</summary>
-          <div class="calc-body" id="calc-body"></div>
-        </details>
+    <!-- 운명 수 -->
+    <article class="card num-card">
+      <p class="eyebrow">MY NUMBER</p>
+      <div class="num-row">
+        <span class="num-big" id="num-big"></span>
+        <span class="stamp" id="stamp" hidden></span>
+        <img class="num-cat" src="assets/pixel-cat.webp" width="136" height="152" alt="">
       </div>
+      <h2 class="nick" id="num-nick"></h2>
+      <p class="num-tag" id="num-tag"></p>
+      <div class="chips" id="num-chips"></div>
+    </article>
 
-      <div class="col-right">
-        <!-- 01 기질 -->
-        <section class="card">
-          <div class="sec-head">
-            <span class="sec-no">01</span>
-            <h2 class="sec-title" id="sec1-title">타고난 기질과 숨은 강점</h2>
-          </div>
-          <span class="sub-label"><i></i>이런 게 강해요</span>
-          <ul class="list" id="traits"></ul>
-          <hr class="hr-dash">
-          <span class="sub-label sky"><i></i>조심하면 좋은 패턴</span>
-          <ul class="list sky" id="shadow"></ul>
-        </section>
-
-        <!-- 02 2027 -->
-        <section class="card">
-          <div class="sec-head">
-            <span class="sec-no">02</span>
-            <h2 class="sec-title">2027년, 내 해는</h2>
-          </div>
-          <div class="py-head">
-            <span class="py-num" id="py-num">6</span>
-            <div class="py-meta">
-              <span class="k">2027년 개인년수</span>
-              <p class="t" id="py-title">울타리를 손보는 해</p>
-            </div>
-          </div>
-          <p class="py-theme" id="py-theme"></p>
-          <div class="half">
-            <div class="half-card">
-              <div class="half-top">
-                <span class="half-when">상반기 · 1~6월</span>
-                <span class="half-kw" id="py-kw1"></span>
-              </div>
-              <p id="py-h1"></p>
-            </div>
-            <div class="half-card">
-              <div class="half-top">
-                <span class="half-when">하반기 · 7~12월</span>
-                <span class="half-kw" id="py-kw2"></span>
-              </div>
-              <p id="py-h2"></p>
-            </div>
-          </div>
-          <p class="py-tip"><b>한마디</b><span id="py-tip"></span></p>
-        </section>
-
-        <!-- 03 일·돈·관계 -->
-        <section class="card">
-          <div class="sec-head">
-            <span class="sec-no">03</span>
-            <h2 class="sec-title">일하고, 벌고, 만나는 일</h2>
-          </div>
-          <div class="tr3">
-            <div class="tr3-item">
-              <span class="tr3-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3 12h18"/></svg></span>
-              <div><h3>일</h3><p id="tr-work"></p></div>
-            </div>
-            <div class="tr3-item">
-              <span class="tr3-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M14.6 9.6c-.6-.8-1.6-1.1-2.6-1.1-1.4 0-2.4.7-2.4 1.8 0 2.6 5.2 1.3 5.2 3.9 0 1.2-1.1 1.9-2.8 1.9-1.1 0-2.1-.4-2.7-1.2"/></svg></span>
-              <div><h3>돈</h3><p id="tr-money"></p></div>
-            </div>
-            <div class="tr3-item">
-              <span class="tr3-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.7-7.5-9.5A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 3.1C19.5 15.3 12 20 12 20Z"/></svg></span>
-              <div><h3>관계</h3><p id="tr-love"></p></div>
-            </div>
-          </div>
-          <hr class="hr-dash">
-          <span class="sub-label"><i></i>잘 맞는 숫자</span>
-          <div class="match-row" id="match-row"></div>
-          <div class="avoid-box" style="margin-top:14px">
-            <span class="k">피하면 좋은 상황</span>
-            <p id="avoid"></p>
-          </div>
-        </section>
-
-        <!-- 04 타로 -->
-        <section class="card panel">
-          <div class="sec-head">
-            <span class="sec-no">04</span>
-            <h2 class="sec-title">태어날 때 뽑힌 카드 한 장</h2>
-          </div>
-          <div class="tarot">
-            <img class="tarot-art" src="assets/cat-tarot.webp" width="420" height="335" alt="달이 그려진 타로 카드 옆에 앉은 흰 고양이와 카드 뒤에서 얼굴을 내민 강아지 손그림">
-            <div class="tarot-meta">
-              <span class="k">Birth Card · <span id="tarot-rn">V</span></span>
-              <p class="n" id="tarot-name">교황</p>
-              <p class="e" id="tarot-en">THE HIEROPHANT</p>
-              <p id="tarot-line"></p>
-            </div>
-          </div>
-        </section>
+    <!-- 스탯 -->
+    <article class="card panel lcd-card">
+      <div class="stat-head">
+        <span class="px-label">MY STATS</span>
+        <span class="stat-val">5점 만점</span>
       </div>
-    </div>
+      <div id="stat-rows"></div>
+    </article>
 
-    <div class="actions" role="group" aria-label="결과 저장과 공유">
-      <button type="button" class="btn btn-ink" id="btn-save">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7.5 11 12 15.5 16.5 11M5 19h14"/></svg>
-        PNG 저장
+    <!-- 01 2027 -->
+    <section class="card">
+      <div class="sec-head">
+        <span class="sec-no">01</span>
+        <h2 class="sec-title">2027년, 내 해는</h2>
+      </div>
+      <div class="py-head">
+        <span class="py-num" id="py-num">6</span>
+        <div class="py-meta">
+          <span class="k">2027년 개인년수</span>
+          <p class="t" id="py-title"></p>
+        </div>
+      </div>
+      <p class="py-theme" id="py-theme"></p>
+      <div class="half">
+        <div class="half-card">
+          <div class="half-top">
+            <span class="half-when">상반기 · 1~6월</span>
+            <span class="half-kw" id="py-kw1"></span>
+          </div>
+          <p id="py-h1"></p>
+        </div>
+        <div class="half-card">
+          <div class="half-top">
+            <span class="half-when">하반기 · 7~12월</span>
+            <span class="half-kw" id="py-kw2"></span>
+          </div>
+          <p id="py-h2"></p>
+        </div>
+      </div>
+      <p class="py-tip"><b>한마디</b><span id="py-tip"></span></p>
+    </section>
+
+    <!-- 02 타로 뽑기 -->
+    <section class="card draw" id="draw-card">
+      <div class="sec-head">
+        <span class="sec-no">02</span>
+        <h2 class="sec-title">타로 카드 뽑기</h2>
+      </div>
+      <p class="draw-hint">마음이 가는 카드 <b>3장</b>을 골라 주세요. 고른 순서대로 <b>오늘 · 2027 · 조언</b>이 돼요.</p>
+
+      <ol class="slots" id="slots">
+        <li class="slot" data-pos="0"><span class="slot-k">오늘</span><span class="slot-v" id="slot-0">—</span></li>
+        <li class="slot" data-pos="1"><span class="slot-k">2027</span><span class="slot-v" id="slot-1">—</span></li>
+        <li class="slot" data-pos="2"><span class="slot-k">조언</span><span class="slot-v" id="slot-2">—</span></li>
+      </ol>
+
+      <div class="spread" id="spread" role="group" aria-label="뒤집힌 타로 카드 6장"></div>
+
+      <div class="readings" id="readings"></div>
+
+      <button type="button" class="btn btn-ghost btn-block" id="btn-redraw">
+        다시 섞어서 뽑기
       </button>
-      <button type="button" class="btn btn-paper" id="btn-share">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7.5 8.5 12 4l4.5 4.5M5 14v5h14v-5"/></svg>
-        공유
-      </button>
-      <button type="button" class="btn btn-paper" id="btn-copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 5.5A2.5 2.5 0 0 0 13.5 3H6a2.5 2.5 0 0 0-2.5 2.5V13"/></svg>
-        문구 복사
-      </button>
-    </div>
-    <p class="fine out-fine">PNG로 저장해서 스토리·단톡방에 올려 보세요. 생일은 이미지에 담기지 않아요.</p>
-    <p class="fine out-fine">수비학은 재미로 보는 참고용이에요. 결과가 사람을 정하지는 않아요.</p>
+    </section>
+
+    <!-- 03 기질 -->
+    <section class="card">
+      <div class="sec-head">
+        <span class="sec-no">03</span>
+        <h2 class="sec-title">타고난 기질과 숨은 강점</h2>
+      </div>
+      <span class="sub-label"><i></i>이런 게 강해요</span>
+      <ul class="list" id="traits"></ul>
+      <hr class="dash">
+      <span class="sub-label sky"><i></i>조심하면 좋은 패턴</span>
+      <ul class="list sky" id="shadow"></ul>
+    </section>
+
+    <!-- 04 일·돈·관계 -->
+    <section class="card">
+      <div class="sec-head">
+        <span class="sec-no">04</span>
+        <h2 class="sec-title">일하고, 벌고, 만나는 일</h2>
+      </div>
+      <div class="tr3">
+        <div class="tr3-item">
+          <span class="tr3-ic" id="ic-work"></span>
+          <div><h3>일</h3><p id="tr-work"></p></div>
+        </div>
+        <div class="tr3-item">
+          <span class="tr3-ic" id="ic-money"></span>
+          <div><h3>돈</h3><p id="tr-money"></p></div>
+        </div>
+        <div class="tr3-item">
+          <span class="tr3-ic" id="ic-love"></span>
+          <div><h3>관계</h3><p id="tr-love"></p></div>
+        </div>
+      </div>
+      <hr class="dash">
+      <span class="sub-label"><i></i>잘 맞는 숫자</span>
+      <div class="match-row" id="match-row"></div>
+      <div class="avoid-box">
+        <span class="k">피하면 좋은 상황</span>
+        <p id="avoid"></p>
+      </div>
+    </section>
+
+    <!-- 05 탄생 카드 -->
+    <section class="card birth">
+      <div class="sec-head">
+        <span class="sec-no">05</span>
+        <h2 class="sec-title">태어난 날의 카드</h2>
+      </div>
+      <div class="birth-row">
+        <div class="mini-card" id="birth-card"></div>
+        <div class="birth-meta">
+          <span class="k">BIRTH CARD · <span id="tarot-rn">V</span></span>
+          <p class="n" id="tarot-name">교황</p>
+          <p class="e" id="tarot-en">THE HIEROPHANT</p>
+          <p class="line" id="tarot-line"></p>
+        </div>
+      </div>
+      <p class="birth-note">생일 숫자를 22까지 줄여서 고른 카드예요. 직접 뽑는 카드와는 별개로, 타고난 성향 쪽에 가까워요.</p>
+    </section>
+
+    <!-- 계산 과정 -->
+    <details class="card calc" id="calc">
+      <summary>계산 과정 보기</summary>
+      <div class="calc-body" id="calc-body"></div>
+    </details>
+
+    <p class="fine out-fine">수비학과 타로는 재미로 보는 참고용이에요. 결과가 사람을 정하지는 않아요.</p>
   </section>
   </main>
 
@@ -268,9 +284,21 @@
   </footer>
 </div>
 
+<div class="actionbar" id="actionbar" role="group" aria-label="결과 저장과 공유">
+  <button type="button" class="btn btn-ink" id="btn-save">
+    PNG 저장
+  </button>
+  <button type="button" class="btn btn-paper" id="btn-share">
+    공유
+  </button>
+  <button type="button" class="btn btn-paper" id="btn-copy">
+    문구 복사
+  </button>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="data.js?v=20261118j"></script>
-<script src="app.js?v=20261118z"></script>
+<script src="data.js?v=20261118b"></script>
+<script src="app.js?v=20261118b"></script>
 </body>
 </html>
