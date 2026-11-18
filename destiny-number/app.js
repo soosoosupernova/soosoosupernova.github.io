@@ -308,7 +308,7 @@
     ctx.beginPath(); ctx.moveTo(M, 132); ctx.lineTo(W - M, 132); ctx.stroke();
 
     // 운명 수 카드
-    var cy = 168, chh = 700;
+    var cy = 168, chh = 648;
     rr(ctx, M, cy, CW, chh, 44);
     ctx.fillStyle = PAPER; ctx.fill();
     ctx.strokeStyle = LINE; ctx.lineWidth = 2; ctx.stroke();
@@ -317,16 +317,16 @@
     spaced(ctx, 'MY NUMBER', M + 44, cy + 66, 3.2);
 
     ctx.fillStyle = SKY; ctx.font = '182px ' + F_SERIF;
-    ctx.fillText(String(r.lp), M + 40, cy + 256);
+    ctx.fillText(String(r.lp), M + 40, cy + 244);
     var numW = ctx.measureText(String(r.lp)).width;
 
     // 고양이 (흰 배경은 multiply로 종이에 얹는다)
-    var mw = 232;
+    var mw = 226;
     if (mascotImg && mascotImg.complete && mascotImg.naturalWidth) {
       var mh = mw * mascotImg.naturalHeight / mascotImg.naturalWidth;
       ctx.save();
       ctx.globalCompositeOperation = 'multiply';
-      ctx.drawImage(mascotImg, M + CW - mw - 30, cy + 76, mw, mh);
+      ctx.drawImage(mascotImg, M + CW - mw - 30, cy + 68, mw, mh);
       ctx.restore();
     }
 
@@ -346,13 +346,13 @@
     }
 
     ctx.fillStyle = INK; ctx.font = '54px ' + F_SERIF;
-    ctx.fillText(L.nick, M + 40, cy + 372);
+    ctx.fillText(L.nick, M + 40, cy + 356);
     ctx.fillStyle = INK2; ctx.font = '29px ' + F_BODY;
     var tagLines = wrapText(ctx, L.tag, CW - 210).slice(0, 3);
-    tagLines.forEach(function (ln, i) { ctx.fillText(ln, M + 44, cy + 432 + i * 46); });
+    tagLines.forEach(function (ln, i) { ctx.fillText(ln, M + 44, cy + 416 + i * 46); });
 
     // 생일 칩
-    var chipY = cy + chh - 84;
+    var chipY = cy + chh - 78;
     rr(ctx, M + 44, chipY, 348, 48, 24);
     ctx.fillStyle = BLOCK; ctx.fill();
     ctx.fillStyle = INK2; ctx.font = '22px ' + F_BODY;
