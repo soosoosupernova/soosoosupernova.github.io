@@ -348,11 +348,13 @@
     ctx.font = '32px ' + F_MONO; ctx.fillStyle = '#7A6A5F';
     ctx.fillText('번', cx + 68 + numW, cy + 296);
 
-    blob(ctx, cx + cw - 150, cy + 258, 200, T.blob);
+    var blobSize = r.master ? 176 : 200;
+    var blobCx = r.master ? cx + cw - 126 : cx + cw - 150;
+    blob(ctx, blobCx, cy + 258, blobSize, T.blob);
 
     if (r.master) {
       ctx.save();
-      ctx.translate(cx + cw - 150, cy + 258);
+      ctx.translate(cx + cw - 320, cy + 252);
       ctx.rotate(-0.19);
       ctx.beginPath(); ctx.arc(0, 0, 74, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(255,253,249,.82)'; ctx.fill();
