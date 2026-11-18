@@ -521,6 +521,8 @@
     var numW = ctx.measureText(String(r.lp)).width;
     ctx.fillStyle = INK2; ctx.font = '32px ' + F_PX;
     ctx.fillText('번', PX + numW + 16, heroTop + 138);
+    var bnW = ctx.measureText('번').width;
+    pxLabel(ctx, '· 운명 수', PX + numW + 24 + bnW, heroTop + 136, MUTE, 20);
 
     if (r.master) {
       var sx = PX + numW + 100, sy = heroTop + 26;
