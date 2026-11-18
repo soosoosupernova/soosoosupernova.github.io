@@ -34,7 +34,7 @@
         f.contentDocument.head.appendChild(st);
       } catch (e) { console.log('qa', e); }
     });
-    f.src = f.dataset.src;
+    f.src = f.dataset.src + (f.dataset.src.indexOf('?') > -1 ? '&' : '?') + 'cb=' + Date.now();
   });
 </script>
 </body>
