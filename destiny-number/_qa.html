@@ -20,7 +20,12 @@
   wrap.style.width = w + 'px';
   wrap.style.height = h + 'px';
   wrap.style.transform = 'scale(' + s + ')';
-  document.getElementById('f').src = u;
+  var fr = document.getElementById('f');
+  fr.addEventListener('load', function () {
+    var y = +(q.get('y') || 0);
+    if (y) { try { fr.contentWindow.scrollTo(0, y); } catch (e) {} }
+  });
+  fr.src = u;
 })();
 </script>
 </body>
