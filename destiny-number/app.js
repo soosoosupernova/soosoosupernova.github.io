@@ -632,10 +632,10 @@
       var pbox = wrapText(ctx, cb.punch, CW - 60, 3);
       var ph = 52 + pbox.length * 38 + 22;
       rect(ctx, PX, y, CW, ph, '#FDF0F5');
-      rect(ctx, PX, y, 10, ph, PINK2);
+      rect(ctx, PX, y, 10, ph, PINK);
       ctx.strokeStyle = LINE; ctx.lineWidth = 3;
       ctx.strokeRect(PX + 1.5, y + 1.5, CW - 3, ph - 3);
-      pxLabel(ctx, '한 줄 총평', PX + 32, y + 36, PINK2, 18);
+      pxLabel(ctx, '한 줄 총평', PX + 32, y + 36, PINK, 18);
       ctx.fillStyle = INK; ctx.font = '26px ' + F_BODY;
       pbox.forEach(function (ln, i) { ctx.fillText(ln, PX + 32, y + 76 + i * 38); });
       y += ph + 30;
