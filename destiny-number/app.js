@@ -279,7 +279,7 @@
 
     // 배경
     ctx.fillStyle = '#FBF8F3'; ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(224,205,182,.5)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(224,205,182,.36)'; ctx.lineWidth = 1;
     for (var gx = 0; gx <= W; gx += 36) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
     for (var gy = 0; gy <= H; gy += 36) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
     var grad = ctx.createRadialGradient(140, 60, 10, 140, 60, 420);
@@ -298,7 +298,7 @@
     ctx.textAlign = 'left';
 
     // 카드 창
-    var cx = 72, cy = 120, cw = W - 144, chH = 600;
+    var cx = 72, cy = 120, cw = W - 144, chH = 650;
     ctx.save();
     ctx.shadowColor = 'rgba(94,70,48,.10)'; ctx.shadowBlur = 28; ctx.shadowOffsetY = 12;
     rr(ctx, cx, cy, cw, chH, 40); ctx.fillStyle = '#FFFDF9'; ctx.fill();
@@ -321,16 +321,16 @@
     ctx.fillStyle = '#6B5D54'; ctx.font = '22px ' + F_MONO;
     ctx.fillText('운명 수 · DESTINY NUMBER', cx + 56, cy + 168);
     ctx.fillStyle = T.accent; ctx.font = '200px ' + F_ROUND;
-    ctx.fillText(String(r.lp), cx + 52, cy + 350);
+    ctx.fillText(String(r.lp), cx + 52, cy + 348);
     var numW = ctx.measureText(String(r.lp)).width;
-    ctx.font = '34px ' + F_MONO; ctx.fillStyle = '#7A6A5F';
-    ctx.fillText('번', cx + 66 + numW, cy + 350);
+    ctx.font = '32px ' + F_MONO; ctx.fillStyle = '#7A6A5F';
+    ctx.fillText('번', cx + 68 + numW, cy + 296);
 
-    blob(ctx, cx + cw - 150, cy + 268, 200, T.blob);
+    blob(ctx, cx + cw - 150, cy + 258, 200, T.blob);
 
     if (r.master) {
       ctx.save();
-      ctx.translate(cx + cw - 150, cy + 268);
+      ctx.translate(cx + cw - 150, cy + 258);
       ctx.rotate(-0.19);
       ctx.beginPath(); ctx.arc(0, 0, 74, 0, Math.PI * 2);
       ctx.fillStyle = 'rgba(255,253,249,.82)'; ctx.fill();
@@ -347,10 +347,10 @@
 
     // 별명 + 한 줄
     ctx.fillStyle = '#3A302B'; ctx.font = '54px ' + F_ROUND;
-    ctx.fillText(L.nick, cx + 52, cy + 420);
+    ctx.fillText(L.nick, cx + 52, cy + 432);
     ctx.fillStyle = '#6B5D54'; ctx.font = '30px ' + F_BODY;
     var tagLines = wrapText(ctx, L.tag, cw - 120);
-    tagLines.forEach(function (ln, i) { ctx.fillText(ln, cx + 54, cy + 474 + i * 46); });
+    tagLines.forEach(function (ln, i) { ctx.fillText(ln, cx + 54, cy + 492 + i * 46); });
 
     // 생일 칩
     var chipY = cy + chH - 46;
