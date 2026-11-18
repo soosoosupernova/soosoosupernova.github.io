@@ -244,7 +244,9 @@ ul.list.butter li::before{background:var(--butter2)}
 /* ---------- 하단 동작 ---------- */
 .actions{position:sticky;bottom:8px;z-index:20;display:flex;flex-wrap:wrap;gap:7px;
   background:rgba(251,248,243,.97);border:2px solid var(--line);border-radius:999px;padding:6px;margin-top:16px;
-  box-shadow:0 10px 26px rgba(94,70,48,.16);backdrop-filter:blur(8px)}
+  box-shadow:0 10px 26px rgba(94,70,48,.16);backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s ease, transform .2s ease}
+.actions.is-shown{opacity:1;pointer-events:auto;transform:none}
 .actions .btn{flex:1 1 auto;min-width:0;padding:12px 12px;font-size:13px;white-space:nowrap}
 .actions .btn svg{width:14px;height:14px}
 .out-fine{text-align:center}

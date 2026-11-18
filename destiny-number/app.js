@@ -547,6 +547,15 @@
     $('btn-share').addEventListener('click', share);
     $('btn-copy').addEventListener('click', function () { copyText(shareText()); });
 
+    // 결과를 훑어보는 동안에는 저장 바가 시야를 가리지 않게, 첫 카드를 지나면 나타난다
+    var bar = d.querySelector('.actions');
+    function watchBar() {
+      if (!bar) { return; }
+      bar.classList.toggle('is-shown', (w.scrollY || 0) > 420);
+    }
+    w.addEventListener('scroll', watchBar, { passive: true });
+    watchBar();
+
     // 테스트/확인용: ?d=1990-04-27 로 결과를 바로 열 수 있다 (주소에 남지 않게 지운다)
     var q = search.match(/[?&]d=(\d{4})-(\d{2})-(\d{2})/);
     if (q) {
