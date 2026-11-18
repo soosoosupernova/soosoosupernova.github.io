@@ -80,9 +80,6 @@
     var tarot = N.TAROT[r.card];
 
     // 카드
-    $('card-body').style.setProperty('--nb', T.bg);
-    $('card-body').style.setProperty('--na', T.accent);
-    $('blob-mini').style.color = T.blob;
     $('num-big').innerHTML = r.lp + '<small>번</small>';
     $('out-date').textContent = r.y + '.' + pad(r.m) + '.' + pad(r.d) + ' 양력';
     $('num-nick').textContent = L.nick;
@@ -107,7 +104,7 @@
     $('stat-rows').innerHTML = names.map(function (n) {
       var v = L.stats[n[0]], hearts = '';
       for (var k = 0; k < 5; k++) {
-        hearts += '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.2S4 15.1 4 9.9A4.5 4.5 0 0 1 12 6.7 4.5 4.5 0 0 1 20 9.9c0 5.2-8 10.3-8 10.3Z" fill="' + (k < v ? '#E2748F' : '#CBD3B8') + '"/></svg>';
+        hearts += '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.2S4 15.1 4 9.9A4.5 4.5 0 0 1 12 6.7 4.5 4.5 0 0 1 20 9.9c0 5.2-8 10.3-8 10.3Z" fill="' + (k < v ? '#B93B3B' : '#E9DFCC') + '"/></svg>';
       }
       return '<div class="stat-row"><span class="stat-name" title="' + n[2] + '">' + n[1] + '</span><span class="hearts" aria-hidden="true">' + hearts + '</span><span class="stat-val">' + v + '/5</span></div>';
     }).join('');
@@ -138,11 +135,9 @@
     // 타로
     var roman = ['0', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX', 'XXI'];
     $('tarot-rn').textContent = roman[tarot.n];
-    $('tarot-nm').textContent = tarot.name;
     $('tarot-name').textContent = tarot.name;
     $('tarot-en').textContent = tarot.en;
     $('tarot-line').textContent = tarot.line;
-    $('tarot-mot').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + N.MOTIF[tarot.motif] + '"/></svg>';
 
     // 계산 과정
     var lines = [];
@@ -204,7 +199,8 @@
 
   /* ---------------- PNG 카드 ---------------- */
   var F_BODY = '"Pretendard Variable", Pretendard, -apple-system, sans-serif';
-  var F_ROUND = 'Jua, "Pretendard Variable", Pretendard, sans-serif';
+  var F_SERIF = '"Gowun Dodum", "Pretendard Variable", Pretendard, sans-serif';
+  var F_HAND = 'Caveat, "Gowun Dodum", cursive';
   var F_MONO = 'ui-monospace, "SF Mono", Menlo, Consolas, monospace';
 
   function rr(ctx, x, y, w2, h2, r) {
@@ -262,176 +258,160 @@
     ctx.restore();
   }
 
-  function blob(ctx, cx, cy, size, color) {
-    var s = size / 120;
-    ctx.save();
-    ctx.translate(cx - size / 2, cy - size / 2);
-    ctx.scale(s, s);
-    ctx.beginPath();
-    ctx.moveTo(62, 16);
-    ctx.bezierCurveTo(85, 16, 103, 31, 103, 50);
-    ctx.bezierCurveTo(103, 57, 101, 62, 97, 66);
-    ctx.bezierCurveTo(100, 70, 101, 75, 101, 80);
-    ctx.bezierCurveTo(101, 98, 84, 110, 62, 110);
-    ctx.bezierCurveTo(40, 110, 23, 98, 23, 80);
-    ctx.bezierCurveTo(23, 75, 24, 71, 27, 67);
-    ctx.bezierCurveTo(23, 63, 21, 58, 21, 50);
-    ctx.bezierCurveTo(21, 31, 39, 16, 62, 16);
-    ctx.closePath();
-    ctx.fillStyle = color;
-    ctx.fill();
-    ctx.lineWidth = 2.6; ctx.strokeStyle = 'rgba(58,48,43,.20)'; ctx.stroke();
-    ctx.fillStyle = '#3A302B';
-    ctx.beginPath(); ctx.ellipse(47, 60, 4.4, 5, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(75, 60, 4.4, 5, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = 'rgba(242,145,174,.55)';
-    ctx.beginPath(); ctx.ellipse(35, 74, 7, 4, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(87, 74, 7, 4, 0, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = '#3A302B'; ctx.lineWidth = 2.6; ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.moveTo(55, 72); ctx.quadraticCurveTo(61, 79, 67, 72); ctx.stroke();
-    ctx.restore();
+  /* 자간을 직접 벌려 그린다 (ctx.letterSpacing 미지원 브라우저 대비) */
+  function spaced(ctx, text, x, y, gap) {
+    var cur = x;
+    for (var i = 0; i < text.length; i++) {
+      ctx.fillText(text[i], cur, y);
+      cur += ctx.measureText(text[i]).width + gap;
+    }
+    return cur - x;
+  }
+  function spacedW(ctx, text, gap) {
+    var w = 0;
+    for (var i = 0; i < text.length; i++) { w += ctx.measureText(text[i]).width + gap; }
+    return w - gap;
+  }
+
+  var MASCOT_SRC = 'assets/cat-mascot.webp';
+  var mascotImg = null;
+  function loadMascot() {
+    if (!mascotImg) { mascotImg = new Image(); mascotImg.src = MASCOT_SRC; }
+    if (mascotImg.complete && mascotImg.naturalWidth) { return Promise.resolve(mascotImg); }
+    return new Promise(function (res) {
+      mascotImg.onload = function () { res(mascotImg); };
+      mascotImg.onerror = function () { res(null); };
+    });
   }
 
   function makeCard() {
-    var r = current, L = N.LIFE[r.lp], T = N.THEME[r.lp], PY = N.PY[r.py], tarot = N.TAROT[r.card];
-    var W = 1080, H = 1560;
+    var r = current, L = N.LIFE[r.lp], PY = N.PY[r.py], tarot = N.TAROT[r.card];
+    var W = 1080, H = 2000;
     var cv = d.createElement('canvas');
     cv.width = W; cv.height = H;
     var ctx = cv.getContext('2d');
+    var M = 72, CW = W - M * 2;
+    var INK = '#2D2724', INK2 = '#6A5A4E', MUTE = '#9A8A7B', LINE = '#E9DFCC',
+      SKY = '#4C7E9B', SKY_SOFT = '#E3EEF5', CHERRY = '#B93B3B',
+      PAPER = '#FFFDF7', BLOCK = '#F7F1E3';
 
-    // 배경
-    ctx.fillStyle = '#FBF8F3'; ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(224,205,182,.36)'; ctx.lineWidth = 1;
-    for (var gx = 0; gx <= W; gx += 36) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke(); }
-    for (var gy = 0; gy <= H; gy += 36) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke(); }
-    var grad = ctx.createRadialGradient(140, 60, 10, 140, 60, 420);
-    grad.addColorStop(0, 'rgba(255,233,174,.85)'); grad.addColorStop(1, 'rgba(255,233,174,0)');
-    ctx.fillStyle = grad; ctx.fillRect(0, 0, W, 520);
-    var grad2 = ctx.createRadialGradient(980, 120, 10, 980, 120, 380);
-    grad2.addColorStop(0, 'rgba(255,219,230,.8)'); grad2.addColorStop(1, 'rgba(255,219,230,0)');
-    ctx.fillStyle = grad2; ctx.fillRect(0, 0, W, 520);
+    ctx.fillStyle = '#FAF6EC'; ctx.fillRect(0, 0, W, H);
+    ctx.textBaseline = 'alphabetic';
 
     // 헤더
-    ctx.fillStyle = '#3A302B';
-    ctx.font = '34px ' + F_ROUND; ctx.textBaseline = 'alphabetic';
-    ctx.fillText('수수수 웹툴', 72, 92);
-    ctx.font = '20px ' + F_MONO; ctx.fillStyle = '#7A6A5F'; ctx.textAlign = 'right';
-    ctx.fillText('NUMEROLOGY REPORT', W - 72, 90);
     ctx.textAlign = 'left';
+    ctx.fillStyle = INK; ctx.font = '34px ' + F_SERIF;
+    ctx.fillText('수수수 웹툴', M, 102);
+    ctx.font = '17px ' + F_BODY; ctx.fillStyle = MUTE;
+    spaced(ctx, 'MY LITTLE DESTINY', W - M - spacedW(ctx, 'MY LITTLE DESTINY', 3.4), 100, 3.4);
+    ctx.strokeStyle = LINE; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(M, 132); ctx.lineTo(W - M, 132); ctx.stroke();
 
-    // 카드 창
-    var cx = 72, cy = 120, cw = W - 144, chH = 650;
-    ctx.save();
-    ctx.shadowColor = 'rgba(94,70,48,.10)'; ctx.shadowBlur = 28; ctx.shadowOffsetY = 12;
-    rr(ctx, cx, cy, cw, chH, 40); ctx.fillStyle = '#FFFDF9'; ctx.fill();
-    ctx.restore();
-    ctx.save(); rr(ctx, cx, cy, cw, chH, 40); ctx.clip();
-    ctx.fillStyle = T.bg; ctx.fillRect(cx, cy, cw, 78);
-    ctx.restore();
-    rr(ctx, cx, cy, cw, chH, 40); ctx.strokeStyle = '#EFE3D4'; ctx.lineWidth = 4; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, cy + 78); ctx.lineTo(cx + cw, cy + 78); ctx.strokeStyle = '#EFE3D4'; ctx.lineWidth = 3; ctx.stroke();
+    // 운명 수 카드
+    var cy = 168, chh = 700;
+    rr(ctx, M, cy, CW, chh, 44);
+    ctx.fillStyle = PAPER; ctx.fill();
+    ctx.strokeStyle = LINE; ctx.lineWidth = 2; ctx.stroke();
 
-    ['#F291AE', '#FFD06A', '#74C7A8'].forEach(function (c, i) {
-      ctx.beginPath(); ctx.arc(cx + 42 + i * 30, cy + 39, 10, 0, Math.PI * 2);
-      ctx.fillStyle = c; ctx.fill();
-      ctx.strokeStyle = 'rgba(58,48,43,.12)'; ctx.lineWidth = 1.5; ctx.stroke();
-    });
-    ctx.fillStyle = 'rgba(58,48,43,.62)'; ctx.font = '20px ' + F_MONO;
-    ctx.fillText('MY NUMBER.EXE', cx + 138, cy + 47);
+    ctx.fillStyle = MUTE; ctx.font = '17px ' + F_BODY;
+    spaced(ctx, 'MY NUMBER', M + 44, cy + 66, 3.2);
 
-    // 숫자 + 블롭
-    ctx.fillStyle = '#6B5D54'; ctx.font = '22px ' + F_MONO;
-    ctx.fillText('운명 수 · DESTINY NUMBER', cx + 56, cy + 168);
-    ctx.fillStyle = T.accent; ctx.font = '200px ' + F_ROUND;
-    ctx.fillText(String(r.lp), cx + 52, cy + 348);
+    ctx.fillStyle = SKY; ctx.font = '182px ' + F_SERIF;
+    ctx.fillText(String(r.lp), M + 40, cy + 264);
     var numW = ctx.measureText(String(r.lp)).width;
-    ctx.font = '32px ' + F_MONO; ctx.fillStyle = '#7A6A5F';
-    ctx.fillText('번', cx + 68 + numW, cy + 296);
 
-    var blobSize = r.master ? 176 : 200;
-    var blobCx = r.master ? cx + cw - 126 : cx + cw - 150;
-    blob(ctx, blobCx, cy + 258, blobSize, T.blob);
+    // 고양이 (흰 배경은 multiply로 종이에 얹는다)
+    var mw = 250;
+    if (mascotImg && mascotImg.complete && mascotImg.naturalWidth) {
+      var mh = mw * mascotImg.naturalHeight / mascotImg.naturalWidth;
+      ctx.save();
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.drawImage(mascotImg, M + CW - mw - 30, cy + 96, mw, mh);
+      ctx.restore();
+    }
 
     if (r.master) {
+      var sx = M + 56 + numW + 56, sy = cy + 118;
       ctx.save();
-      ctx.translate(cx + cw - 320, cy + 252);
-      ctx.rotate(-0.19);
-      ctx.beginPath(); ctx.arc(0, 0, 74, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,253,249,.82)'; ctx.fill();
-      ctx.setLineDash([8, 7]); ctx.lineWidth = 4; ctx.strokeStyle = '#EE88A6'; ctx.stroke();
+      ctx.translate(sx, sy);
+      ctx.rotate(-0.13);
+      ctx.beginPath(); ctx.arc(0, 0, 54, 0, Math.PI * 2);
+      ctx.setLineDash([6, 6]); ctx.lineWidth = 2.5; ctx.strokeStyle = CHERRY; ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = '#C4466C'; ctx.textAlign = 'center';
-      ctx.font = '30px Gaegu, sans-serif';
-      ctx.fillText('MASTER', 0, -4);
-      ctx.font = '32px ' + F_ROUND;
-      ctx.fillText(String(r.lp), 0, 34);
+      ctx.fillStyle = CHERRY; ctx.textAlign = 'center';
+      ctx.font = '13px ' + F_BODY; ctx.fillText('MASTER', 0, -4);
+      ctx.font = '28px ' + F_SERIF; ctx.fillText(String(r.lp), 0, 30);
       ctx.textAlign = 'left';
       ctx.restore();
     }
 
-    // 별명 + 한 줄
-    ctx.fillStyle = '#3A302B'; ctx.font = '54px ' + F_ROUND;
-    ctx.fillText(L.nick, cx + 52, cy + 432);
-    ctx.fillStyle = '#6B5D54'; ctx.font = '30px ' + F_BODY;
-    var tagLines = wrapText(ctx, L.tag, cw - 110);
-    tagLines.forEach(function (ln, i) { ctx.fillText(ln, cx + 54, cy + 492 + i * 46); });
+    ctx.fillStyle = INK; ctx.font = '54px ' + F_SERIF;
+    ctx.fillText(L.nick, M + 40, cy + 408);
+    ctx.fillStyle = INK2; ctx.font = '29px ' + F_BODY;
+    var tagLines = wrapText(ctx, L.tag, CW - 92).slice(0, 3);
+    tagLines.forEach(function (ln, i) { ctx.fillText(ln, M + 44, cy + 474 + i * 46); });
 
     // 생일 칩
-    var chipY = cy + chH - 46;
-    ctx.fillStyle = '#FFF9EF'; rr(ctx, cx + 52, chipY - 30, 330, 48, 24); ctx.fill();
-    ctx.strokeStyle = '#E3D3BF'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = '#6B5D54'; ctx.font = '22px ' + F_MONO;
-    ctx.fillText(r.y + '.' + pad(r.m) + '.' + pad(r.d) + '  양력', cx + 74, chipY + 1);
+    var chipY = cy + chh - 84;
+    rr(ctx, M + 44, chipY, 348, 48, 24);
+    ctx.fillStyle = BLOCK; ctx.fill();
+    ctx.fillStyle = INK2; ctx.font = '22px ' + F_BODY;
+    ctx.fillText(r.y + '.' + pad(r.m) + '.' + pad(r.d) + '  양력', M + 70, chipY + 32);
 
-    // 스탯 패널
-    var sy = cy + chH + 34, sh = 236;
-    rr(ctx, cx, sy, cw, sh, 34);
-    ctx.fillStyle = '#E9EEDA'; ctx.fill();
-    ctx.strokeStyle = '#D3DDBB'; ctx.lineWidth = 3; ctx.stroke();
-    ctx.fillStyle = '#46512F'; ctx.font = '30px ' + F_ROUND;
-    ctx.fillText('내 스탯', cx + 44, sy + 56);
-    ctx.fillStyle = '#6C7A4F'; ctx.font = '16px ' + F_MONO; ctx.textAlign = 'right';
-    ctx.fillText('STAT', cx + cw - 44, sy + 54); ctx.textAlign = 'left';
+    // 스탯
+    var sty = cy + chh + 40, sh = 272;
+    rr(ctx, M, sty, CW, sh, 36);
+    ctx.fillStyle = BLOCK; ctx.fill();
+    ctx.fillStyle = INK; ctx.font = '27px ' + F_SERIF;
+    ctx.fillText('내 스탯', M + 44, sty + 58);
+    ctx.fillStyle = MUTE; ctx.font = '16px ' + F_BODY;
+    spaced(ctx, 'MY STATS', M + CW - 44 - spacedW(ctx, 'MY STATS', 2.6), sty + 54, 2.6);
     var rows = [['직관력', L.stats.intuition], ['행동력', L.stats.drive], ['애정운', L.stats.love], ['재물감각', L.stats.money]];
     rows.forEach(function (row, i) {
-      var ry2 = sy + 104 + i * 42;
-      ctx.fillStyle = '#4E5B3B'; ctx.font = '22px ' + F_MONO;
-      ctx.fillText(row[0], cx + 44, ry2);
-      for (var k = 0; k < 5; k++) { heartPath(ctx, cx + 612 + k * 42, ry2 - 22, 30, k < row[1], '#E2748F'); }
-      ctx.fillStyle = '#6C7A4F'; ctx.textAlign = 'right'; ctx.font = '18px ' + F_MONO;
-      ctx.fillText(row[1] + '/5', cx + cw - 44, ry2); ctx.textAlign = 'left';
+      var ry = sty + 116 + i * 38;
+      ctx.fillStyle = INK2; ctx.font = '23px ' + F_BODY;
+      ctx.fillText(row[0], M + 44, ry);
+      for (var k = 0; k < 5; k++) {
+        heartPath(ctx, M + 566 + k * 38, ry - 19, 27, k < row[1], CHERRY);
+      }
+      ctx.fillStyle = MUTE; ctx.font = '18px ' + F_BODY; ctx.textAlign = 'right';
+      ctx.fillText(row[1] + '/5', M + CW - 44, ry);
+      ctx.textAlign = 'left';
     });
 
     // 2027
-    var py2 = sy + sh + 44;
-    rr(ctx, cx, py2, 300, 56, 28); ctx.fillStyle = '#D5F1E4'; ctx.fill();
-    ctx.strokeStyle = '#B7E2D0'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = '#21705A'; ctx.font = '26px ' + F_ROUND;
-    ctx.fillText('2027 · ' + r.py + '의 해', cx + 30, py2 + 38);
-    ctx.fillStyle = '#3A302B'; ctx.font = '38px ' + F_ROUND;
-    ctx.fillText(PY.title, cx + 320, py2 + 42);
+    var py = sty + sh + 44;
+    rr(ctx, M, py, 320, 54, 27);
+    ctx.fillStyle = SKY_SOFT; ctx.fill();
+    ctx.fillStyle = SKY; ctx.font = '25px ' + F_SERIF;
+    ctx.fillText('2027 · ' + r.py + '의 해', M + 28, py + 36);
+    ctx.fillStyle = INK; ctx.font = '36px ' + F_SERIF;
+    ctx.fillText(PY.title, M + 352, py + 40);
+    ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
+    var pyLines = wrapText(ctx, PY.theme, CW).slice(0, 2);
+    pyLines.forEach(function (ln, i) { ctx.fillText(ln, M, py + 108 + i * 42); });
 
-    ctx.fillStyle = '#6B5D54'; ctx.font = '26px ' + F_BODY;
-    var pyLines = wrapText(ctx, PY.theme, cw - 20).slice(0, 2);
-    pyLines.forEach(function (ln, i) { ctx.fillText(ln, cx, py2 + 106 + i * 40); });
-
-    // 타로
-    var ty = py2 + 106 + pyLines.length * 40 + 26;
-    ctx.fillStyle = '#6B5D54'; ctx.font = '20px ' + F_MONO;
-    ctx.fillText('탄생 타로 카드', cx, ty + 4);
-    ctx.fillStyle = '#3A302B'; ctx.font = '34px ' + F_ROUND;
-    ctx.fillText(tarot.name + ' · ' + tarot.en, cx, ty + 48);
+    // 탄생 타로
+    var ty = py + 108 + pyLines.length * 42 + 34;
+    ctx.fillStyle = MUTE; ctx.font = '16px ' + F_BODY;
+    spaced(ctx, 'BIRTH TAROT CARD', M, ty, 2.6);
+    ctx.fillStyle = INK; ctx.font = '34px ' + F_SERIF;
+    ctx.fillText(tarot.name + ' · ' + tarot.en, M, ty + 46);
+    ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
+    var tLines = wrapText(ctx, tarot.line, CW).slice(0, 2);
+    tLines.forEach(function (ln, i) { ctx.fillText(ln, M, ty + 96 + i * 40); });
 
     // 푸터
-    var footY = ty + 66 + 76;
-    ctx.fillStyle = '#7A6A5F'; ctx.font = '20px ' + F_MONO;
-    ctx.fillText('soosoosupernova.github.io/destiny-number', cx, footY);
-    ctx.textAlign = 'right';
-    ctx.fillText('재미로 보는 참고용', cx + cw, footY);
+    var fy = ty + 96 + tLines.length * 40 + 30;
+    ctx.strokeStyle = LINE; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(M, fy); ctx.lineTo(W - M, fy); ctx.stroke();
+    ctx.fillStyle = MUTE; ctx.font = '18px ' + F_BODY;
+    ctx.fillText('soosoosupernova.github.io/destiny-number', M, fy + 40);
+    ctx.fillStyle = CHERRY; ctx.font = '30px ' + F_HAND; ctx.textAlign = 'right';
+    ctx.fillText('made with care', W - M, fy + 40);
     ctx.textAlign = 'left';
 
-    // 실제 사용 높이로 자르기
-    var cropH = Math.min(H, footY + 56);
+    var cropH = Math.min(H, fy + 80);
     var out = d.createElement('canvas');
     out.width = W; out.height = cropH;
     out.getContext('2d').drawImage(cv, 0, 0);
@@ -453,7 +433,7 @@
   }
 
   function savePng() {
-    fontsReady().then(function () {
+    Promise.all([fontsReady(), loadMascot()]).then(function () {
       var cv = makeCard();
       canvasToBlob(cv).then(function (bin) {
         if (!bin) { toast('이미지를 만들지 못했어요. 화면을 캡처해 주세요.'); return; }
@@ -471,10 +451,10 @@
     if (!d.fonts || !d.fonts.ready) { return Promise.resolve(); }
     var jobs = [];
     try {
-      jobs.push(d.fonts.load('400 100px Jua'));
-      jobs.push(d.fonts.load('700 30px Gaegu'));
+      jobs.push(d.fonts.load('400 100px "Gowun Dodum"'));
+      jobs.push(d.fonts.load('600 30px Caveat'));
       jobs.push(d.fonts.load('400 30px "Pretendard Variable"'));
-      jobs.push(d.fonts.load('700 30px "Pretendard Variable"'));
+      jobs.push(d.fonts.load('650 30px "Pretendard Variable"'));
     } catch (e) {}
     return Promise.all(jobs).then(function () { return d.fonts.ready; }).catch(function () {});
   }
@@ -491,7 +471,7 @@
 
   function share() {
     var txt = shareText();
-    fontsReady().then(function () { return makeCard(); }).then(function (cv) {
+    Promise.all([fontsReady(), loadMascot()]).then(function () { return makeCard(); }).then(function (cv) {
       return canvasToBlob(cv).then(function (bin) {
         var file = bin ? new File([bin], fileName(), { type: 'image/png' }) : null;
         if (file && navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
@@ -569,7 +549,7 @@
 
     // PNG 미리보기 (?pngprev=1) — 확인용
     if (/[?&]pngprev=1/.test(search) && current) {
-      fontsReady().then(function () {
+      Promise.all([fontsReady(), loadMascot()]).then(function () {
         var cv = makeCard();
         cv.style.cssText = 'width:100%;max-width:420px;height:auto;display:block;margin:16px auto;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.15)';
         d.getElementById('screen-out').appendChild(cv);
