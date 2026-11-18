@@ -313,28 +313,28 @@
     var box = $('combo-body');
     if (!box || !current) { return; }
     var r = current;
-    var d = comboParts(r);
-    if (!d) {
+    var cb = comboParts(r);
+    if (!cb) {
       box.innerHTML = '<p class="combo-empty">카드 3장을 다 고르면 <b>' + r.lp + '의 ' + N.AURA[r.lp] +
         ' 기운</b>과 뽑은 카드가 만났을 때의 해석이 여기에 나와요.</p>';
       return;
     }
     var t = function (i) { return N.TAROT[i]; };
     var rows = [
-      ['내 숫자 × 오늘 카드', t(d.cards[0]).name + ' · ' + t(d.cards[0]).kw, d.syn],
-      ['2027 개인년수 × 2027 카드', t(d.cards[1]).name + ' · ' + t(d.cards[1]).kw, d.year],
-      ['조언 카드로 2027 실행', t(d.cards[2]).name + ' · ' + t(d.cards[2]).kw, d.act]
+      ['내 숫자 × 오늘 카드', t(cb.cards[0]).name + ' · ' + t(cb.cards[0]).kw, cb.syn],
+      ['2027 개인년수 × 2027 카드', t(cb.cards[1]).name + ' · ' + t(cb.cards[1]).kw, cb.year],
+      ['조언 카드로 2027 실행', t(cb.cards[2]).name + ' · ' + t(cb.cards[2]).kw, cb.act]
     ];
     box.innerHTML =
-      '<div class="combo-punch"><span class="cp-k">한 줄 총평</span><p>' + d.punch + '</p></div>' +
+      '<div class="combo-punch"><span class="cp-k">한 줄 총평</span><p>' + cb.punch + '</p></div>' +
       rows.map(function (row) {
         return '<div class="combo-item"><span class="ci-k">' + row[0] + '</span>' +
           '<span class="ci-t">' + row[1] + '</span><p>' + row[2] + '</p></div>';
       }).join('') +
-      '<div class="combo-watch"><span class="cw-k">주의할 점</span><p>' + d.watch + '</p></div>' +
-      '<div class="combo-luck"><span class="cl-sw" style="background:' + d.color.hex + '"></span>' +
-      '<div><span class="cl-k">2027 행운 컬러 · ' + d.color.name + '</span>' +
-      '<p>' + d.luck + '</p></div></div>';
+      '<div class="combo-watch"><span class="cw-k">주의할 점</span><p>' + cb.watch + '</p></div>' +
+      '<div class="combo-luck"><span class="cl-sw" style="background:' + cb.color.hex + '"></span>' +
+      '<div><span class="cl-k">2027 행운 컬러 · ' + cb.color.name + '</span>' +
+      '<p>' + cb.luck + '</p></div></div>';
   }
 
   function pickCard(i, btn) {
@@ -475,7 +475,7 @@
   function makeCard() {
     var r = current, L = N.LIFE[r.lp], PY = N.PY[r.py], tarot = N.TAROT[r.card];
     var cat = N.CAT[r.lp] || { name: '고양이', line: '' };
-    var d = comboParts(r);
+    var cb = comboParts(r);
     var W = 1080, HMAX = 3400;
     var cv = d.createElement('canvas');
     cv.width = W; cv.height = HMAX;
@@ -628,8 +628,8 @@
     y += th + 26;
 
     // 한 줄 총평
-    if (d) {
-      var pbox = wrapText(ctx, d.punch, CW - 60, 3);
+    if (cb) {
+      var pbox = wrapText(ctx, cb.punch, CW - 60, 3);
       var ph = 52 + pbox.length * 38 + 22;
       rect(ctx, PX, y, CW, ph, '#FDF0F5');
       rect(ctx, PX, y, 10, ph, PINK2);
@@ -642,17 +642,17 @@
     }
 
     /* ---------- 조합 해석 ---------- */
-    if (d) {
+    if (cb) {
       pxLabel(ctx, '수비학 × 타로 조합', PX, y, N.THEME[r.lp].accent, 20); y += 40;
       ctx.fillStyle = INK; ctx.font = '26px ' + F_BODY;
-      var sLines = wrapText(ctx, d.syn, CW, 3);
+      var sLines = wrapText(ctx, cb.syn, CW, 3);
       sLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 38); });
       y += sLines.length * 38 + 16;
       ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
-      var yLines = wrapText(ctx, d.year, CW, 3);
+      var yLines = wrapText(ctx, cb.year, CW, 3);
       yLines.forEach(function (ln, i) { ctx.fillText(ln, PX, y + i * 38); });
       y += yLines.length * 38 + 16;
-      var wLines = wrapText(ctx, d.watch, CW - 40, 2);
+      var wLines = wrapText(ctx, cb.watch, CW - 40, 2);
       var wh = 26 + wLines.length * 36 + 16;
       rect(ctx, PX, y, CW, wh, '#EAF4F8');
       ctx.strokeStyle = '#BFDCEA'; ctx.lineWidth = 3;
@@ -755,17 +755,17 @@
   function shareText() {
     var L = N.LIFE[current.lp], PY = N.PY[current.py];
     var cat = N.CAT[current.lp] || {};
-    var d = comboParts(current);
+    var cb = comboParts(current);
     var lines = [];
     lines.push('내 운명 수는 ' + (current.master ? '마스터 수 ' : '') + current.lp + ' · ' + L.nick);
     lines.push('내 고양이는 ' + cat.name + ' (' + cat.line + ')');
     lines.push('2027년은 ' + current.py + '의 해 (' + PY.title + ')');
-    if (d) {
-      lines.push('뽑은 카드 — 오늘 ' + N.TAROT[d.cards[0]].name +
-        ' / 2027 ' + N.TAROT[d.cards[1]].name +
-        ' / 조언 ' + N.TAROT[d.cards[2]].name);
-      lines.push('한 줄 총평: ' + d.punch);
-      lines.push('2027 행운 포인트: ' + d.color.name + ' · ' + d.luck);
+    if (cb) {
+      lines.push('뽑은 카드 — 오늘 ' + N.TAROT[cb.cards[0]].name +
+        ' / 2027 ' + N.TAROT[cb.cards[1]].name +
+        ' / 조언 ' + N.TAROT[cb.cards[2]].name);
+      lines.push('한 줄 총평: ' + cb.punch);
+      lines.push('2027 행운 포인트: ' + cb.color.name + ' · ' + cb.luck);
     }
     lines.push('— 수수수 웹툴 수비학·타로');
     lines.push('https://soosoosupernova.github.io/destiny-number/');
