@@ -23,6 +23,7 @@
   function jump() {
     try {
       var c = f.contentDocument && f.contentDocument.querySelector('canvas');
+      if (c && p.get('full')) { c.style.width = '1080px'; c.style.maxWidth = 'none'; }
       if (c && c.getBoundingClientRect().height > 100) { c.scrollIntoView({ block: 'start' }); return; }
       f.contentWindow.scrollTo(0, y);
     } catch (e) {}
