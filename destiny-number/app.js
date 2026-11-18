@@ -188,12 +188,14 @@
     render(r);
     $('screen-in').classList.remove('is-on');
     $('screen-out').classList.add('is-on');
+    d.body.classList.add('is-result');
     w.scrollTo({ top: 0, behavior: 'instant' in w ? 'instant' : 'auto' });
   }
 
   function back() {
     $('screen-out').classList.remove('is-on');
     $('screen-in').classList.add('is-on');
+    d.body.classList.remove('is-result');
     w.scrollTo({ top: 0, behavior: 'auto' });
   }
 
