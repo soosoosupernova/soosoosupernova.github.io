@@ -381,12 +381,15 @@
 
     // 2027
     var py = sty + sh + 44;
-    rr(ctx, M, py, 320, 54, 27);
+    var pyChip = '2027 · ' + r.py + '의 해';
+    ctx.font = '25px ' + F_SERIF;
+    var chipW = ctx.measureText(pyChip).width + 58;
+    rr(ctx, M, py, chipW, 54, 27);
     ctx.fillStyle = SKY_SOFT; ctx.fill();
-    ctx.fillStyle = SKY; ctx.font = '25px ' + F_SERIF;
-    ctx.fillText('2027 · ' + r.py + '의 해', M + 28, py + 36);
+    ctx.fillStyle = SKY;
+    ctx.fillText(pyChip, M + 29, py + 36);
     ctx.fillStyle = INK; ctx.font = '36px ' + F_SERIF;
-    ctx.fillText(PY.title, M + 352, py + 40);
+    ctx.fillText(PY.title, M + chipW + 32, py + 40);
     ctx.fillStyle = INK2; ctx.font = '26px ' + F_BODY;
     var pyLines = wrapText(ctx, PY.theme, CW).slice(0, 2);
     pyLines.forEach(function (ln, i) { ctx.fillText(ln, M, py + 108 + i * 42); });
