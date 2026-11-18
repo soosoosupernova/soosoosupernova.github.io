@@ -236,7 +236,7 @@
   function cardFaceHTML(card) {
     var t = N.TAROT[card];
     return '<span class="tc-num">' + ROMAN[t.n] + '</span>' +
-      '<span class="tc-art">' + glyph(N.ART[card], 38, '#4B3A52') + '</span>' +
+      '<span class="tc-art">' + glyph(N.ART[card], 46, '#4B3A52') + '</span>' +
       '<span class="tc-name">' + t.name + '</span>';
   }
 
