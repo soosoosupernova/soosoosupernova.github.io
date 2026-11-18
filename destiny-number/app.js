@@ -108,7 +108,7 @@
     $('num-tag').textContent = L.tag;
 
     var catEl = $('num-cat');
-    catEl.src = 'assets/cats/cat-' + r.lp + '.png';
+    catEl.src = 'assets/cats/cat-' + r.lp + '.png?v=2';
     catEl.alt = cat.name + ' 도트 고양이';
     $('cat-name').textContent = cat.name;
     $('cat-line').textContent = cat.line;
@@ -440,7 +440,7 @@
     var key = 'c' + n;
     if (!catCache[key]) {
       var im = new Image();
-      im.src = 'assets/cats/cat-' + n + '.png';
+      im.src = 'assets/cats/cat-' + n + '.png?v=2';
       catCache[key] = im;
     }
     var img = catCache[key];
