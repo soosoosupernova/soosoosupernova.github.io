@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>QA adfit anim</title>
+<style>
+  html,body{margin:0;padding:0;background:#eee}
+  .adfit-wrap{display:flex;justify-content:center;width:100%;max-width:100%;margin:14px auto;overflow:hidden}
+  .adfit-wrap .kakao_ad_area{flex:none;max-width:100%}
+  #box{width:375px;margin:20px auto;background:#fff;padding:10px}
+  .screen{display:block;animation:fade .18s steps(2,end) both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+</style></head>
+<body>
+<div id="box">
+  <section class="screen">
+    <p>animated wrapper test</p>
+    <div class="adfit-wrap">
+      <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-LhCur2Hh3oYSp986" data-ad-width="320" data-ad-height="100"></ins>
+    </div>
+    <p>below</p>
+  </section>
+</div>
+<script src="https://t1.daumcdn.net/kas/static/ba.min.js" async></script>
+</body></html>
