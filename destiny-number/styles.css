@@ -73,7 +73,7 @@ body.is-result .shell{padding-bottom:84px}
 /* ---------- 화면 전환 ---------- */
 .screen{display:none}
 .screen.is-on{display:block;animation:fade .18s steps(2,end) both}
-@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fade{from{opacity:.01}to{opacity:1}}
 
 /* ---------- 게임기 ---------- */
 .device{
