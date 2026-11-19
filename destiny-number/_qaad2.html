@@ -6,7 +6,8 @@
   .adfit-wrap .kakao_ad_area{flex:none;max-width:100%}
   #box{width:375px;margin:20px auto;background:#fff;padding:10px}
   .screen{display:block;animation:fade .18s steps(2,end) both}
-  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes fade{from{opacity:.01}to{opacity:1}}
+  #log{font:12px/1.5 monospace;white-space:pre-wrap;background:#111;color:#0f0;padding:8px;margin-top:12px}
 </style></head>
 <body>
 <div id="box">
@@ -16,7 +17,21 @@
       <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-LhCur2Hh3oYSp986" data-ad-width="320" data-ad-height="100"></ins>
     </div>
     <p>below</p>
+    <div id="log">(log)</div>
   </section>
 </div>
+<script>
+  (function(){
+    var el=document.getElementById('log');
+    ['log','warn','error','info'].forEach(function(k){
+      var orig=console[k].bind(console);
+      console[k]=function(){
+        try{ el.textContent += '\n['+k+'] '+Array.prototype.map.call(arguments,function(a){ return typeof a==='string'?a:(a&&a.message? a.message : JSON.stringify(a)); }).join(' '); }catch(e){}
+        orig.apply(null,arguments);
+      };
+    });
+    window.addEventListener('error',function(e){ el.textContent += '\n[window.error] '+e.message; });
+  })();
+</script>
 <script src="https://t1.daumcdn.net/kas/static/ba.min.js" async></script>
 </body></html>
