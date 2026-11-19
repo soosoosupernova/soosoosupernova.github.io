@@ -108,7 +108,7 @@
     $('num-tag').textContent = L.tag;
 
     var catEl = $('num-cat');
-    catEl.src = 'assets/cats/cat-' + r.lp + '.png?v=3';
+    catEl.src = 'assets/cats/cat-' + r.lp + '.png?v=4';
     catEl.alt = cat.name + ' 도트 고양이';
     $('cat-name').textContent = cat.name;
     $('cat-line').textContent = cat.line;
@@ -447,7 +447,7 @@
     var key = 'c' + n;
     if (!catCache[key]) {
       var im = new Image();
-      im.src = 'assets/cats/cat-' + n + '.png?v=3';
+      im.src = 'assets/cats/cat-' + n + '.png?v=4';
       catCache[key] = im;
     }
     var img = catCache[key];
@@ -542,7 +542,7 @@
 
     if (catImg) {
       ctx.imageSmoothingEnabled = false;
-      ctx.drawImage(catImg, PX + CW - 210, heroTop - 2, 210, 210);
+      ctx.drawImage(catImg, PX + CW - 192, heroTop - 2, 192, 192);
     }
 
     y = heroTop + 232;
