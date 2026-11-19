@@ -39,6 +39,9 @@
   src:url("https://cdn.jsdelivr.net/gh/quiple/galmuri/dist/Galmuri11-Bold.woff2") format("woff2");
   font-weight:700; font-style:normal; font-display:swap;
 }
+.adfit-wrap{display:flex;justify-content:center;width:100%;max-width:100%;margin:14px auto;overflow:hidden}
+.adfit-wrap .kakao_ad_area{flex:none;max-width:100%}
+@media print{.adfit-wrap{display:none!important}}
 </style>
 <link rel="stylesheet" href="styles.css?v=20261119m">
 </head>
@@ -96,6 +99,10 @@
     </div>
 
     <p class="fine">생일은 <b>서버로 보내지 않고</b> 브라우저 안에서만 계산해요. 저장도, 전송도 없어요.</p>
+
+    <div class="adfit-wrap">
+      <ins class="kakao_ad_area" style="display:none;" data-ad-unit="DAN-LhCur2Hh3oYSp986" data-ad-width="320" data-ad-height="100"></ins>
+    </div>
 
     <article class="card about">
       <p class="eyebrow">HOW IT WORKS</p>
@@ -288,7 +295,7 @@
       <a href="../about.html">운영자 안내</a>
       <a href="https://github.com/soosoosupernova" rel="noopener">GitHub</a>
     </div>
-    <p>© 2026 수수수 웹툴 · 수정일 2026-11-19</p>
+    <p>© 2026 수수수 웹툴 · 수정일 2026-11-20</p>
   </footer>
 </div>
 
@@ -308,5 +315,6 @@
 
 <script src="data.js?v=20261119m"></script>
 <script src="app.js?v=20261119m"></script>
+<script src="https://t1.daumcdn.net/kas/static/ba.min.js" async></script>
 </body>
 </html>
