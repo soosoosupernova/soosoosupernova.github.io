@@ -289,26 +289,18 @@
   }
 
   /* ---------------- 수비학 × 타로 조합 ---------------- */
-  function josa(word, withBatchim, withoutBatchim) {
-    var code = word.charCodeAt(word.length - 1) - 0xAC00;
-    if (code < 0 || code > 11171) { return withoutBatchim; }
-    return (code % 28 === 0) ? withoutBatchim : withBatchim;
-  }
-
   function comboParts(r) {
     if (!r || picks.length < MAX_PICK) { return null; }
     var lp = r.lp, py = r.py;
     var c = picks.map(function (p) { return p.card; });
     var myFam = N.LFAM[lp];
     var pair = N.PAIR[myFam][N.CFAM[c[0]]];
-    var au = N.AURA[lp], pa = N.PYAURA[py];
-    var punch = (r.master ? '마스터 ' : '') + lp + '의 ' + au + josa(au, '이', '가') + ' 2027 ' + py + '의 ' + pa +
-      josa(pa, '을', '를') + ' 만나요. 오늘은 ' + N.CACT[c[0]] + ', 2027은 ' + N.CACT[c[1]] + ', 조언은 ' + N.CACT[c[2]] + '.';
+    var punch = N.CACT[c[0]].t + ' ' + N.CACT[c[1]].y + ' ' + N.ADV[c[2]];
     return {
       punch: punch,
       syn: N.SIG[lp] + ' ' + pair.syn,
       year: N.PYPAIR[py][N.CFAM[c[1]]],
-      act: N.ADV[c[2]] + ' ' + N.FRAME[lp],
+      act: N.FRAME[lp],
       watch: pair.watch,
       cards: c,
       color: N.PYCOLOR[py],
@@ -330,10 +322,10 @@
     var rows = [
       ['내 숫자 × 오늘 카드', t(cb.cards[0]).name + ' · ' + t(cb.cards[0]).kw, cb.syn],
       ['2027 개인년수 × 2027 카드', t(cb.cards[1]).name + ' · ' + t(cb.cards[1]).kw, cb.year],
-      ['조언 카드로 2027 실행', t(cb.cards[2]).name + ' · ' + t(cb.cards[2]).kw, cb.act]
+      ['조언 카드를 2027에 쓰면', t(cb.cards[2]).name + ' · ' + t(cb.cards[2]).kw, cb.act]
     ];
     box.innerHTML =
-      '<div class="combo-punch"><span class="cp-k">한 줄 총평</span><p>' + cb.punch + '</p></div>' +
+      '<div class="combo-punch"><span class="cp-k">한 줄 요약</span><p>' + cb.punch + '</p></div>' +
       rows.map(function (row) {
         return '<div class="combo-item"><span class="ci-k">' + row[0] + '</span>' +
           '<span class="ci-t">' + row[1] + '</span><p>' + row[2] + '</p></div>';
@@ -640,13 +632,13 @@
     /* ---------- 한 줄 총평 ---------- */
     if (cb) {
       ctx.font = '26px ' + F_BODY;
-      var pbox = wrapText(ctx, cb.punch, CW - 64, 3);
+      var pbox = wrapText(ctx, cb.punch, CW - 64, 4);
       var ph = 62 + pbox.length * 40 + 26;
       rect(ctx, PX, y, CW, ph, '#FDF0F5');
       rect(ctx, PX, y, 10, ph, PINK);
       ctx.strokeStyle = LINE; ctx.lineWidth = 3;
       ctx.strokeRect(PX + 1.5, y + 1.5, CW - 3, ph - 3);
-      pxLabel(ctx, '한 줄 총평', PX + 32, y + 34, PINK, 18);
+      pxLabel(ctx, '한 줄 요약', PX + 32, y + 34, PINK, 18);
       ctx.fillStyle = INK; ctx.font = '26px ' + F_BODY;
       for (var p = 0; p < pbox.length; p++) { ctx.fillText(pbox[p], PX + 32, y + 78 + p * 40); }
       y += ph + 28;
@@ -765,22 +757,32 @@
 
   function shareText() {
     var L = N.LIFE[current.lp], PY = N.PY[current.py];
-    var cat = N.CAT[current.lp] || {};
+    var cat = N.CAT[current.lp] || { name: '고양이', line: '' };
     var cb = comboParts(current);
-    var lines = [];
-    lines.push('내 운명 수는 ' + (current.master ? '마스터 수 ' : '') + current.lp + ' · ' + L.nick);
-    lines.push('내 고양이는 ' + cat.name + ' (' + cat.line + ')');
-    lines.push('2027년은 ' + current.py + '의 해 (' + PY.title + ')');
+    var io = [];
+    io.push('🐱 내 수비학 · 타로 결과');
+    io.push('');
+    io.push('🔢 운명 수 ' + current.lp + (current.master ? ' (마스터 수)' : '') + ' · ' + L.nick);
+    io.push('🐾 ' + cat.name);
+    io.push('“' + cat.line + '”');
+    io.push('');
+    io.push('✨ 2027년은 ' + current.py + '의 해 (' + PY.gloss + ')');
+    io.push(N.TEND[current.lp] + ' ' + N.PYLEAD[current.py]);
     if (cb) {
-      lines.push('뽑은 카드 — 오늘 ' + N.TAROT[cb.cards[0]].name +
-        ' / 2027 ' + N.TAROT[cb.cards[1]].name +
-        ' / 조언 ' + N.TAROT[cb.cards[2]].name);
-      lines.push('한 줄 총평: ' + cb.punch);
-      lines.push('2027 행운 포인트: ' + cb.color.name + ' · ' + cb.luck);
+      io.push('');
+      io.push('🃏 오늘 [' + N.TAROT[cb.cards[0]].name + '] · 2027 [' + N.TAROT[cb.cards[1]].name +
+        '] · 조언 [' + N.TAROT[cb.cards[2]].name + ']');
+      io.push('');
+      io.push('💬 한 줄 요약');
+      io.push(cb.punch);
+      io.push('');
+      io.push('🍀 2027 행운 포인트');
+      io.push(cb.color.name + ' · ' + cb.luck);
     }
-    lines.push('— 수수수 웹툴 수비학·타로');
-    lines.push('https://soosoosupernova.github.io/destiny-number/');
-    return lines.join('\n');
+    io.push('');
+    io.push('👉 나도 해보기');
+    io.push('https://soosoosupernova.github.io/destiny-number/');
+    return io.join('\n');
   }
 
   function share() {
@@ -796,7 +798,7 @@
           return;
         }
         if (navigator.share) {
-          navigator.share({ title: '내 수비학·타로 리포트', text: txt, url: 'https://soosoosupernova.github.io/destiny-number/' })
+          navigator.share({ title: '내 수비학·타로 리포트', text: txt })
             .catch(function () { copyText(txt); });
           return;
         }
