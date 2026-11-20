@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<title>QA 375 full</title>
+<style>body{margin:0;background:#222}iframe{display:block;width:375px;border:0;background:#fff}</style>
+</head><body>
+<iframe id="a" src="/leave-calculator/" width="375" height="5200"></iframe>
+<iframe id="b" src="/destiny-number/" width="375" height="2900"></iframe>
+<p id="m" style="color:#9f9;font:12px monospace;padding:8px"></p>
+<script>
+var out=[];
+['a','b'].forEach(function(id){
+  var f=document.getElementById(id);
+  f.addEventListener('load',function(){
+    var d=f.contentDocument;
+    var sw=Math.max(d.documentElement.scrollWidth,d.body.scrollWidth);
+    var cw=d.documentElement.clientWidth;
+    out.push(id+' clientW='+cw+' scrollW='+sw+' overflowX='+(sw-cw)+' docH='+d.documentElement.scrollHeight);
+    document.getElementById('m').textContent=out.join(' | ');
+  });
+});
+</script>
+</body></html>
