@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<title>QA 375 — destiny-number 임시</title>
+<style>
+  body{margin:0;background:#222;color:#eee;font:13px/1.5 -apple-system,sans-serif}
+  .cap{padding:6px 10px;color:#9fe;font:12px/1.4 monospace}
+  iframe{display:block;width:375px;height:700px;border:0;background:#fff}
+  .m{padding:4px 10px;color:#fd8;font:11px/1.4 monospace;white-space:pre-wrap}
+</style>
+</head><body>
+<div class="cap" id="cap">loading…</div>
+<iframe id="f" src="/destiny-number/?d=1995-06-21"></iframe>
+<div class="m" id="m"></div>
+<script>
+var sec = (location.search.match(/sec=(\w+)/) || [,'top'])[1];
+var f = document.getElementById('f'), log = [];
+function done(txt){ document.getElementById('m').textContent = log.join('\n'); document.getElementById('cap').textContent = txt; }
+f.addEventListener('load', function () {
+  var d = f.contentDocument, w = f.contentWindow;
+  setTimeout(function () {
+    function pickCards(){
+      var btns = d.querySelectorAll('#spread .tcard');
+      for (var i = 0; i < 3 && i < btns.length; i++) { btns[i].click(); }
+    }
+    function scrollToSel(sel, off){
+      var el = d.querySelector(sel);
+      if (!el) { log.push('no sel ' + sel); return; }
+      w.scrollTo(0, el.getBoundingClientRect().top + (w.scrollY || 0) - (off || 8));
+    }
+    if (sec === 'input') {
+      d.getElementById('btn-back').click();
+      w.scrollTo(0, 0);
+      setTimeout(function(){
+        var ad = d.querySelector('.adfit-wrap');
+        var adRect = ad ? ad.getBoundingClientRect() : null;
+        var ins = d.querySelector('.kakao_ad_area');
+        log.push('ad box: w=' + (adRect ? Math.round(adRect.width) : 'none') + ' h=' + (adRect ? Math.round(adRect.height) : 'none'));
+        log.push('ad iframe in ins: ' + (ins ? ins.querySelectorAll('iframe').length : 0));
+        done('1. 입력 화면 + 애드핏 (375)');
+      }, 600);
+      return;
+    }
+    pickCards();
+    setTimeout(function () {
+      var de = d.documentElement;
+      log.push('clientW=' + de.clientWidth + ' scrollW=' + de.scrollWidth + ' overflowX=' + (de.scrollWidth - de.clientWidth));
+      log.push('docH=' + de.scrollHeight);
+      if (sec === 'num') { w.scrollTo(0, 0); done('2. 결과 상단 — 운명 수·고양이 (375)'); }
+      else if (sec === 'py') { scrollToSel('#py-num', 70); done('3. 2027 개인년수 (375)'); }
+      else if (sec === 'draw') { scrollToSel('#spread', 40); done('4. 타로 3장 뽑은 상태 (375)'); }
+      else if (sec === 'combo') { scrollToSel('#combo-card', 40); done('5. 수비학 × 타로 · 한 줄 요약 (375)'); }
+      else if (sec === 'traits') { scrollToSel('#traits', 60); done('6. 기질·일·돈·관계 (375)'); }
+      else { w.scrollTo(0, 0); done('결과 상단 (375)'); }
+      setTimeout(function(){
+        var cp = d.querySelector('.combo-punch p');
+        if (cp) log.push('punch box: w=' + Math.round(cp.getBoundingClientRect().width) + ' h=' + Math.round(cp.getBoundingClientRect().height) + ' scrollW=' + cp.scrollWidth);
+        done(document.getElementById('cap').textContent);
+      }, 300);
+    }, 500);
+  }, 700);
+});
+</script>
+</body></html>
