@@ -322,7 +322,7 @@
     var rows = [
       ['내 숫자 × 오늘 카드', t(cb.cards[0]).name + ' · ' + t(cb.cards[0]).kw, cb.syn],
       ['2027 개인년수 × 2027 카드', t(cb.cards[1]).name + ' · ' + t(cb.cards[1]).kw, cb.year],
-      ['조언 카드를 2027에 쓰면', t(cb.cards[2]).name + ' · ' + t(cb.cards[2]).kw, cb.act]
+      ['조언 카드를 내 숫자에 쓰면', t(cb.cards[2]).name + ' · ' + t(cb.cards[2]).kw, cb.act]
     ];
     box.innerHTML =
       '<div class="combo-punch"><span class="cp-k">한 줄 요약</span><p>' + cb.punch + '</p></div>' +
