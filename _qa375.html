@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>QA 375 — temporary</title>
+<style>
+  body{margin:0;padding:16px;background:#222;color:#eee;font:13px/1.5 sans-serif}
+  .row{margin:0 0 28px}
+  .row h2{font-size:13px;margin:0 0 6px;color:#9fe}
+  .m{font:12px/1.4 monospace;margin:4px 0 0;color:#fd8}
+  iframe{display:block;width:375px;height:812px;border:2px solid #666;background:#fff}
+</style>
+</head>
+<body>
+<div id="log" style="font:12px/1.5 monospace;color:#6f6;white-space:pre"></div>
+
+<div class="row"><h2>1. leave-calculator — top</h2>
+  <iframe src="/leave-calculator/" width="375" height="812" data-y="0"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>2. leave-calculator — guide/faq</h2>
+  <iframe src="/leave-calculator/" width="375" height="812" data-sel="#guide"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>3. leave-calculator — footer</h2>
+  <iframe src="/leave-calculator/" width="375" height="812" data-sel=".foot"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>4. resume-rebuilder — top</h2>
+  <iframe src="/resume-rebuilder/" width="375" height="812" data-y="0"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>5. resume-rebuilder — guide</h2>
+  <iframe src="/resume-rebuilder/" width="375" height="812" data-sel=".seo-guide"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>6. resume-rebuilder — faq end</h2>
+  <iframe src="/resume-rebuilder/" width="375" height="812" data-sel=".sg-links"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>7. relationship-report — top</h2>
+  <iframe src="/relationship-report/" width="375" height="812" data-y="0"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>8. relationship-report — guide</h2>
+  <iframe src="/relationship-report/" width="375" height="812" data-sel=".rr-seo"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>9. relationship-report — faq end</h2>
+  <iframe src="/relationship-report/" width="375" height="812" data-sel=".rs-links"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>10. destiny-number — top</h2>
+  <iframe src="/destiny-number/" width="375" height="812" data-y="0"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>11. destiny-number — number table</h2>
+  <iframe src="/destiny-number/" width="375" height="812" data-sel=".seo-num"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>12. destiny-number — faq end</h2>
+  <iframe src="/destiny-number/" width="375" height="812" data-sel=".seo-links"></iframe><p class="m"></p></div>
+
+<div class="row"><h2>13. hub — top</h2>
+  <iframe src="/" width="375" height="812" data-y="0"></iframe><p class="m"></p></div>
+
+<script>
+(function(){
+  var log = [];
+  var frames = [].slice.call(document.querySelectorAll('iframe'));
+  frames.forEach(function(f){
+    f.addEventListener('load', function(){
+      var d, w;
+      try {
+        d = f.contentDocument || f.contentWindow.document;
+        var docW = Math.max(d.documentElement.scrollWidth, d.body ? d.body.scrollWidth : 0);
+        var clientW = d.documentElement.clientWidth;
+        var sel = f.getAttribute('data-sel');
+        var y = parseInt(f.getAttribute('data-y') || '0', 10);
+        if (sel) {
+          var el = d.querySelector(sel);
+          if (el) { y = Math.round(el.getBoundingClientRect().top + (f.contentWindow.pageYOffset||0)) - 8; }
+        }
+        if (y) { f.contentWindow.scrollTo(0, y); }
+        var bodyScroll = d.body ? d.body.scrollWidth : 0;
+        var msg = f.closest('.row').querySelector('h2').textContent
+          + ' | docScrollW=' + docW + ' bodyScrollW=' + bodyScroll
+          + ' clientW=' + clientW + ' overflowX=' + (docW - clientW)
+          + ' scrollY=' + Math.round(f.contentWindow.pageYOffset||0)
+          + ' docH=' + d.documentElement.scrollHeight;
+        f.closest('.row').querySelector('.m').textContent = msg;
+        log.push(msg);
+        document.getElementById('log').textContent = log.join('\n');
+      } catch (e) {
+        var m2 = f.closest('.row').querySelector('h2').textContent + ' | ERROR ' + e.message;
+        f.closest('.row').querySelector('.m').textContent = m2;
+        log.push(m2);
+        document.getElementById('log').textContent = log.join('\n');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
