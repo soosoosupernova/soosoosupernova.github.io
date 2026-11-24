@@ -89,6 +89,12 @@
     });
   }
 
+  /* 완성한 빙고 줄 수에 맞는 알림 문구 */
+  function bingoDoneCopy(n) {
+    if (n >= 10) { return '빙고 10줄! 겨울취향표를 다 채웠어요 🎉'; }
+    return '빙고 ' + n + '줄 완성! 겨울 미션 성공 🎉';
+  }
+
   function checkedCount() {
     var n = 0;
     for (var i = 0; i < state.length; i++) { if (state[i]) { n += 1; } }
@@ -154,7 +160,7 @@
     if (el && state[i]) { el.classList.add('pop'); }
     var after = bingoLines().length;
     if (after > before) {
-      celebrate('빙고 한 줄! 겨울 미션 성공 🎉');
+      celebrate(bingoDoneCopy(after));
     } else if (state[i]) {
       toast('한 칸 채웠어요 ♥');
     } else {

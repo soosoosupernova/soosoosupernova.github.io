@@ -703,7 +703,7 @@
     else if (s.rate >= 45) { base = '반반이에요. 서로 알려줄 취향이 아직 있어요.'; }
     else if (s.rate >= 25) { base = '취향이 꽤 갈려요. 그래서 이야기할 거리가 많아요.'; }
     else { base = '정반대에 가까워요. 서로의 세계가 궁금해지는 조합이에요.'; }
-    if (s.lines.length >= 2) { base += ' 빙고 ' + s.lines.length + '줄까지 완성했어요.'; }
+    if (s.lines.length >= 1) { base += ' 빙고 ' + s.lines.length + '줄까지 완성했어요.'; }
     return base;
   }
 
