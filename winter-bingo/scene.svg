@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375 200" fill="none">
+<g stroke-linecap="round" stroke-linejoin="round">
+
+  <!-- 뒷 능선 -->
+  <path d="M-20 160 L44 120 L78 138 L116 112 L152 160 Z" fill="#EFF7FC"/>
+
+  <!-- 앞 봉우리 (면으로만, 선 없이) -->
+  <path d="M84 160 Q116 136 148 118 Q160 124 170 130 Q192 92 214 58 Q234 86 252 108 Q264 104 272 100 Q308 126 340 160 Z" fill="#FFFFFF"/>
+  <path d="M214 58 Q234 86 252 108 Q264 104 272 100 Q308 126 340 160 L214 160 Z" fill="#DFEDF8"/>
+  <path d="M148 118 Q160 124 170 130" stroke="#EDF6FB" stroke-width="1.2"/>
+
+  <!-- 오른쪽 봉우리 -->
+  <path d="M300 160 L344 132 L375 160 Z" fill="#F0F8FD"/>
+  <path d="M344 132 L375 160 L352 160 Z" fill="#DCEBF6"/>
+
+  <!-- 설원 -->
+  <path d="M0 160 Q92 152 176 159 Q268 166 375 156 L375 200 L0 200 Z" fill="#FFFFFF"/>
+  <path d="M0 160 Q92 152 176 159 Q268 166 375 156" stroke="#C9DEEC" stroke-width="1"/>
+  <path d="M22 174 Q66 168 110 172 M242 170 Q290 164 338 169" stroke="#C6DBE9" stroke-width=".9" stroke-opacity=".55"/>
+  <path d="M56 188 Q96 182 136 186" stroke="#CFE1EE" stroke-width=".8" stroke-opacity=".45"/>
+
+  <g><path d="M24 160 L24 154" stroke="#A2B6C3" stroke-width="2" stroke-linecap="round"/><path d="M15.0 155.0 L24 141.7 L33.0 155.0 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M24 142.7 L16.4 154.0" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M17.7 149.6 L24 136.3 L30.3 149.6 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M24 137.3 L19.1 148.6" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M20.4 144.2 L24 130.9 L27.6 144.2 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M24 131.9 L21.8 143.2" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/></g><g><path d="M45 160 L45 154" stroke="#A2B6C3" stroke-width="2" stroke-linecap="round"/><path d="M34.0 155.0 L45 136.1 L56.0 155.0 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M45 137.1 L35.4 154.0" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M37.3 147.3 L45 128.3 L52.7 147.3 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M45 129.3 L38.7 146.3" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M40.6 139.5 L45 120.6 L49.4 139.5 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M45 121.6 L42.0 138.5" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/></g><g><path d="M65 160 L65 154" stroke="#A2B6C3" stroke-width="2" stroke-linecap="round"/><path d="M57.0 155.0 L65 142.7 L73.0 155.0 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M65 143.7 L58.4 154.0" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M59.4 150.0 L65 137.7 L70.6 150.0 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M65 138.7 L60.8 149.0" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M61.8 144.9 L65 132.6 L68.2 144.9 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M65 133.6 L63.2 143.9" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/></g><g><path d="M334 158 L334 152" stroke="#A2B6C3" stroke-width="2" stroke-linecap="round"/><path d="M323.5 153.0 L334 135.0 L344.5 153.0 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M334 136.0 L324.9 152.0" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M326.6 145.7 L334 127.7 L341.4 145.7 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M334 128.7 L328.0 144.7" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M329.8 138.3 L334 120.3 L338.2 138.3 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M334 121.3 L331.2 137.3" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/></g><g><path d="M355 158 L355 152" stroke="#A2B6C3" stroke-width="2" stroke-linecap="round"/><path d="M346.5 153.0 L355 139.7 L363.5 153.0 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M355 140.7 L347.9 152.0" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M349.1 147.6 L355 134.3 L360.9 147.6 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M355 135.3 L350.4 146.6" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/><path d="M351.6 142.2 L355 128.9 L358.4 142.2 Z" fill="#7492A6" stroke="#648295" stroke-width=".6"/><path d="M355 129.9 L353.0 141.2" stroke="#FFFFFF" stroke-width="2.1" stroke-linecap="round"/></g>
+
+  <!-- 오두막 -->
+  <g stroke="#6F8B9C" stroke-width="1.15" fill="#FFFFFF">
+    <path d="M122 160 L122 134 L178 134 L178 160 Z"/>
+    <path d="M116 134 L150 114 L184 134 Z" fill="#F0F6FA"/>
+    <rect x="130" y="141" width="13" height="10" fill="#F8E7C6"/>
+    <path d="M136.5 141 L136.5 151 M130 146 L143 146"/>
+    <path d="M155 160 L155 146 L166 146 L166 160 Z" fill="#EFF5F9"/>
+  </g>
+  <path d="M117.5 132.5 Q150 121 182.5 132.5" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M165 112 L172 112 L172 130 L165 130 Z" fill="#FFFFFF" stroke="#6F8B9C" stroke-width="1.1"/>
+  <path d="M164 111 L173 111" stroke="#6F8B9C" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M169 108 C177 102 171 96 179 91" stroke="#A8C1D2" stroke-width="1"/>
+
+  <!-- 발자국 -->
+  <g fill="#D9E8F2">
+    <ellipse cx="94" cy="176" rx="1.9" ry="1.2"/><ellipse cx="104" cy="172" rx="1.9" ry="1.2"/>
+    <ellipse cx="112" cy="168" rx="1.9" ry="1.2"/><ellipse cx="120" cy="165" rx="1.9" ry="1.2"/>
+    <ellipse cx="128" cy="163" rx="1.9" ry="1.2"/>
+  </g>
+
+  <!-- 눈 -->
+  <g fill="#FFFFFF" stroke="#A9C4D6" stroke-width=".7" stroke-opacity=".45">
+    <circle cx="44" cy="70" r="1.5"/><circle cx="90" cy="46" r="1.2"/><circle cx="126" cy="76" r="1.3"/>
+    <circle cx="254" cy="36" r="1.3"/><circle cx="280" cy="80" r="1.2"/><circle cx="350" cy="58" r="1.5"/>
+    <circle cx="18" cy="108" r="1.3"/><circle cx="238" cy="100" r="1.1"/><circle cx="64" cy="116" r="1.2"/>
+    <circle cx="326" cy="44" r="1.1"/><circle cx="146" cy="48" r="1"/>
+  </g>
+  <circle cx="298" cy="62" r="11" stroke="#A9C4D6" stroke-width=".9" stroke-opacity=".5"/>
+</g>
+</svg>

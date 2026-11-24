@@ -7,7 +7,7 @@
   var LINES = D.LINES;
   var PALETTES = D.PALETTES;
   var FONT_BODY = '"Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif';
-  var FONT_DISPLAY = 'Jua, "Noto Sans KR", sans-serif';
+  var FONT_DISPLAY = '"Gowun Batang", "Noto Serif KR", serif';
   var PAGE_TITLE = document.title;
 
   var state = new Array(16).fill(false);
@@ -175,7 +175,7 @@
   function celebrate(msg) {
     toast(msg);
     var area = $('confetti');
-    var colors = ['#ff91ad', '#ffd978', '#91c9ec', '#9bdcc9', '#c5b3e9'];
+    var colors = ['#B0893C', '#C6DFF1', '#C98A9E', '#8FA9B8', '#E3D9BC'];
     area.innerHTML = '';
     for (var i = 0; i < 55; i++) {
       var p = document.createElement('i');
@@ -243,10 +243,10 @@
   function fontsReady() {
     if (!document.fonts || !document.fonts.load) { return Promise.resolve(); }
     var jobs = [
-      '400 40px Jua',
-      '700 20px "Noto Sans KR"',
-      '800 20px "Noto Sans KR"',
-      '900 20px "Noto Sans KR"'
+      '400 40px "Gowun Batang"',
+      '400 20px "Noto Sans KR"',
+      '500 20px "Noto Sans KR"',
+      '600 20px "Noto Sans KR"'
     ].map(function (f) { return document.fonts.load(f).catch(function () {}); });
     return Promise.all(jobs).then(function () { return document.fonts.ready; }).catch(function () {});
   }
@@ -291,22 +291,17 @@
   function artImg(type) {
     if (ART_IMGS[type]) { return ART_IMGS[type]; }
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="82" viewBox="0 0 100 82">' +
-      '<ellipse cx="50" cy="77" rx="27" ry="3" fill="#dce3e5" opacity=".6"/>' + artBody(type) + '</svg>';
+      '<defs><filter id="mute" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feColorMatrix type="saturate" values="0.55"/>' +
+      '<feComponentTransfer><feFuncR type="linear" slope="1.02" intercept="0.01"/>' +
+      '<feFuncG type="linear" slope="1.02" intercept="0.01"/>' +
+      '<feFuncB type="linear" slope="1.02" intercept="0.01"/></feComponentTransfer>' +
+      '</filter></defs><g filter="url(#mute)">' +
+      '<ellipse cx="50" cy="77" rx="27" ry="3" fill="#dce3e5" opacity=".6"/>' + artBody(type) + '</g></svg>';
     var img = new Image();
     img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     ART_IMGS[type] = img;
     return img;
-  }
-
-  var MASCOT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="171" viewBox="0 0 140 120">' +
-    '<ellipse cx="72" cy="103" rx="42" ry="8" fill="#e9f0f3"/><circle cx="72" cy="72" r="35" fill="#fff" stroke="#dceaf0" stroke-width="3"/><circle cx="72" cy="31" r="24" fill="#fff" stroke="#dceaf0" stroke-width="3"/><path d="M52 14 Q70 -2 91 14 L88 22 L54 22Z" fill="#ff91ad" stroke="#e77d9b" stroke-width="2"/><circle cx="64" cy="31" r="2.7" fill="#53647a"/><circle cx="80" cy="31" r="2.7" fill="#53647a"/><path d="M67 39 Q72 44 77 39" fill="none" stroke="#e88a9f" stroke-width="2.5" stroke-linecap="round"/><path d="M42 61 Q72 72 102 60 L101 73 Q72 84 43 74Z" fill="#8dc8e8" stroke="#72afd1" stroke-width="2"/><path d="M88 70 L98 99 Q88 105 81 98 L79 74Z" fill="#8dc8e8" stroke="#72afd1" stroke-width="2"/><circle cx="58" cy="66" r="3" fill="#f3a0b3"/><circle cx="87" cy="66" r="3" fill="#f3a0b3"/></svg>';
-  var mascot = null;
-  function mascotImg() {
-    if (!mascot) {
-      mascot = new Image();
-      mascot.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(MASCOT_SVG);
-    }
-    return mascot;
   }
 
   function waitImg(img) {
@@ -320,68 +315,68 @@
     });
   }
 
-  /* 카드 도장: 화면 `.clear-stamp`와 같은 비율(칸 폭 70.75 기준)로 그린다 */
+  /* 카드 도장: 화면 `.clear-stamp`와 같은 비율(칸 폭 72 기준)로 그린다 */
   function drawClearStamp(ctx, cx, cy, bingo, tw) {
-    var k = tw / 70.75;
-    var w = tw * (bingo ? 0.772 : 0.683);
-    var h = tw * (bingo ? 0.345 : 0.288);
-    var fs = (bingo ? 7.4 : 6.8) * k;
-    var hfs = 6.4 * k;
-    var ls = fs * (bingo ? 0.06 : 0.07);
-    var gap = 2 * k;
-    var bw = (bingo ? 2 : 1.5) * k;
-    var r = h / 2;
+    var k = tw / 72;
+    var fs = 6 * k;
+    var padX = 6 * k, padT = 2 * k, padB = 3 * k;
+    var ls = fs * 0.2;
 
     ctx.save();
     ctx.translate(cx, cy);
-    ctx.rotate(-8 * Math.PI / 180);
+    ctx.rotate(-4 * Math.PI / 180);
+
+    ctx.font = '600 ' + fs.toFixed(2) + 'px ' + FONT_BODY;
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = ls.toFixed(2) + 'px'; }
+    var textW = ctx.measureText('CLEAR').width;
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
+    var w = textW + padX * 2;
+    var h = fs * 1.2 + padT + padB;
+
+    ctx.fillStyle = bingo ? '#FFFDF4' : 'rgba(255,255,255,.92)';
+    ctx.fillRect(-w / 2, -h / 2, w, h);
 
     if (bingo) {
-      ctx.save();
-      ctx.shadowColor = 'rgba(217,154,43,.24)';
-      ctx.shadowBlur = 10 * k;
-      ctx.fillStyle = 'rgba(255,252,240,.95)';
-      roundRect(ctx, -w / 2 - 2 * k, -h / 2 - 2 * k, w + 4 * k, h + 4 * k, r + 2 * k);
-      ctx.fill();
-      ctx.restore();
-    } else {
-      ctx.fillStyle = 'rgba(232,122,158,.20)';
-      roundRect(ctx, -w / 2 - 2.7 * k, -h / 2 - 2.7 * k, w + 5.4 * k, h + 5.4 * k, r + 2.7 * k);
-      ctx.fill();
-      ctx.fillStyle = 'rgba(255,245,248,.90)';
-      roundRect(ctx, -w / 2 - 2 * k, -h / 2 - 2 * k, w + 4 * k, h + 4 * k, r + 2 * k);
-      ctx.fill();
+      ctx.strokeStyle = 'rgba(176,137,60,.18)';
+      ctx.lineWidth = 1.5 * k;
+      ctx.strokeRect(-w / 2 - 2.2 * k, -h / 2 - 2.2 * k, w + 4.4 * k, h + 4.4 * k);
     }
 
-    ctx.fillStyle = bingo ? 'rgba(255,248,225,.92)' : 'rgba(255,245,248,.88)';
-    roundRect(ctx, -w / 2, -h / 2, w, h, r);
-    ctx.fill();
-    ctx.strokeStyle = bingo ? '#D99A2B' : '#E87A9E';
-    ctx.lineWidth = bw;
-    roundRect(ctx, -w / 2 + bw / 2, -h / 2 + bw / 2, w - bw, h - bw, Math.max(r - bw / 2, 2));
-    ctx.stroke();
+    ctx.strokeStyle = bingo ? '#B0893C' : '#CE93A5';
+    ctx.lineWidth = 1 * k;
+    ctx.strokeRect(-w / 2 + .5 * k, -h / 2 + .5 * k, w - 1 * k, h - 1 * k);
 
-    ctx.textAlign = 'left';
+    ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.font = '900 ' + fs.toFixed(2) + 'px ' + FONT_BODY;
+    ctx.fillStyle = bingo ? '#9A7726' : '#B2738A';
+    ctx.font = '600 ' + fs.toFixed(2) + 'px ' + FONT_BODY;
     if ('letterSpacing' in ctx) { ctx.letterSpacing = ls.toFixed(2) + 'px'; }
-    var wordW = ctx.measureText('CLEAR').width - ls;
-    ctx.font = '900 ' + hfs.toFixed(2) + 'px ' + FONT_BODY;
+    ctx.fillText('CLEAR', ls / 2, 0.5 * k);
     if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
-    var heartW = ctx.measureText('\u2665').width;
-    var tx = -(wordW + gap + heartW) / 2;
-
-    ctx.font = '900 ' + fs.toFixed(2) + 'px ' + FONT_BODY;
-    if ('letterSpacing' in ctx) { ctx.letterSpacing = ls.toFixed(2) + 'px'; }
-    ctx.fillStyle = bingo ? '#BE8519' : '#E87A9E';
-    ctx.fillText('CLEAR', tx, 0);
-    if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
-    ctx.font = '900 ' + hfs.toFixed(2) + 'px ' + FONT_BODY;
-    ctx.fillStyle = bingo ? '#D19A2E' : '#F09EBB';
-    ctx.fillText('\u2665', tx + wordW + gap, -0.5 * k);
 
     ctx.restore();
     ctx.textBaseline = 'alphabetic';
+  }
+
+  function drawPine(ctx, x, baseY, h, color) {
+    ctx.fillStyle = color;
+    for (var t = 0; t < 3; t++) {
+      var bw = h * 0.46 * (1 - t * 0.26);
+      var by = baseY - t * h * 0.26;
+      var ty = by - h * 0.48;
+      ctx.beginPath();
+      ctx.moveTo(x, ty);
+      ctx.lineTo(x - bw / 2, by);
+      ctx.lineTo(x + bw / 2, by);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x, baseY);
+    ctx.lineTo(x, baseY + 6);
+    ctx.stroke();
   }
 
   function drawCard() {
@@ -394,178 +389,202 @@
     var n = checkedCount();
 
     ctx.clearRect(0, 0, W, H);
-    var bg = ctx.createLinearGradient(0, 0, W, H);
-    bg.addColorStop(0, '#e9f5fd');
-    bg.addColorStop(.5, '#f7f8fe');
-    bg.addColorStop(1, '#fdeef4');
-    ctx.fillStyle = bg;
+
+    /* 겨울 하늘 */
+    var sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#C6DFF1');
+    sky.addColorStop(.40, '#DAEBF6');
+    sky.addColorStop(.72, '#E9F4FB');
+    sky.addColorStop(1, '#F5FBFE');
+    ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
 
-    function softCircle(cx, cy, r, color) {
-      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      g.addColorStop(0, color);
-      g.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(cx, cy, r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    softCircle(110, 90, 260, 'rgba(255,232,240,.95)');
-    softCircle(990, 120, 280, 'rgba(206,235,253,.9)');
-    softCircle(50, 1290, 260, 'rgba(220,246,238,.85)');
+    /* 옅은 해 */
+    ctx.beginPath();
+    ctx.arc(872, 132, 46, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,.42)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.85)';
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
 
-    var seed = 20261224;
+    /* 눈 점 */
+    var seed = 20261125;
     function rnd() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
-    for (var d = 0; d < 44; d++) {
-      var dx = rnd() * W, dy = rnd() * H, dr = 1.6 + rnd() * 3.2;
+    for (var d = 0; d < 46; d++) {
+      var dx = rnd() * W, dy = rnd() * H, dr = 1.4 + rnd() * 2.6;
       ctx.beginPath();
       ctx.arc(dx, dy, dr, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,' + (0.5 + rnd() * 0.35).toFixed(2) + ')';
+      ctx.fillStyle = 'rgba(255,255,255,' + (0.35 + rnd() * 0.45).toFixed(2) + ')';
       ctx.fill();
     }
 
+    /* 종이 */
     ctx.save();
-    ctx.shadowColor = 'rgba(120,150,175,.22)';
-    ctx.shadowBlur = 44;
-    ctx.shadowOffsetY = 16;
-    ctx.fillStyle = '#FFFDFB';
-    roundRect(ctx, 48, 48, 984, 1254, 56);
+    ctx.shadowColor = 'rgba(88,128,155,.18)';
+    ctx.shadowBlur = 34;
+    ctx.shadowOffsetY = 10;
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, 40, 40, 1000, 1270, 6);
     ctx.fill();
     ctx.restore();
-    ctx.strokeStyle = 'rgba(255,255,255,.95)';
-    ctx.lineWidth = 4;
-    roundRect(ctx, 48, 48, 984, 1254, 56);
+    ctx.strokeStyle = '#D3E2EB';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, 40, 40, 1000, 1270, 6);
     ctx.stroke();
 
-    ctx.textBaseline = 'alphabetic';
+    var L = 108, R = 972;
+
+    /* 머리 */
     ctx.textAlign = 'left';
-    ctx.font = '800 19px ' + FONT_BODY;
-    if ('letterSpacing' in ctx) { ctx.letterSpacing = '3.4px'; }
-    ctx.fillStyle = '#C98CA0';
-    var brandText = 'LITTLE WINTER CLUB · WINTER 2026';
-    ctx.fillText(brandText, 124, 146);
-    var brandW = ctx.measureText(brandText).width;
+    ctx.textBaseline = 'alphabetic';
+    ctx.font = '600 15px ' + FONT_BODY;
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '4.4px'; }
+    ctx.fillStyle = '#5F7C8F';
+    ctx.fillText('LITTLE WINTER CLUB', L, 118);
     if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
 
-    /* 태그 알약: 겨울취향표 */
-    var tagW = 116, tagH = 34, tagX = 124 + brandW + 14, tagY = 118;
-    ctx.fillStyle = '#EAF5FD';
-    roundRect(ctx, tagX, tagY, tagW, tagH, tagH / 2);
-    ctx.fill();
-    ctx.strokeStyle = '#CBE7F8';
-    ctx.lineWidth = 2;
-    roundRect(ctx, tagX + 1, tagY + 1, tagW - 2, tagH - 2, (tagH - 2) / 2);
-    ctx.stroke();
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#3F7FA3';
-    ctx.font = '800 17px ' + FONT_BODY;
-    ctx.fillText('겨울취향표', tagX + tagW / 2, tagY + tagH / 2 + 1);
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'right';
+    ctx.font = '400 18px ' + FONT_DISPLAY;
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '2.4px'; }
+    ctx.fillStyle = '#3C5567';
+    ctx.fillText('겨울취향표', R, 118);
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
 
-    var mi = mascotImg();
-    if (mi.complete && mi.naturalWidth) { ctx.drawImage(mi, 770, 82, 196, 168); }
-
+    /* 제목 */
     var title = '올 겨울 얼마나 즐겼지?';
-    var tSize = 66;
+    var tSize = 62;
+    ctx.textAlign = 'left';
     ctx.font = '400 ' + tSize + 'px ' + FONT_DISPLAY;
-    while (ctx.measureText(title).width > 610 && tSize > 40) {
+    while (ctx.measureText(title).width > 780 && tSize > 40) {
       tSize -= 2;
       ctx.font = '400 ' + tSize + 'px ' + FONT_DISPLAY;
     }
-    ctx.fillStyle = '#34445D';
-    ctx.fillText(title, 124, 250);
+    ctx.fillStyle = '#23323E';
+    ctx.fillText(title, L, 212);
 
+    /* 이름 */
     var nm = (myName ? myName + '님의 겨울취향표' : '나의 겨울취향표');
-    var nSize = 28;
-    ctx.font = '800 ' + nSize + 'px ' + FONT_BODY;
-    while (ctx.measureText(nm).width > 700 && nSize > 18) {
-      nSize -= 2;
-      ctx.font = '800 ' + nSize + 'px ' + FONT_BODY;
-    }
-    ctx.fillStyle = '#B4556F';
-    ctx.fillText(nm, 124, 294);
+    ctx.font = '500 21px ' + FONT_BODY;
+    ctx.fillStyle = '#A87587';
+    ctx.fillText(nm, L, 252);
 
+    /* 현황 3열 */
     var stats = [
-      { k: '완료한 미션', v: n + ' / 16', bg: '#F5FAFE', bd: '#E7F1F7' },
-      { k: '완성한 빙고', v: wins.length + '줄', bg: '#FFF6F9', bd: '#FBE4EB' },
-      { k: '남은 미션', v: (16 - n) + '개', bg: '#F4FBF7', bd: '#E2F2EA' }
+      { k: '완료한 미션', v: String(n), u: '/16' },
+      { k: '완성한 빙고', v: String(wins.length), u: '줄' },
+      { k: '남은 미션', v: String(16 - n), u: '개' }
     ];
-    stats.forEach(function (s, i) {
-      var x = 124 + i * 282, y = 330, w = 264, h = 78;
-      ctx.fillStyle = s.bg;
-      roundRect(ctx, x, y, w, h, 20);
-      ctx.fill();
-      ctx.strokeStyle = s.bd;
-      ctx.lineWidth = 2;
-      roundRect(ctx, x, y, w, h, 20);
+    var sy = 292, sh = 84, colW = (R - L) / 3;
+    ctx.strokeStyle = '#D3E2EB';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(L, sy); ctx.lineTo(R, sy);
+    ctx.moveTo(L, sy + sh); ctx.lineTo(R, sy + sh);
+    ctx.stroke();
+    ctx.strokeStyle = '#E2EBF1';
+    [1, 2].forEach(function (c) {
+      var xx = L + colW * c;
+      ctx.beginPath();
+      ctx.moveTo(xx, sy + 10); ctx.lineTo(xx, sy + sh - 10);
       ctx.stroke();
-      ctx.fillStyle = '#9AA6B4';
-      ctx.font = '700 18px ' + FONT_BODY;
-      ctx.fillText(s.k, x + 22, y + 31);
-      ctx.fillStyle = '#35435B';
-      ctx.font = '800 30px ' + FONT_BODY;
-      ctx.fillText(s.v, x + 22, y + 66);
+    });
+    stats.forEach(function (s, i) {
+      var x = L + colW * i + (i ? 18 : 0);
+      ctx.textAlign = 'left';
+      ctx.font = '500 14px ' + FONT_BODY;
+      if ('letterSpacing' in ctx) { ctx.letterSpacing = '2.1px'; }
+      ctx.fillStyle = '#7B93A2';
+      ctx.fillText(s.k, x, sy + 32);
+      if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
+      ctx.font = '400 38px ' + FONT_DISPLAY;
+      ctx.fillStyle = '#1F2E3A';
+      ctx.fillText(s.v, x, sy + 72);
+      var vw = ctx.measureText(s.v).width;
+      ctx.font = '400 14px ' + FONT_BODY;
+      ctx.fillStyle = '#8FA3B1';
+      ctx.fillText(s.u, x + vw + 4, sy + 72);
     });
 
-    var gx = 124, gy = 452, tw = 198, th = 176, gap = 18;
+    /* 보드 라벨 */
+    ctx.textAlign = 'left';
+    ctx.font = '600 12px ' + FONT_BODY;
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '3.1px'; }
+    ctx.fillStyle = '#9AAEBB';
+    ctx.fillText('SIXTEEN MOMENTS OF WINTER', L, 410);
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
+
+    /* 미션 칸 */
+    var tw = 204, th = 166, gx = 16, gy = 14;
+    var by0 = 432;
     MISSIONS.forEach(function (m, i) {
       var col = i % 4, row = Math.floor(i / 4);
-      var x = gx + col * (tw + gap), y = gy + row * (th + gap);
-      var pal = PALETTES[m.art] || ['#e8a76a', '#fff4e4'];
+      var x = L + col * (tw + gx), y = by0 + row * (th + gy);
       var on = state[i];
       var isWin = !!winning[i];
 
-      ctx.fillStyle = on ? '#FFF3F6' : pal[1];
-      roundRect(ctx, x, y, tw, th, 26);
-      ctx.fill();
-
-      ctx.strokeStyle = on ? '#F1DDE5' : '#F1EDE6';
-      ctx.lineWidth = on ? 3 : 2;
-      roundRect(ctx, x + 1.5, y + 1.5, tw - 3, th - 3, 25);
-      ctx.stroke();
+      ctx.fillStyle = on ? (isWin ? '#FBF6E9' : '#F2F7FA') : (isWin ? '#FDFBF5' : '#FFFFFF');
+      ctx.fillRect(x, y, tw, th);
+      ctx.strokeStyle = on ? (isWin ? '#DFCFA6' : '#D2E3EC') : (isWin ? '#DFD3B2' : '#E4EDF3');
+      ctx.lineWidth = 1.4;
+      ctx.strokeRect(x + .7, y + .7, tw - 1.4, th - 1.4);
 
       ctx.textAlign = 'left';
-      ctx.fillStyle = on ? '#DDBAC6' : '#AEB6C1';
-      ctx.font = '800 15px ' + FONT_BODY;
-      ctx.fillText(pad(i + 1), x + 16, y + 30);
+      ctx.font = '500 13px ' + FONT_BODY;
+      if ('letterSpacing' in ctx) { ctx.letterSpacing = '1.4px'; }
+      ctx.fillStyle = on ? '#C0D0D9' : '#A9BCC8';
+      ctx.fillText(pad(i + 1), x + 14, y + 26);
+      if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
 
-      if (on) { ctx.globalAlpha = .48; }
+      if (on) { ctx.globalAlpha = .34; }
       var im = artImg(m.art);
       if (im.complete && im.naturalWidth) {
-        ctx.drawImage(im, x + tw / 2 - 39, y + 34, 78, 64);
+        ctx.drawImage(im, x + tw / 2 - 41, y + 34, 82, 67);
       }
+      ctx.globalAlpha = 1;
 
       ctx.textAlign = 'center';
-      var fs = 21, lines = [];
-      for (; fs >= 14; fs--) {
-        ctx.font = '800 ' + fs + 'px ' + FONT_BODY;
-        lines = wrapAll(ctx, m.label, tw - 40);
+      var fs = 19, lines = [];
+      for (; fs >= 13; fs--) {
+        ctx.font = '500 ' + fs + 'px ' + FONT_BODY;
+        lines = wrapAll(ctx, m.label, tw - 32);
         if (lines.length <= 2) { break; }
       }
-      if (fs < 14) { fs = 14; }
+      if (fs < 13) { fs = 13; }
       if (lines.length > 2) { lines = lines.slice(0, 2); }
-      ctx.font = '800 ' + fs + 'px ' + FONT_BODY;
-      ctx.fillStyle = on ? '#9D8A93' : '#35435B';
-      var lh = Math.round(fs * 1.3);
+      ctx.font = '500 ' + fs + 'px ' + FONT_BODY;
+      ctx.fillStyle = on ? '#8A9DAA' : '#3B4C59';
+      var lh = Math.round(fs * 1.42);
       ctx.textBaseline = 'middle';
-      var startY = y + 136 - (lines.length - 1) * lh / 2;
+      var startY = y + th - 30 - (lines.length - 1) * lh / 2;
       lines.forEach(function (ln, li) {
         ctx.fillText(ln, x + tw / 2, startY + li * lh);
       });
       ctx.textBaseline = 'alphabetic';
-      ctx.globalAlpha = 1;
 
-      if (on) {
-        drawClearStamp(ctx, x + tw / 2, y + 66, isWin, tw);
-      }
+      if (on) { drawClearStamp(ctx, x + tw / 2, y + th * 0.30, isWin, tw); }
     });
 
+    /* 지평선·소나무 */
+    ctx.strokeStyle = '#D3E2EB';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(L, 1198);
+    ctx.bezierCurveTo(360, 1192, 720, 1204, R, 1196);
+    ctx.stroke();
+    drawPine(ctx, 120, 1198, 34, '#A6BBC8');
+    drawPine(ctx, 148, 1198, 26, '#B3C6D2');
+    drawPine(ctx, 174, 1198, 30, '#A6BBC8');
+    drawPine(ctx, 958, 1196, 30, '#A6BBC8');
+    drawPine(ctx, 932, 1196, 24, '#B3C6D2');
+    drawPine(ctx, 906, 1196, 32, '#A6BBC8');
+
     ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(53,67,91,.45)';
-    ctx.font = '700 19px ' + FONT_BODY;
-    ctx.fillText('soosoosupernova.github.io/winter-bingo', W / 2, 1278);
+    ctx.font = '500 13px ' + FONT_BODY;
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '1.1px'; }
+    ctx.fillStyle = 'rgba(60,85,103,.55)';
+    ctx.fillText('soosoosupernova.github.io/winter-bingo', W / 2, 1274);
+    if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
 
     return cv;
   }
@@ -580,7 +599,6 @@
     $('savePreview').hidden = true;
 
     var imgs = MISSIONS.map(function (m) { return artImg(m.art); });
-    imgs.push(mascotImg());
 
     fontsReady()
       .then(function () { return Promise.all(imgs.map(waitImg)); })

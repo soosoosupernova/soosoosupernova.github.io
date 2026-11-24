@@ -4,6 +4,9 @@
   --line:#C97A9B; --line2:#EBBFD2; --hard:#EFBBD1;
   --pink:#FFD1E2; --bar:#F7B0CC; --hot:#E4678F;
   --lav:#E8DDFB; --lemon:#FFF3C8; --mint:#D6F2E4; --sky:#D6ECFB; --peach:#FFE0D3;
+  --apricot:#FFE2CE; --leaf:#E8F4D8; --lilac:#F2E3F7;
+  /* CTA — 파스텔 도트 톤에 녹아드는 블러시 크림·로즈베이지 */
+  --blush:#FFEAF1; --blush-hi:#FFF2F6; --rose:#D8A3B7; --plum:#5A3646;
   --f:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',system-ui,sans-serif;
   --px:'Galmuri11','DungGeunMo','Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans CJK KR',system-ui,sans-serif;
 }
@@ -118,11 +121,11 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .roster-txt span{display:block; font-size:10.5px; color:var(--ink2); line-height:1.4; margin-top:1px}
 .roster-txt span.warn{color:#C0436E; font-weight:700}
 .roster-btn{
-  flex:none; min-height:34px; padding:0 10px; border:2px solid var(--line);
-  background:var(--pink); color:var(--ink); font-family:var(--px); font-size:11px;
-  box-shadow:3px 3px 0 rgba(201,122,155,.35); cursor:pointer;
+  flex:none; min-height:34px; padding:0 10px; border:2px solid var(--rose);
+  background:var(--blush); color:var(--plum); font-family:var(--px); font-size:11px;
+  box-shadow:2px 2px 0 rgba(216,163,183,.3); cursor:pointer;
 }
-.roster-btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(201,122,155,.35)}
+.roster-btn:active{transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(216,163,183,.3)}
 .roster-btn:disabled{background:#F6EBF1; color:#C0AEBA; border-color:var(--line2); box-shadow:none; cursor:default; transform:none}
 
 /* ---------- 아코디언 ---------- */
@@ -169,6 +172,9 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .chip.on[data-cat="3"]{background:var(--mint)}
 .chip.on[data-cat="4"]{background:var(--sky)}
 .chip.on[data-cat="5"]{background:var(--peach)}
+.chip.on[data-cat="6"]{background:var(--apricot)}
+.chip.on[data-cat="7"]{background:var(--leaf)}
+.chip.on[data-cat="8"]{background:var(--lilac)}
 .chip-more{
   border-style:dashed; border-color:var(--line); background:#FFF0F7; color:var(--ink2);
   box-shadow:none;
@@ -177,6 +183,24 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .chip-more .chip-plus{color:var(--hot); font-size:11px}
 .acc-tools{display:flex; flex-wrap:wrap; gap:6px; padding-top:3px; border-top:2px dashed var(--line2)}
 .acc-tools .tool-btn{margin-top:9px}
+.acc-tools .more-btn{flex:1 1 100%; margin-top:9px}
+/* 카테고리 칩 페이지 — 10개씩 보고 나머지는 '1/2' 뱃지로 더 보기 */
+.more-btn{
+  display:flex; align-items:center; justify-content:flex-start; gap:6px; width:100%; min-height:32px; padding:0 8px;
+  border:1.5px solid #E2B8C8; background:#FFFFFF;
+  color:var(--ink2); font-family:var(--px); font-size:11px; text-align:left; cursor:pointer;
+  box-shadow:1px 1px 0 rgba(226,184,200,.26);
+}
+.more-btn:hover{background:#FFF9FB}
+.more-btn:active{background:#FFF4F8; box-shadow:none}
+.more-badge{
+  flex:none; display:inline-flex; align-items:center; justify-content:center; min-width:29px; height:18px; padding:0 4px;
+  background:#FFF4F8; border:1px solid #E2B8C8; color:var(--ink2); font-family:var(--px); font-size:10px;
+}
+.more-txt{flex:0 1 auto; min-width:0; text-align:left; white-space:nowrap}
+.more-txt b{color:#8A6474; font-weight:600}
+.more-arrow{flex:none; font-size:9px; color:var(--mute); margin-left:1px}
+.more-btn.at-end .more-arrow{transform:rotate(180deg)}
 .tool-btn{
   min-height:32px; padding:0 9px; border:2px solid var(--line); background:var(--mint);
   color:var(--ink); font-family:var(--px); font-size:11px; cursor:pointer;
@@ -192,8 +216,8 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .custom-row input::placeholder{color:#C4AEBA; font-family:var(--f); font-size:11.5px}
 .custom-row input:focus{border-color:var(--hot); outline:none}
 .custom-add{
-  flex:none; min-height:38px; padding:0 10px; border:2px solid var(--line); background:var(--pink);
-  color:var(--ink); font-family:var(--px); font-size:11px; cursor:pointer; box-shadow:2px 2px 0 rgba(201,122,155,.3);
+  flex:none; min-height:38px; padding:0 10px; border:2px solid var(--rose); background:var(--blush);
+  color:var(--plum); font-family:var(--px); font-size:11px; cursor:pointer; box-shadow:2px 2px 0 rgba(216,163,183,.28);
 }
 .custom-hint{margin:6px 0 0; font-size:10.5px; color:var(--mute); line-height:1.5}
 
@@ -219,8 +243,9 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
   padding:12px 12px; border:2px solid var(--line); font-family:var(--px); font-size:13px;
   cursor:pointer; text-align:center; letter-spacing:0;
 }
-.btn.primary{background:var(--bar); color:#4B2A3A; box-shadow:4px 4px 0 rgba(201,122,155,.42)}
-.btn.primary:active{transform:translate(3px,3px); box-shadow:1px 1px 0 rgba(201,122,155,.42)}
+.btn.primary{background:var(--blush); border-color:var(--rose); color:var(--plum); font-weight:700; box-shadow:3px 3px 0 rgba(216,163,183,.3)}
+.btn.primary:hover:not([disabled]){background:var(--blush-hi)}
+.btn.primary:active{background:var(--blush-hi); transform:translate(3px,3px); box-shadow:1px 1px 0 rgba(216,163,183,.3)}
 .btn.ghost{background:var(--mint); color:#3F5B50; font-size:12px; box-shadow:3px 3px 0 rgba(201,122,155,.26)}
 .btn.ghost:active{transform:translate(2px,2px); box-shadow:1px 1px 0 rgba(201,122,155,.26)}
 .btn[disabled]{background:#F6EBF1; color:#C0AEBA; border-color:var(--line2); box-shadow:none; cursor:default; transform:none}
@@ -254,9 +279,23 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .cell.tight .cell-txt{font-size:.92em; line-height:1.2}
 .cell.k0{background:var(--pink)} .cell.k1{background:var(--lav)} .cell.k2{background:var(--lemon)}
 .cell.k3{background:var(--mint)} .cell.k4{background:var(--sky)} .cell.k5{background:var(--peach)}
-.cell.free{background:#FFF7FB; border-style:dashed; border-color:var(--line2); color:var(--mute); box-shadow:none}
+.cell.k6{background:var(--apricot)} .cell.k7{background:var(--leaf)} .cell.k8{background:var(--lilac)}
+/* 3×3 판: 칸이 넓어서 글자·아이콘을 키운다 */
+.board.cols3{grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px}
+.board.cols3 .cell{font-size:13px}
+.board.cols3 .cell-in{padding:10px 5px 6px; gap:4px}
+.board.cols3 .cell-ico{width:34px}
+.board.cols3 .cell.tight .cell-in{padding:8px 4px 5px}
+.board.cols3 .cell.tight .cell-ico{width:28px}
+.cell.free{background:#FFF7FB; border-style:dashed; border-color:var(--line2); color:var(--mute); box-shadow:none; cursor:pointer; appearance:none}
 .cell.free .cell-star{display:block; font-size:11px; line-height:1}
 .cell.free .cell-free{display:block; font-family:var(--px); font-size:9px; margin-top:1px}
+.cell.free .cell-free-hint{display:none; margin-top:3px; font-family:var(--f); font-size:9px; font-weight:700; color:#C4AEBA; line-height:1.3}
+.board.cols3 .cell.free .cell-free-hint{display:block}
+.cell.free.clear{background:#EFF9F4; border-style:solid; border-color:#7ED0C4; color:#3F7D74; box-shadow:2px 2px 0 rgba(126,208,196,.28)}
+.cell.free.clear .cell-free-hint{display:none}
+.cell .tap-check{position:absolute; top:2px; right:2px; width:13px; height:12px; color:#4E9E7B; z-index:2}
+.cell .tap-check .i{width:100%; height:100%; display:block}
 .legend{margin:9px 0 8px; font-size:10.5px; line-height:1.65; color:var(--ink2); word-break:keep-all}
 .board-meta{display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin:0 0 9px; font-family:var(--px); font-size:10.5px; color:var(--ink2)}
 .board-meta .dot{width:4px; height:4px; background:var(--line)}
@@ -264,6 +303,7 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 /* 친구 모드 셀 */
 .friend-board .cell{cursor:pointer; -webkit-user-select:none; user-select:none}
 .friend-board .cell:active{transform:translate(1px,1px)}
+.board .cell.free:active{transform:translate(1px,1px)}
 .friend-board .cell.tap{background-image:linear-gradient(0deg, rgba(255,255,255,.35), rgba(255,255,255,.35))}
 .friend-board .cell.tap:not(.bingo)::before{
   content:""; position:absolute; inset:2px; border:2px dashed var(--hot); pointer-events:none;
@@ -278,7 +318,6 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 }
 .cell.pop{animation:pop .2s steps(2)}
 @keyframes pop{0%{transform:scale(.94)} 100%{transform:scale(1)}}
-
 /* ---------- 친구 지표 ---------- */
 .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:2px 0 9px}
 .stat{

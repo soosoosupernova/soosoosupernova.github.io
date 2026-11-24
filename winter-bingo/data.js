@@ -3,7 +3,7 @@ window.WINTER_BINGO_DATA = {
   MISSIONS: [
     { label: '갓 구운 붕어빵', art: 'fish' },
     { label: '눈사람이랑 셀카', art: 'snow' },
-    { label: '첫눈 날 엄마 연락', art: 'phone' },
+    { label: '첫눈 날 엄마에게 연락', art: 'phone' },
     { label: '핫팩 전해주기', art: 'warm' },
     { label: '따끈한 뱅쇼 한 잔', art: 'mug' },
     { label: '크리스마스 케이크', art: 'cake' },
