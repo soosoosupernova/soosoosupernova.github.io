@@ -171,6 +171,21 @@
     });
     $('topTag').textContent = id === 's-friend' ? '친구 참여' : (id === 's-board' ? '내 빙고판' : '취향 고르기');
     window.scrollTo(0, 0);
+    if (id === 's-board') { setTimeout(loadAdfit, 0); }
+  }
+
+  /* 애드핏: 광고 자리가 빙고판 화면 안에 있어서, 그 화면이 처음 보일 때 스크립트를 한 번 불러와요.
+     (숨겨진 상태에서 먼저 실행되면 애드핏이 광고 요청을 건너뛰기 때문) */
+  var adfitLoaded = false;
+  function loadAdfit() {
+    if (adfitLoaded) { return; }
+    var box = document.querySelector('#s-board .adfit-wrap');
+    if (!box || $('s-board').hidden) { return; }
+    adfitLoaded = true;
+    var s = document.createElement('script');
+    s.src = 'https://t1.kakaocdn.net/kas/static/ba.min.js';
+    s.async = true;
+    document.body.appendChild(s);
   }
 
   function clean(str) {
