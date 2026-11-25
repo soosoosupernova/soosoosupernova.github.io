@@ -113,6 +113,7 @@
     $('sharePanel').hidden = true;
     $('savePreview').hidden = true;
     $('bonusPanel').hidden = true;
+    $('bonusBtn').setAttribute('aria-expanded', 'false');
     $('statusMsg').textContent = '';
     show('result');
   }
@@ -172,6 +173,7 @@
     $('sharePanel').hidden = true;
     $('savePreview').hidden = true;
     $('bonusPanel').hidden = true;
+    $('bonusBtn').setAttribute('aria-expanded', 'false');
     $('statusMsg').textContent = '';
     document.title = PAGE_TITLE;
     show('intro');
