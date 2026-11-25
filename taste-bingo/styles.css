@@ -393,10 +393,9 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .foot-links a{color:var(--ink2); text-decoration:none; font-weight:700}
 .foot .addr{font-family:var(--px); font-size:10px}
 
-/* 광고 자리 — 다른 웹툴과 같은 규격(320×100), 매체 승인 전이라 자리만 */
-.adfit-wrap{display:flex; justify-content:center; align-items:center; width:100%; max-width:100%; min-height:104px; margin:14px 0 0; overflow:hidden; border:2px dashed var(--line2); background:rgba(255,247,251,.8)}
+/* 광고 자리 — 다른 웹툴과 같은 320×100 하단 배너 규격 */
+.adfit-wrap{display:flex; justify-content:center; align-items:center; width:100%; max-width:100%; margin:14px 0 0; overflow:hidden}
 .adfit-wrap .kakao_ad_area{flex:none; max-width:100%}
-.adfit-ph{font-family:var(--px); font-size:10px; color:#C0AEBA}
 @media print{.adfit-wrap{display:none!important}}
 
 /* ---------- 좁은 화면 ---------- */

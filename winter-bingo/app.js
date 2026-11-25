@@ -147,7 +147,7 @@
     if (isFriend) {
       $('friendTitle').textContent = friend.name ? friend.name + '님의 겨울취향표' : '겨울취향표';
       $('friendMeta').textContent = n + '/16 완료 · ' + wins.length + '줄 빙고';
-      document.title = (friend.name ? friend.name + '님의 ' : '') + '겨울취향표 · 올 겨울 얼마나 즐겼지?';
+      document.title = (friend.name ? friend.name + '님의 ' : '') + '겨울취향표 · 올 겨울 찐하게 즐기고 있나요?';
     }
   }
 
@@ -458,7 +458,7 @@
     if ('letterSpacing' in ctx) { ctx.letterSpacing = '0px'; }
 
     /* 제목 */
-    var title = '올 겨울 얼마나 즐겼지?';
+    var title = '올 겨울 찐하게 즐기고 있나요?';
     var tSize = 62;
     ctx.textAlign = 'left';
     ctx.font = '400 ' + tSize + 'px ' + FONT_DISPLAY;

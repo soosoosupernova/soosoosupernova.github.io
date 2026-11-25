@@ -175,8 +175,9 @@ button{font-family:inherit}
 @keyframes fall{to{transform:translateY(105vh) rotate(650deg); opacity:0}}
 
 /* ---------- 광고 ---------- */
-.adfit-wrap{margin:14px 0 0}
-.adfit-ph{display:block; padding:14px 10px; text-align:center; font-size:8px; letter-spacing:.18em; color:#B0C1CC; border:1px solid var(--line); background:#fff}
+.adfit-wrap{display:flex; justify-content:center; width:100%; max-width:100%; margin:14px auto 0; overflow:hidden}
+.adfit-wrap .kakao_ad_area{flex:none; max-width:100%}
+@media print{.adfit-wrap{display:none!important}}
 
 /* ---------- 안내 본문 ---------- */
 .info{margin-top:22px; padding:20px 0 0; border-top:1px solid var(--line2)}
