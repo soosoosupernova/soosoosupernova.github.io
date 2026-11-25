@@ -888,7 +888,8 @@
     ctx.font = '400 30px ' + TXT;
     var rxLines = wrap(ctx, B.rx, textW, 2);
     var rxH = rxLines.length === 1 ? 118 : 52 + rxLines.length * 44 + 34;
-    var rxBottom = 1200;
+    /* 하단 띠를 걷어낸 자리 — 효능 상자를 카드 아래 끝으로 내려 여백을 맞춘다 */
+    var rxBottom = 1240;
     var rxY = rxBottom - rxH;
 
     ctx.fillStyle = '#FFFFFF';
@@ -925,38 +926,6 @@
     rxLines.forEach(function (ln, i) {
       ctx.fillText(ln, textX, firstBaseline + i * 44);
     });
-
-    /* ── 맨 아래 보너스 띠 ── */
-    var bandY = 1216, bandH = 56, bandW = rxW;
-    ctx.fillStyle = BUTTER;
-    roundRect(ctx, rxX, bandY, bandW, bandH, 16);
-    ctx.fill();
-    ctx.save();
-    ctx.setLineDash([9, 7]);
-    ctx.strokeStyle = 'rgba(36, 31, 51, .16)';
-    ctx.lineWidth = 3;
-    roundRect(ctx, rxX, bandY, bandW, bandH, 16);
-    ctx.stroke();
-    ctx.restore();
-
-    ctx.font = '400 20px ' + PIX;
-    letterSpacing(ctx, '1px');
-    var labTxt = '보너스';
-    var labW2 = ctx.measureText(labTxt).width + 22;
-    ctx.fillStyle = INK;
-    roundRect(ctx, rxX + 16, bandY + 12, labW2, 32, 6);
-    ctx.fill();
-    ctx.fillStyle = '#FFFFFF';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(labTxt, rxX + 16 + labW2 / 2, bandY + 29);
-    letterSpacing(ctx, '0px');
-
-    ctx.font = '400 23px ' + TXT;
-    ctx.fillStyle = '#2E2840';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(B.line, rxX + 16 + labW2 + 14, bandY + 30);
 
     /* ── 하단 주소 ── */
     ctx.textAlign = 'center';

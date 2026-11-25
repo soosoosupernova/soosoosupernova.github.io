@@ -839,7 +839,6 @@ body {
 .bonus-chip { --zc: var(--mint); }
 .bonus-tag { --zc: var(--mint); }
 .bonus-kw { box-shadow: 3px 3px 0 var(--mint); }
-.bonus-line { --zc: var(--butter); }
 .bonus-actions { margin: 12px 0 0; display: flex; align-items: center; gap: 10px; }
 .bonus-actions .primary {
   flex: 1;
