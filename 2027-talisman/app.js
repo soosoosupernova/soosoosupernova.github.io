@@ -92,7 +92,7 @@
       renderQ();
       return;
     }
-    var t = D.matchType(state.picks) || D.TYPES['1,1,1'];
+    var t = D.matchType(state.picks) || D.FALLBACK;
     paint(t);
     setMode('mine');
   }
@@ -108,22 +108,41 @@
     $('cardSpell').textContent = t.spell;
     $('cardRx').textContent = t.rx;
 
-    var y = state.year;
-    if (D.validYear(y)) {
-      var zod = D.zodiacOf(+y);
-      $('cardZodiac').textContent = y + ' · ' + zod;
-      $('cardZline').innerHTML = '<strong>' + zod + '</strong> · ' + D.ZODIAC_LINE[zod];
-      $('cardZline').hidden = false;
-    } else {
-      $('cardZodiac').textContent = '丁未 · 정미년';
-      $('cardZline').innerHTML = '';
-      $('cardZline').hidden = true;
-    }
+    paintZodiac();
 
     $('sharePanel').hidden = true;
     $('savePreview').hidden = true;
     $('statusMsg').textContent = '';
     show('result');
+  }
+
+  /* 띠 배지(오행 파스텔) + 사주 도장 + 2027 사주 한 줄.
+     태어난 해를 넣지 않으면 배지는 기본 톤이고 도장·한 줄은 감춘다. */
+  function paintZodiac() {
+    var y = state.year;
+    var zod = D.validYear(y) ? D.zodiacOf(+y) : null;
+    var saju = zod ? D.ZODIAC_SAJU[zod] : null;
+    var chip = $('cardZodiac');
+    var stamp = $('cardStamp');
+    var line = $('cardZline');
+
+    if (saju) {
+      chip.textContent = y + ' · ' + zod;
+      chip.classList.add('on');
+      $('card').style.setProperty('--zc', saju.color);
+      stamp.textContent = saju.hanja + ' · ' + saju.stamp;
+      stamp.hidden = false;
+      $('cardZlineText').textContent = saju.line;
+      line.hidden = false;
+    } else {
+      chip.textContent = '丁未 · 정미년';
+      chip.classList.remove('on');
+      $('card').style.removeProperty('--zc');
+      stamp.textContent = '';
+      stamp.hidden = true;
+      $('cardZlineText').textContent = '';
+      line.hidden = true;
+    }
   }
 
   function setMode(mode) {
@@ -328,6 +347,8 @@
     var M = 60, PW = 960, PH = 1230;   /* 카드 60~1020 × 60~1290 */
     var L = M + 44;
     var hasZ = D.validYear(state.year);
+    var saju = hasZ ? D.ZODIAC_SAJU[D.zodiacOf(+state.year)] : null;
+    hasZ = !!saju;
 
     /* 그림자 + 종이 */
     ctx.fillStyle = 'rgba(36, 31, 51, .13)';
@@ -365,7 +386,7 @@
     var rxLines = wrap(ctx, t.rx, textW, 3);
     var rxH = rxLines.length === 1 ? 118 : 52 + rxLines.length * 44 + 34;
 
-    var rxBottom = hasZ ? 1174 : 1240;
+    var rxBottom = hasZ ? 1110 : 1240;
     var rxY = rxBottom - rxH;
     var spellY = rxY - 30;
     var nameY = spellY - 48;
@@ -425,24 +446,54 @@
     ctx.restore();
     letterSpacing(ctx, '0px');
 
-    /* ── 띠 칩 ── */
+    /* ── 띠 칩 (띠 오행 파스텔) ── */
     var zodTxt = hasZ ? state.year + ' · ' + D.zodiacOf(+state.year) : '丁未 · 정미년';
     ctx.font = '500 29px ' + TXT;
     var zw = ctx.measureText(zodTxt).width + 40;
-    ctx.fillStyle = 'rgba(255, 255, 255, .92)';
+    ctx.fillStyle = saju ? saju.color : 'rgba(255, 255, 255, .92)';
     roundRect(ctx, L, chipTop, zw, chipH, 26);
     ctx.fill();
     ctx.save();
     ctx.setLineDash([9, 7]);
-    ctx.strokeStyle = '#C9BFE8';
+    ctx.strokeStyle = saju ? 'rgba(36, 31, 51, .20)' : '#C9BFE8';
     ctx.lineWidth = 3;
     roundRect(ctx, L, chipTop, zw, chipH, 26);
     ctx.stroke();
     ctx.restore();
-    ctx.fillStyle = SOFT;
+    ctx.fillStyle = saju ? INK : SOFT;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
     ctx.fillText(zodTxt, L + 20, chipTop + chipH / 2 + 1);
+
+    /* ── 사주 도장: 午 · 화(火) · 귀인·육합운 ── */
+    if (saju) {
+      var stampTxt = saju.hanja + ' · ' + saju.stamp;
+      ctx.font = '400 25px ' + PIX;
+      letterSpacing(ctx, '1px');
+      var sw = ctx.measureText(stampTxt).width + 36;
+      var sh = 56;
+      var sx = M + PW - 44 - sw;
+      ctx.save();
+      ctx.translate(sx + sw / 2, chipTop + chipH / 2 + 1);
+      ctx.rotate(2 * Math.PI / 180);
+      ctx.fillStyle = '#FFFFFF';
+      roundRect(ctx, -sw / 2, -sh / 2, sw, sh, 10);
+      ctx.fill();
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = 4;
+      roundRect(ctx, -sw / 2, -sh / 2, sw, sh, 10);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(36, 31, 51, .22)';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, -sw / 2 + 7, -sh / 2 + 7, sw - 14, sh - 14, 5);
+      ctx.stroke();
+      ctx.fillStyle = INK;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(stampTxt, 1, 2);
+      ctx.restore();
+      letterSpacing(ctx, '0px');
+    }
 
     /* ── 캐릭터 ── */
     var cx = 540, cy = figTop + figH / 2;
@@ -565,27 +616,48 @@
       ctx.fillText(ln, textX, firstBaseline + i * 44);
     });
 
-    /* ── 띠 한 줄 ── */
-    if (hasZ) {
-      var zod = D.zodiacOf(+state.year);
+    /* ── 사주 부적 한 줄 (띠 오행 파스텔 띠) ── */
+    if (saju) {
+      var bandH = 120;
+      var bandY = 1256 - bandH;
+      ctx.fillStyle = saju.color;
+      roundRect(ctx, rxX, bandY, rxW, bandH, 22);
+      ctx.fill();
       ctx.save();
-      ctx.setLineDash([7, 8]);
-      ctx.strokeStyle = '#DCCFEF';
+      ctx.setLineDash([10, 8]);
+      ctx.strokeStyle = 'rgba(36, 31, 51, .18)';
       ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(rxX + 40, rxBottom + 26);
-      ctx.lineTo(rxX + rxW - 40, rxBottom + 26);
+      roundRect(ctx, rxX, bandY, rxW, bandH, 22);
       ctx.stroke();
       ctx.restore();
 
+      /* 2027 사주 라벨 */
+      ctx.font = '400 21px ' + PIX;
+      letterSpacing(ctx, '2px');
+      var labTxt = '2027 사주';
+      var labW = ctx.measureText(labTxt).width + 26;
+      ctx.fillStyle = INK;
+      roundRect(ctx, 540 - labW / 2, bandY + 15, labW, 34, 6);
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
       ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(labTxt, 540, bandY + 15 + 18);
+      letterSpacing(ctx, '0px');
+
+      /* 띠 한 줄 — 824 폭에 들어가게 28px → 24px 폴백 */
+      var zline = saju.line;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'alphabetic';
       ctx.font = '400 28px ' + TXT;
-      ctx.fillStyle = SOFT;
-      var zline = zod + ' · ' + D.ZODIAC_LINE[zod];
-      if (ctx.measureText(zline).width > rxW - 20) {
-        ctx.font = '400 25px ' + TXT;
+      if (ctx.measureText(zline).width > rxW - 56) {
+        ctx.font = '400 26px ' + TXT;
       }
-      ctx.fillText(zline, 540, rxBottom + 70);
+      if (ctx.measureText(zline).width > rxW - 56) {
+        ctx.font = '400 24px ' + TXT;
+      }
+      ctx.fillStyle = '#2E2840';
+      ctx.fillText(zline, 540, bandY + 100);
     }
 
     /* ── 하단 주소 ── */

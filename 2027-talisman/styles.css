@@ -570,6 +570,15 @@ body {
   border-radius: 4px;
   transform: rotate(2deg);
 }
+.zrow {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin: 10px 0 0;
+}
 .zyear {
   font-family: var(--pix);
   font-size: 9px;
@@ -578,8 +587,29 @@ body {
   border-radius: 12px;
   background: rgba(255, 255, 255, .85);
   padding: 4px 9px 3px;
-  margin: 10px 0 0;
-  align-self: flex-start;
+  margin: 0;
+}
+/* 태어난 해를 넣었을 때: 띠 오행 파스텔 배지 */
+.zyear.on {
+  color: var(--ink);
+  background: var(--zc, #fff);
+  border-style: solid;
+  border-color: rgba(36, 31, 51, .22);
+  box-shadow: 0 2px 0 rgba(36, 31, 51, .06);
+}
+.zstamp {
+  font-family: var(--pix);
+  font-size: 8.5px;
+  letter-spacing: .01em;
+  line-height: 1.5;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  padding: 3px 6px 2px;
+  transform: rotate(2deg);
+  box-shadow: 2px 2px 0 var(--zc, #E7DFF3);
+  white-space: nowrap;
 }
 
 .figure {
@@ -671,18 +701,39 @@ body {
   word-break: keep-all;
 }
 
+/* 2027 사주 부적 한 줄 — 띠 오행 파스텔 띠 */
 .zline {
   margin: 12px 0 0;
-  padding-top: 11px;
   width: 100%;
-  border-top: 1px dashed #DCCFEF;
-  font-size: 10.5px;
-  line-height: 1.7;
-  color: var(--ink-soft);
-  text-align: center;
+  background: var(--zc, #fff);
+  border: 2px dashed rgba(36, 31, 51, .16);
+  border-radius: 12px;
+  padding: 10px 11px 11px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  text-align: left;
+}
+.zline .zlab {
+  flex: none;
+  font-family: var(--pix);
+  font-size: 8px;
+  letter-spacing: .04em;
+  line-height: 1.4;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 3px;
+  padding: 2px 5px 1px;
+  margin-top: 2px;
+  white-space: nowrap;
+}
+.zline p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.75;
+  color: #2E2840;
   word-break: keep-all;
 }
-.zline strong { color: var(--pink-deep); font-weight: 600; }
 
 .guard {
   position: absolute;
@@ -838,9 +889,62 @@ body {
 }
 .info-list b { display: block; font-family: var(--pix); font-size: 11px; letter-spacing: .02em; color: var(--pink-deep); margin-bottom: 2px; }
 
-.types-table { width: 100%; border-collapse: collapse; margin: 6px 0 16px; font-size: 11.5px; }
-.types-table th, .types-table td { border-bottom: 1px solid var(--line); padding: 7px 4px; text-align: left; color: #403A52; }
-.types-table th { font-family: var(--pix); font-size: 9.5px; letter-spacing: .06em; color: var(--ink-soft); font-weight: 400; }
+.types-title {
+  margin: 22px 0 4px;
+  font-family: var(--pix);
+  font-size: 12px;
+  letter-spacing: .01em;
+  color: var(--ink);
+}
+.types-lead { margin: 0 0 10px; font-size: 11.5px; line-height: 1.7; color: var(--ink-soft); }
+.types-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+.types-grid li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  min-width: 0;
+  background: #FFFCF2;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 6px 3px 7px;
+  text-align: center;
+}
+.types-grid img {
+  width: 54px;
+  height: 54px;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 1px 0 2px;
+}
+.types-grid .no {
+  font-family: var(--pix);
+  font-size: 7px;
+  letter-spacing: .06em;
+  color: var(--ink-faint);
+}
+.types-grid b {
+  font-family: var(--pix);
+  font-size: 9.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ink);
+  word-break: keep-all;
+}
+.types-grid .tg-kw {
+  font-size: 8.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  word-break: keep-all;
+}
 
 .info-faq { margin: 6px 0 16px; }
 .info-faq summary {
@@ -892,6 +996,9 @@ body {
   }
   .info { margin-top: 18px; border: 2px solid #E4DBF3; border-radius: 22px; }
   .intro-body, .quiz-body, .result-body { padding-left: 30px; padding-right: 30px; }
+  .types-grid img { width: 72px; height: 72px; }
+  .types-grid b { font-size: 10.5px; }
+  .types-grid .tg-kw { font-size: 9.5px; }
 }
 
 @media (max-width: 363px) {
@@ -902,6 +1009,10 @@ body {
 @media (max-width: 340px) {
   #quiz.wide .qtext { font-size: 19px; }
   #quiz.wide .opt { font-size: 12px; padding: 12px 11px; gap: 10px; }
+  .types-grid { gap: 6px; }
+  .types-grid b { font-size: 9px; }
+  .types-grid .tg-kw { font-size: 8px; }
+  .zstamp { font-size: 8px; }
 }
 
 @media (max-width: 600px) and (max-height: 700px) {
