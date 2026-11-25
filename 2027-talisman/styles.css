@@ -891,6 +891,16 @@ body {
   .stage-a { --deck-k: .86; }
 }
 
+@media (max-width: 600px) and (max-height: 740px) {
+  .stage { height: 340px; }
+  .stage-a { --deck-k: .8; }
+  .topbar { padding-top: 14px; }
+  .yearpill { margin-top: 20px; }
+  .intro-title { margin-top: 14px; }
+  .lede { margin-top: 10px; }
+  .intro-foot { padding-top: 10px; }
+}
+
 @media (max-width: 340px) {
   .intro-body, .quiz-body, .result-body { padding-left: 18px; padding-right: 18px; }
   .yearpill { margin-top: 24px; }
