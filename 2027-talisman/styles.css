@@ -417,7 +417,7 @@ body {
 
 .steps { display: flex; gap: 5px; margin-top: 22px; }
 .steps i {
-  width: 26px;
+  width: 21px;
   height: 6px;
   background: #E7DFF3;
   border: 1px solid #D5CAEA;
@@ -447,6 +447,14 @@ body {
 }
 
 .opts { margin: 28px 0 0; display: flex; flex-direction: column; gap: 12px; }
+/* 4지선다(2027 소원)는 보기 넷이 한 화면에 들어오도록 여백을 줄인다 */
+#quiz.wide .yearchip { margin-top: 18px; }
+#quiz.wide .steps { margin-top: 16px; }
+#quiz.wide .axis { margin-top: 18px; }
+#quiz.wide .qtext { margin-top: 12px; font-size: clamp(19px, 5.4vw, 21px); }
+#quiz.wide .opts { margin-top: 20px; gap: 9px; }
+#quiz.wide .opt { padding: 13px 13px; font-size: 13px; gap: 11px; }
+
 .opt {
   text-align: left;
   cursor: pointer;
@@ -889,6 +897,21 @@ body {
 @media (max-width: 363px) {
   .stage { height: 365px; }
   .stage-a { --deck-k: .86; }
+}
+
+@media (max-width: 340px) {
+  #quiz.wide .qtext { font-size: 19px; }
+  #quiz.wide .opt { font-size: 12px; padding: 12px 11px; gap: 10px; }
+}
+
+@media (max-width: 600px) and (max-height: 700px) {
+  #quiz.wide .yearchip { margin-top: 14px; }
+  #quiz.wide .steps { margin-top: 12px; }
+  #quiz.wide .axis { margin-top: 14px; }
+  #quiz.wide .qtext { margin-top: 10px; }
+  #quiz.wide .opts { margin-top: 16px; gap: 8px; }
+  #quiz.wide .opt { padding: 11px 12px; }
+  #quiz.wide .quizfoot { padding: 14px 0 18px; }
 }
 
 @media (max-width: 600px) and (max-height: 740px) {

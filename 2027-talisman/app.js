@@ -48,29 +48,51 @@
     var q = D.QUESTIONS[state.idx];
     $('axis').textContent = q.axis;
     $('qtext').textContent = q.q;
-    $('stepTag').textContent = (state.idx + 1) + ' / 3';
+    $('stepTag').textContent = (state.idx + 1) + ' / ' + D.QUESTIONS.length;
+    $('quiz').classList.toggle('wide', q.opts.length > 2);
 
     var bars = $('quiz').querySelectorAll('.steps i');
     Array.prototype.forEach.call(bars, function (b, i) {
       b.classList.toggle('on', i <= state.idx);
     });
 
-    var opts = $('quiz').querySelectorAll('.opt');
-    opts[0].querySelector('.t').textContent = q.a;
-    opts[1].querySelector('.t').textContent = q.b;
-    opts[0].setAttribute('aria-label', 'A. ' + q.a);
-    opts[1].setAttribute('aria-label', 'B. ' + q.b);
-    Array.prototype.forEach.call(opts, function (o) { o.classList.remove('chosen'); });
+    var box = $('opts');
+    box.innerHTML = '';
+    q.opts.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'opt';
+      b.setAttribute('aria-label', o.k + '. ' + o.t);
+      if (o.wish) { b.setAttribute('data-wish', o.wish); }
+      else { b.setAttribute('data-v', o.v); }
+
+      var k = document.createElement('span');
+      k.className = 'k';
+      k.setAttribute('aria-hidden', 'true');
+      k.textContent = o.k;
+
+      var t = document.createElement('span');
+      t.className = 't';
+      t.textContent = o.t;
+
+      b.appendChild(k);
+      b.appendChild(t);
+      box.appendChild(b);
+    });
   }
 
-  function answer(v) {
-    state.picks[state.idx] = v;
-    if (state.idx < 2) {
+  function answer(opt) {
+    var q = D.QUESTIONS[state.idx];
+    state.picks[state.idx] = q.opts.length > 2
+      ? opt.getAttribute('data-wish')
+      : parseInt(opt.getAttribute('data-v'), 10);
+
+    if (state.idx < D.QUESTIONS.length - 1) {
       state.idx += 1;
       renderQ();
       return;
     }
-    var t = D.typeOf(state.picks[0], state.picks[1], state.picks[2]) || D.TYPES['1,1,1'];
+    var t = D.matchType(state.picks) || D.TYPES['1,1,1'];
     paint(t);
     setMode('mine');
   }
@@ -675,17 +697,16 @@
   $('yearInput').addEventListener('input', onYearInput);
   $('yearInput').addEventListener('blur', onYearInput);
 
-  Array.prototype.forEach.call($('quiz').querySelectorAll('.opt'), function (o) {
-    o.addEventListener('click', function () {
-      if (state.busy) { return; }
-      state.busy = true;
-      o.classList.add('chosen');
-      var v = parseInt(o.getAttribute('data-v'), 10);
-      setTimeout(function () {
-        state.busy = false;
-        answer(v);
-      }, 120);
-    });
+  $('opts').addEventListener('click', function (e) {
+    var el = e.target;
+    while (el && el !== this && !el.classList.contains('opt')) { el = el.parentNode; }
+    if (!el || el === this || state.busy) { return; }
+    state.busy = true;
+    el.classList.add('chosen');
+    setTimeout(function () {
+      state.busy = false;
+      answer(el);
+    }, 120);
   });
 
   $('backBtn').addEventListener('click', function () {
