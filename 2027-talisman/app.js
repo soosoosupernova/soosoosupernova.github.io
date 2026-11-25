@@ -112,6 +112,7 @@
 
     $('sharePanel').hidden = true;
     $('savePreview').hidden = true;
+    $('bonusPanel').hidden = true;
     $('statusMsg').textContent = '';
     show('result');
   }
@@ -170,6 +171,7 @@
     syncYearUI();
     $('sharePanel').hidden = true;
     $('savePreview').hidden = true;
+    $('bonusPanel').hidden = true;
     $('statusMsg').textContent = '';
     document.title = PAGE_TITLE;
     show('intro');
@@ -691,6 +693,289 @@
     return cv;
   }
 
+  /* ── 모두의 보너스 부적(복실양) — 1080×1350 한 장 ── */
+  function paintBonusPanel(ctx, img) {
+    var B = D.BONUS;
+    var M = 60, PW = 960, PH = 1230;
+    var L = M + 44;
+
+    /* 그림자 + 종이 */
+    ctx.fillStyle = 'rgba(36, 31, 51, .13)';
+    roundRect(ctx, M + 14, M + 16, PW, PH, 56);
+    ctx.fill();
+
+    ctx.fillStyle = PAPER;
+    roundRect(ctx, M, M, PW, PH, 56);
+    ctx.fill();
+
+    ctx.save();
+    roundRect(ctx, M + 4, M + 4, PW - 8, PH - 8, 52);
+    ctx.clip();
+    ctx.fillStyle = 'rgba(220, 170, 90, .30)';
+    for (var gx = M + 22; gx < M + PW - 10; gx += 28) {
+      for (var gy = M + 22; gy < M + PH - 10; gy += 28) {
+        ctx.beginPath();
+        ctx.arc(gx, gy, 2.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 6;
+    roundRect(ctx, M + 3, M + 3, PW - 6, PH - 6, 53);
+    ctx.stroke();
+
+    /* ── 2027 배지 ── */
+    var bh = 104;
+    ctx.font = '700 78px ' + PIX;
+    letterSpacing(ctx, '3px');
+    var bw = ctx.measureText('2027').width + 44;
+    ctx.save();
+    ctx.translate(L + bw / 2, 92 + bh / 2);
+    ctx.rotate(-1.5 * Math.PI / 180);
+    ctx.fillStyle = BUTTER;
+    roundRect(ctx, -bw / 2 + 9, -bh / 2 + 11, bw, bh, 14);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, -bw / 2, -bh / 2, bw, bh, 14);
+    ctx.fill();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 6;
+    roundRect(ctx, -bw / 2, -bh / 2, bw, bh, 14);
+    ctx.stroke();
+    ctx.fillStyle = PINK_DEEP;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('2027', 1, 4);
+    ctx.restore();
+    letterSpacing(ctx, '0px');
+
+    /* ── BONUS 배지 ── */
+    ctx.font = '400 30px ' + PIX;
+    letterSpacing(ctx, '2px');
+    var nw = ctx.measureText(B.no).width + 34;
+    var nh = 56;
+    ctx.save();
+    ctx.translate(M + PW - 44 - nw / 2, 92 + nh / 2);
+    ctx.rotate(2 * Math.PI / 180);
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, -nw / 2, -nh / 2, nw, nh, 9);
+    ctx.fill();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 5;
+    roundRect(ctx, -nw / 2, -nh / 2, nw, nh, 9);
+    ctx.stroke();
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(B.no, 1, 2);
+    ctx.restore();
+    letterSpacing(ctx, '0px');
+
+    /* ── 丁未 · 정미년 칩 + 모두에게 도장 ── */
+    var chipTop = 216, chipH = 52;
+    ctx.font = '500 29px ' + TXT;
+    var zw = ctx.measureText(B.label).width + 40;
+    ctx.fillStyle = MINT;
+    roundRect(ctx, L, chipTop, zw, chipH, 26);
+    ctx.fill();
+    ctx.save();
+    ctx.setLineDash([9, 7]);
+    ctx.strokeStyle = 'rgba(36, 31, 51, .20)';
+    ctx.lineWidth = 3;
+    roundRect(ctx, L, chipTop, zw, chipH, 26);
+    ctx.stroke();
+    ctx.restore();
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(B.label, L + 20, chipTop + chipH / 2 + 1);
+
+    ctx.font = '400 25px ' + PIX;
+    letterSpacing(ctx, '1px');
+    var tw = ctx.measureText(B.tag).width + 36;
+    var th = 56;
+    var tx = M + PW - 44 - tw;
+    ctx.save();
+    ctx.translate(tx + tw / 2, chipTop + chipH / 2 + 1);
+    ctx.rotate(2 * Math.PI / 180);
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, -tw / 2, -th / 2, tw, th, 10);
+    ctx.fill();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 4;
+    roundRect(ctx, -tw / 2, -th / 2, tw, th, 10);
+    ctx.stroke();
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(B.tag, 1, 2);
+    ctx.restore();
+    letterSpacing(ctx, '0px');
+
+    /* ── 복실양 ── */
+    var figTop = 284, figH = 446;
+    var cy = figTop + figH / 2;
+    if (img && img.naturalWidth) {
+      ctx.save();
+      ctx.translate(540, cy);
+      ctx.rotate(-2 * Math.PI / 180);
+      ctx.shadowColor = 'rgba(36, 31, 51, .16)';
+      ctx.shadowBlur = 30;
+      ctx.shadowOffsetY = 14;
+      ctx.drawImage(img, -figH / 2, -figH / 2, figH, figH);
+      ctx.restore();
+    }
+
+    function spark(x, y, size, color) {
+      ctx.save();
+      ctx.font = '400 ' + size + 'px ' + PIX;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.strokeText('✦', x, y);
+      ctx.fillStyle = color;
+      ctx.fillText('✦', x, y);
+      ctx.restore();
+    }
+    spark(318, figTop + figH * 0.20, 44, PINK);
+    spark(772, figTop + figH * 0.34, 32, '#C9B4FF');
+    spark(340, figTop + figH * 0.80, 28, '#3FAE8B');
+
+    /* ── 키워드 태그 ── */
+    var kwH = 96, kwTop = 762;
+    ctx.save();
+    ctx.translate(540, kwTop + kwH / 2);
+    ctx.rotate(-1 * Math.PI / 180);
+    ctx.font = '700 68px ' + PIX;
+    var kwW = ctx.measureText(B.keyword).width + 56;
+    ctx.fillStyle = MINT;
+    roundRect(ctx, -kwW / 2 + 11, -kwH / 2 + 12, kwW, kwH, 12);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, -kwW / 2, -kwH / 2, kwW, kwH, 12);
+    ctx.fill();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 6;
+    roundRect(ctx, -kwW / 2, -kwH / 2, kwW, kwH, 12);
+    ctx.stroke();
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(B.keyword, 0, 4);
+    ctx.restore();
+
+    /* ── 이름 + 주문 ── */
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = INK;
+    ctx.font = '700 42px ' + PIX;
+    ctx.fillText(B.name, 540, 950);
+
+    ctx.fillStyle = SOFT;
+    ctx.font = '400 29px ' + TXT;
+    ctx.fillText(B.spell, 540, 1000);
+
+    /* ── 효능 상자 ── */
+    var rxX = 128, rxW = 824;
+    var labelW = 82, labelH = 42;
+    var textX = rxX + 24 + labelW + 20;
+    var textW = rxX + rxW - 24 - textX;
+    ctx.font = '400 30px ' + TXT;
+    var rxLines = wrap(ctx, B.rx, textW, 2);
+    var rxH = rxLines.length === 1 ? 118 : 52 + rxLines.length * 44 + 34;
+    var rxBottom = 1200;
+    var rxY = rxBottom - rxH;
+
+    ctx.fillStyle = '#FFFFFF';
+    roundRect(ctx, rxX, rxY, rxW, rxH, 28);
+    ctx.fill();
+    ctx.save();
+    ctx.setLineDash([12, 9]);
+    ctx.strokeStyle = '#C9BFE8';
+    ctx.lineWidth = 4;
+    roundRect(ctx, rxX, rxY, rxW, rxH, 28);
+    ctx.stroke();
+    ctx.restore();
+
+    var labelY = rxY + (rxH - labelH) / 2;
+    ctx.fillStyle = PINK;
+    roundRect(ctx, rxX + 24, labelY, labelW, labelH, 8);
+    ctx.fill();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 5;
+    roundRect(ctx, rxX + 24, labelY, labelW, labelH, 8);
+    ctx.stroke();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '400 25px ' + PIX;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('효능', rxX + 24 + labelW / 2, labelY + labelH / 2 + 2);
+
+    ctx.fillStyle = '#3B3550';
+    ctx.font = '400 30px ' + TXT;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
+    var blockH = 30 + (rxLines.length - 1) * 44;
+    var firstBaseline = rxY + (rxH - blockH) / 2 + 25;
+    rxLines.forEach(function (ln, i) {
+      ctx.fillText(ln, textX, firstBaseline + i * 44);
+    });
+
+    /* ── 맨 아래 보너스 띠 ── */
+    var bandY = 1216, bandH = 56, bandW = rxW;
+    ctx.fillStyle = BUTTER;
+    roundRect(ctx, rxX, bandY, bandW, bandH, 16);
+    ctx.fill();
+    ctx.save();
+    ctx.setLineDash([9, 7]);
+    ctx.strokeStyle = 'rgba(36, 31, 51, .16)';
+    ctx.lineWidth = 3;
+    roundRect(ctx, rxX, bandY, bandW, bandH, 16);
+    ctx.stroke();
+    ctx.restore();
+
+    ctx.font = '400 20px ' + PIX;
+    letterSpacing(ctx, '1px');
+    var labTxt = '보너스';
+    var labW2 = ctx.measureText(labTxt).width + 22;
+    ctx.fillStyle = INK;
+    roundRect(ctx, rxX + 16, bandY + 12, labW2, 32, 6);
+    ctx.fill();
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(labTxt, rxX + 16 + labW2 / 2, bandY + 29);
+    letterSpacing(ctx, '0px');
+
+    ctx.font = '400 23px ' + TXT;
+    ctx.fillStyle = '#2E2840';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(B.line, rxX + 16 + labW2 + 14, bandY + 30);
+
+    /* ── 하단 주소 ── */
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'alphabetic';
+    ctx.font = '400 22px ' + TXT;
+    ctx.fillStyle = 'rgba(36, 31, 51, .42)';
+    ctx.fillText('soosoosupernova.github.io/2027-talisman', 540, 1322);
+  }
+
+  function drawBonusCard(img) {
+    var cv = $('cardCanvas');
+    cv.width = 1080;
+    cv.height = 1350;
+    var ctx = cv.getContext('2d');
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    paintBg(ctx, cv.width, cv.height);
+    paintBonusPanel(ctx, img);
+    return cv;
+  }
+
   function canvasToBlob(cv) {
     return new Promise(function (resolve, reject) {
       if (cv.toBlob) {
@@ -704,55 +989,88 @@
   var previewUrl = null;
 
   function showPreview(url, cap) {
-    if (previewUrl) { URL.revokeObjectURL(previewUrl); }
+    if (previewUrl && previewUrl.indexOf('blob:') === 0) { URL.revokeObjectURL(previewUrl); }
     previewUrl = url;
     $('savePreviewImg').src = url;
     $('savePreviewCap').textContent = cap;
+    $('saveTip').hidden = !IN_APP;
     $('savePreview').hidden = false;
     try { $('savePreview').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
   }
 
+  /* 카톡·인스타 인앱 웹뷰는 blob: 주소 그림을 길게 눌러도 저장을 못 한다.
+     미리보기에는 그림을 통째로 품은 data: 주소를 넣어 웹뷰가 바로 저장하게 한다. */
+  function toDataUrl(cv) {
+    try {
+      var u = cv.toDataURL('image/png');
+      return u && u.indexOf('data:image/png') === 0 ? u : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function downloadBlob(url, fname) {
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = fname;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  /* 미리보기 이미지를 띄우는 같은 자리를 모든 저장 경로가 같이 쓴다. */
+  function deliverCard(cv, fname, doneMsg) {
+    if (IN_APP) {
+      var dataUrl = toDataUrl(cv);
+      if (dataUrl) {
+        showPreview(dataUrl, '이미지를 길게 눌러 저장해주세요.');
+        $('statusMsg').textContent = '';
+        return Promise.resolve();
+      }
+      return canvasToBlob(cv).then(function (blob) {
+        showPreview(URL.createObjectURL(blob), '이미지를 길게 눌러 저장해주세요.');
+        $('statusMsg').textContent = '';
+      });
+    }
+
+    return canvasToBlob(cv).then(function (blob) {
+      var url = URL.createObjectURL(blob);
+      try {
+        downloadBlob(url, fname);
+        $('statusMsg').textContent = doneMsg;
+        setTimeout(function () { URL.revokeObjectURL(url); }, 20000);
+      } catch (e) {
+        showPreview(url, '저장이 막혔어요. 이미지를 길게 눌러 저장해주세요.');
+        $('statusMsg').textContent = '';
+      }
+    });
+  }
+
   function saveImage(kind) {
-    if (state.busy || !state.type) { return; }
-    var t = state.type;
-    var btn = kind === 'card' ? $('saveBtn') : $('profileBtn');
+    if (state.busy) { return; }
+    var bonus = kind === 'bonus';
+    var t = bonus ? D.BONUS : state.type;
+    if (!t) { return; }
+    var btn = bonus ? $('bonusSaveBtn') : (kind === 'square' ? $('profileBtn') : $('saveBtn'));
     state.busy = true;
     btn.disabled = true;
     $('statusMsg').textContent = '카드를 만드는 중이에요.';
     $('savePreview').hidden = true;
 
-    var charSrc = IMG + t.img;
-    var guardSrc = IMG + D.GUARDIAN.img;
+    var fname = '2027-talisman-' + (bonus ? 'bonus' : t.id)
+      + (kind === 'square' ? '-profile' : '') + '.png';
+    var doneMsg = bonus
+      ? '복실양 부적을 저장했어요. (1080×1350)'
+      : (kind === 'square' ? '프사용 이미지를 저장했어요. (1080×1080)' : '카드를 저장했어요. (1080×1350)');
 
-    Promise.all([loadImg(charSrc), loadImg(guardSrc), fontsReady()])
+    var jobs = [loadImg(IMG + t.img), fontsReady()];
+    if (!bonus) { jobs.push(loadImg(IMG + D.GUARDIAN.img)); }
+
+    Promise.all(jobs)
       .then(function (res) {
-        var cv = drawCard(kind, t, res[0], res[1]);
-        return canvasToBlob(cv);
-      })
-      .then(function (blob) {
-        var url = URL.createObjectURL(blob);
-        var fname = '2027-talisman-' + t.id + (kind === 'square' ? '-profile' : '') + '.png';
-        if (IN_APP) {
-          showPreview(url, '이미지를 길게 눌러 저장해주세요.');
-          $('statusMsg').textContent = '';
-          return;
-        }
-        try {
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = fname;
-          a.rel = 'noopener';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          $('statusMsg').textContent = kind === 'square'
-            ? '프사용 이미지를 저장했어요. (1080×1080)'
-            : '카드를 저장했어요. (1080×1350)';
-          setTimeout(function () { URL.revokeObjectURL(url); }, 20000);
-        } catch (e) {
-          showPreview(url, '저장이 막혔어요. 이미지를 길게 눌러 저장해주세요.');
-          $('statusMsg').textContent = '';
-        }
+        var cv = bonus ? drawBonusCard(res[0]) : drawCard(kind, t, res[0], res[2]);
+        return deliverCard(cv, fname, doneMsg);
       })
       .catch(function () {
         $('statusMsg').textContent = '카드를 만들지 못했어요. 한 번 더 눌러주세요.';
@@ -792,6 +1110,18 @@
 
   $('saveBtn').addEventListener('click', function () { saveImage('card'); });
   $('profileBtn').addEventListener('click', function () { saveImage('square'); });
+  $('bonusSaveBtn').addEventListener('click', function () { saveImage('bonus'); });
+  $('bonusBtn').addEventListener('click', function () {
+    $('bonusPanel').hidden = false;
+    $('bonusBtn').setAttribute('aria-expanded', 'true');
+    $('savePreview').hidden = true;
+    $('statusMsg').textContent = '';
+    try { $('bonusPanel').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+  });
+  $('bonusClose').addEventListener('click', function () {
+    $('bonusPanel').hidden = true;
+    $('bonusBtn').setAttribute('aria-expanded', 'false');
+  });
   $('shareBtn').addEventListener('click', openShare);
   $('copyBtn').addEventListener('click', function () {
     copyText($('shareUrl').value).then(function (ok) {

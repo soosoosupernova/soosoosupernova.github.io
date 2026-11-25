@@ -189,6 +189,16 @@ window.TALISMAN = (function () {
   /* 결과 유형이 아니라 카드마다 함께 놓이는 2027 정미년 수호 */
   var GUARDIAN = { img: 'sheep-mascot.webp', line: '정미년 수호 양' };
 
+  /* 2027 정미년 모두의 보너스 부적 — 열여섯 동물 밖에서 누구나 한 장 더 받는 카드 */
+  var BONUS = {
+    id: 'bonus-sheep', img: 'sheep-mascot.webp', no: 'BONUS',
+    label: '丁未 · 정미년', tag: '모두에게',
+    name: '복실양', keyword: '복이 복실복실',
+    spell: '어느 부적을 뽑았든 이 한 장은 같이 와요',
+    rx: '엉킨 일이 한 번에 풀리고, 만나고 싶던 사람이 먼저 연락해요.',
+    line: '2027 정미년 · 열여섯 동물 밖에 한 장 더'
+  };
+
   var ZODIAC = ['쥐띠', '소띠', '호랑이띠', '토끼띠', '용띠', '뱀띠',
     '말띠', '양띠', '원숭이띠', '닭띠', '개띠', '돼지띠'];
 
@@ -254,7 +264,7 @@ window.TALISMAN = (function () {
 
   return {
     QUESTIONS: QUESTIONS, TYPES: TYPES, TYPE_LIST: TYPE_LIST, SLOTS: SLOTS,
-    GUARDIAN: GUARDIAN, FALLBACK: BY_ID.turtle,
+    GUARDIAN: GUARDIAN, BONUS: BONUS, FALLBACK: BY_ID.turtle,
     ZODIAC: ZODIAC, ZODIAC_LINE: ZODIAC_LINE, ZODIAC_SAJU: ZODIAC_SAJU,
     YEAR_MIN: YEAR_MIN, YEAR_MAX: YEAR_MAX,
     zodiacOf: zodiacOf, validYear: validYear, sajuOf: sajuOf,

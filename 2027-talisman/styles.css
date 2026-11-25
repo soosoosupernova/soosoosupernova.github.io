@@ -777,6 +777,87 @@ body {
 .actions button:active { transform: translate(2px, 2px); box-shadow: none; }
 .actions button[disabled] { opacity: .6; cursor: default; }
 
+/* ── 모두의 보너스 부적 (복실양) ─────────── */
+.bonus-strip {
+  margin: 10px 0 0;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: var(--butter);
+  border: 2px dashed #C9A96A;
+  border-radius: 12px;
+  padding: 8px 11px 8px 8px;
+  font-family: var(--txt);
+  color: var(--ink);
+  box-shadow: 2px 2px 0 rgba(36, 31, 51, .08);
+  transition: transform .06s ease;
+}
+.bonus-strip img {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 0 rgba(36, 31, 51, .10));
+}
+.bonus-strip .bs-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bonus-strip b { font-family: var(--pix); font-size: 10px; letter-spacing: .01em; }
+.bonus-strip .bs-txt span { font-size: 9.5px; line-height: 1.4; color: var(--ink-soft); }
+.bonus-strip .bs-go {
+  flex: none;
+  font-family: var(--pix);
+  font-size: 9px;
+  letter-spacing: .06em;
+  color: var(--pink-deep);
+  background: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 20px;
+  padding: 4px 9px 3px;
+}
+.bonus-strip:active { transform: translate(1px, 1px); }
+
+.bonus-panel {
+  margin: 14px 0 0;
+  padding: 14px 12px 16px;
+  background: #FFFDF6;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+}
+.bonus-lead {
+  margin: 2px 0 12px;
+  text-align: center;
+  font-family: var(--pix);
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  color: var(--ink-soft);
+}
+.bonus-lead .s { color: var(--pink); }
+.bonus-card { box-shadow: 4px 5px 0 rgba(36, 31, 51, .10); }
+.bonus-card .figure { width: min(232px, 74%); }
+.bonus-chip { --zc: var(--mint); }
+.bonus-tag { --zc: var(--mint); }
+.bonus-kw { box-shadow: 3px 3px 0 var(--mint); }
+.bonus-line { --zc: var(--butter); }
+.bonus-actions { margin: 12px 0 0; display: flex; align-items: center; gap: 10px; }
+.bonus-actions .primary {
+  flex: 1;
+  cursor: pointer;
+  background: var(--pink);
+  color: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  box-shadow: 2px 2px 0 var(--ink);
+  padding: 12px 10px;
+  font-family: var(--pix);
+  font-size: 11px;
+  letter-spacing: .01em;
+}
+.bonus-actions .primary:active { transform: translate(2px, 2px); box-shadow: none; }
+.bonus-actions .primary[disabled] { opacity: .6; cursor: default; }
+.bonus-actions .linkbtn { flex: none; padding: 8px 4px; }
+
 .share-panel {
   margin: 16px 0 0;
   background: #fff;
@@ -857,9 +938,22 @@ body {
   border-radius: 12px;
   padding: 12px;
   text-align: center;
+  -webkit-touch-callout: default;
 }
 .save-preview p { margin: 0 0 9px; font-size: 10.5px; color: var(--ink-soft); }
-.save-preview img { width: 100%; height: auto; border-radius: 8px; display: block; }
+/* 카톡·인스타 웹뷰에서 길게 눌러 저장이 살아나도록 그림의 기본 동작을 막지 않는다 */
+.save-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  -webkit-touch-callout: default;
+  -webkit-user-select: auto;
+  user-select: auto;
+  -webkit-user-drag: auto;
+  pointer-events: auto;
+}
+.save-preview .save-tip { margin: 8px 0 0; font-size: 9.5px; line-height: 1.7; color: var(--ink-faint); word-break: keep-all; }
 .save-preview .close { margin-top: 8px; }
 
 /* ── 안내·검색용 본문 ──────────────────── */
@@ -945,6 +1039,44 @@ body {
   color: var(--ink-soft);
   word-break: keep-all;
 }
+
+/* 접었다 펴는 안내 본문 — 기본은 접힌 상태 */
+.info-fold { margin: 0; }
+.info-sum {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+  padding: 2px 0 12px;
+  border-bottom: 1px dashed var(--line);
+}
+.info-sum::-webkit-details-marker { display: none; }
+.info-sum::marker { content: ''; }
+.info-sum h2 {
+  flex: 1;
+  margin: 0;
+  font-family: var(--pix);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -.01em;
+}
+.info-sum .fold-sub {
+  flex: none;
+  font-family: var(--pix);
+  font-size: 9px;
+  letter-spacing: .04em;
+  color: #8A6A22;
+  background: var(--butter);
+  border: 1px solid #D9C48C;
+  border-radius: 20px;
+  padding: 4px 9px 3px;
+}
+.info-sum .fold-open { display: none; }
+.info-fold[open] .fold-closed { display: none; }
+.info-fold[open] .fold-open { display: inline; }
+.info-fold[open] .info-sum { border-bottom: 0; padding-bottom: 0; }
+.info-body { padding-top: 14px; }
 
 .info-faq { margin: 6px 0 16px; }
 .info-faq summary {
