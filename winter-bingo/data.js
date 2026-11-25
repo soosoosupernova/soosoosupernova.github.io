@@ -13,7 +13,7 @@ window.WINTER_BINGO_DATA = {
     { label: '목도리 두르고 산책', art: 'scarf' },
     { label: '손 시릴 때까지 눈', art: 'mittens' },
     { label: '겨울 한정 음료', art: 'drink' },
-    { label: '겨울 노래 보내기', art: 'letter' },
+    { label: '연말 안부 전하기', art: 'letter' },
     { label: '포장마차 어묵', art: 'odeng' },
     { label: '편의점 겨울 간식', art: 'snack' },
     { label: '사진첩 정리하기', art: 'photo' }
