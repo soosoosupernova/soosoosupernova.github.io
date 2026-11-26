@@ -718,6 +718,30 @@
     return new Promise(function (res) { cv.toBlob(res, 'image/png'); });
   }
 
+  var IN_APP = /KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/\d|DaumApps|BAND\//i.test(navigator.userAgent)
+    || /[?&]qa_inapp=1/.test(location.search || '');
+
+  /* 카톡·인스타 인앱 웹뷰는 blob: 주소 그림을 길게 눌러도 저장을 못 한다.
+     미리보기에는 그림을 통째로 품은 data: 주소를 넣어 웹뷰가 바로 저장하게 한다. */
+  function toDataUrl(cv) {
+    try {
+      var u = cv.toDataURL('image/png');
+      return u && u.indexOf('data:image/png') === 0 ? u : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function showPreview(url) {
+    var box = $('savePreview');
+    if (!box || !$('savePreviewImg')) { toast('이미지를 저장하지 못했어요. 화면을 캡처해 주세요.'); return; }
+    $('savePreviewImg').src = url;
+    var tip = $('saveTip');
+    if (tip) { tip.hidden = !IN_APP; }
+    box.hidden = false;
+    try { box.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {}
+  }
+
   function fileName() { return 'destiny-number-' + current.lp + '.png'; }
 
   function toast(msg, ttl) {
@@ -743,9 +767,14 @@
     Promise.all([fontsReady(), loadCat(current.lp)]).then(function (res) {
       catImg = res[1];
       var cv = makeCard();
+      if (IN_APP) {
+        var dataUrl = toDataUrl(cv);
+        if (dataUrl) { showPreview(dataUrl); return; }
+      }
       canvasToBlob(cv).then(function (bin) {
         if (!bin) { toast('이미지를 만들지 못했어요. 화면을 캡처해 주세요.'); return; }
         var url = URL.createObjectURL(bin);
+        if (IN_APP) { showPreview(url); return; }
         var a = d.createElement('a');
         a.href = url; a.download = fileName();
         d.body.appendChild(a); a.click(); a.remove();
@@ -803,7 +832,7 @@
           return;
         }
         savePng();
-        toast('공유 기능이 없어 PNG로 저장했어요.');
+        if (!IN_APP) { toast('공유 기능이 없어 PNG로 저장했어요.'); }
       });
     });
   }

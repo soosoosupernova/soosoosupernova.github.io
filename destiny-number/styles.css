@@ -582,6 +582,20 @@ select:focus-visible{outline:2px solid var(--pink2);outline-offset:2px}
 .foot-links a{text-decoration:none;border-bottom:1px dotted #A9B8A0}
 .foot p{font-size:10.5px;color:var(--mute);margin-top:7px}
 
+/* ---------- PNG 미리보기 (카톡·인스타 인앱 저장용) ---------- */
+.save-preview{
+  margin:12px 0 84px;padding:11px;
+  background:var(--paper);border:3px solid var(--ink);
+  -webkit-touch-callout:default;
+}
+.save-preview-label{margin:0 0 8px;font-size:11px;line-height:1.6;color:var(--ink2);text-align:center;word-break:keep-all}
+/* 카톡·인스타 웹뷰에서 길게 눌러 저장이 살아나도록 그림의 기본 동작을 막지 않는다 */
+.save-preview img{
+  width:100%;display:block;border:2px solid var(--line);
+  -webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto;-webkit-user-drag:auto;pointer-events:auto;
+}
+.save-preview .save-tip{margin:8px 0 0;font-size:9.5px;line-height:1.7;color:var(--mute);word-break:keep-all}
+
 /* ---------- 반응형 ---------- */
 @media (min-width:700px){
   .shell{max-width:520px;padding-top:18px}

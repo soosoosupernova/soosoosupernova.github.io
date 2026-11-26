@@ -199,9 +199,11 @@ h2{margin:0 0 8px; font-size:clamp(20px,5.8vw,25px); line-height:1.35; letter-sp
 
 .actions{margin-top:6px}
 .status{margin:12px 0 0; min-height:18px; font-size:13px; font-weight:700; color:var(--cherry); text-align:center}
-.save-preview{margin-top:14px}
+.save-preview{margin-top:14px; -webkit-touch-callout:default}
 .save-preview-label{margin:0 0 8px; font-size:12.5px; color:var(--mute); text-align:center}
-.save-preview img{width:100%; border-radius:16px; border:2px solid var(--line2)}
+/* 카톡·인스타 웹뷰에서 길게 눌러 저장이 살아나도록 그림의 기본 동작을 막지 않는다 */
+.save-preview img{width:100%; border-radius:16px; border:2px solid var(--line2); display:block; -webkit-touch-callout:default; -webkit-user-select:auto; user-select:auto; -webkit-user-drag:auto; pointer-events:auto}
+.save-preview .save-tip{margin:9px 0 0; font-size:10px; line-height:1.7; color:var(--mute); text-align:center; word-break:keep-all}
 
 .adfit-wrap{display:flex; align-items:center; justify-content:center; width:100%; max-width:100%; margin:20px 0 16px; overflow:hidden}
 .adfit-wrap .kakao_ad_area{flex:none; max-width:100%}

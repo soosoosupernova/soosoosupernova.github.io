@@ -150,9 +150,11 @@ button{font-family:inherit}
 .share-hint{margin:9px 0 0; font-size:9.5px; line-height:1.7; color:#95A9B6; word-break:keep-all}
 .status{margin:10px 0 0; min-height:16px; font-size:10.5px; color:var(--ink2)}
 .status:empty{display:none}
-.save-preview{margin-top:12px; padding:11px; border:1px solid var(--line2); border-radius:2px; background:#fff}
+.save-preview{margin-top:12px; padding:11px; border:1px solid var(--line2); border-radius:2px; background:#fff; -webkit-touch-callout:default}
 .save-preview p{margin:0 0 8px; font-size:10px; color:var(--ink2)}
-.save-preview img{width:100%; border:1px solid var(--line)}
+/* 카톡·인스타 웹뷰에서 길게 눌러 저장이 살아나도록 그림의 기본 동작을 막지 않는다 */
+.save-preview img{width:100%; border:1px solid var(--line); display:block; -webkit-touch-callout:default; -webkit-user-select:auto; user-select:auto; -webkit-user-drag:auto; pointer-events:auto}
+.save-preview .save-tip{margin:8px 0 0; font-size:9.5px; line-height:1.7; color:var(--ink2); word-break:keep-all}
 
 /* ---------- 친구 화면 ---------- */
 .friend-note{margin:4px 0 12px; padding:18px 16px; background:#fff; border:1px solid var(--line2); border-radius:2px}

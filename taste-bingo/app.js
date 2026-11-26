@@ -1205,7 +1205,8 @@
     return cv;
   }
 
-  var IN_APP = /KAKAOTALK|Instagram|FBAN|FBAV|NAVER|Line\/|DaumApps/i.test(navigator.userAgent);
+  var IN_APP = /KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/\d|DaumApps|BAND\//i.test(navigator.userAgent)
+    || /[?&]qa_inapp=1/.test(location.search || '');
 
   function canvasToBlob(cv) {
     return new Promise(function (resolve, reject) {
@@ -1214,45 +1215,81 @@
     });
   }
 
+  /* 카톡·인스타 인앱 웹뷰는 blob: 주소 그림을 길게 눌러도 저장을 못 한다.
+     미리보기에는 그림을 통째로 품은 data: 주소를 넣어 웹뷰가 바로 저장하게 한다. */
+  function toDataUrl(cv) {
+    try {
+      var u = cv.toDataURL('image/png');
+      return u && u.indexOf('data:image/png') === 0 ? u : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function parts(kind) {
+    return {
+      friend: kind === 'friend',
+      btn: $(kind === 'friend' ? 'friendCard' : 'cardBtn'),
+      status: $(kind === 'friend' ? 'friendStatus' : 'boardStatus'),
+      box: $(kind === 'friend' ? 'friendPreview' : 'boardPreview'),
+      img: $(kind === 'friend' ? 'friendPreviewImg' : 'boardPreviewImg'),
+      tip: $(kind === 'friend' ? 'friendTip' : 'boardTip')
+    };
+  }
+
+  function showPreview(kind, url) {
+    var p = parts(kind);
+    p.img.src = url;
+    if (p.tip) { p.tip.hidden = !IN_APP; }
+    p.box.hidden = false;
+    p.status.textContent = '';
+    try { p.box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+  }
+
+  /* 미리보기를 띄우는 같은 자리를 모든 저장 경로가 같이 쓴다. */
+  function deliverCard(kind, cv, fname) {
+    var p = parts(kind);
+    if (IN_APP) {
+      var dataUrl = toDataUrl(cv);
+      if (dataUrl) {
+        showPreview(kind, dataUrl);
+        return Promise.resolve();
+      }
+      return canvasToBlob(cv).then(function (blob) { showPreview(kind, URL.createObjectURL(blob)); });
+    }
+
+    return canvasToBlob(cv).then(function (blob) {
+      var url = URL.createObjectURL(blob);
+      try {
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = fname;
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        p.status.textContent = '카드를 저장했어요.';
+        setTimeout(function () { URL.revokeObjectURL(url); }, 20000);
+      } catch (e) {
+        showPreview(kind, url);
+        p.status.textContent = '저장이 막혔어요. 아래 이미지를 길게 눌러 저장해주세요.';
+      }
+    });
+  }
+
   function saveCard(kind) {
-    var btn = kind === 'friend' ? $('friendCard') : $('cardBtn');
-    var status = kind === 'friend' ? $('friendStatus') : $('boardStatus');
-    var box = kind === 'friend' ? $('friendPreview') : $('boardPreview');
-    var img = kind === 'friend' ? $('friendPreviewImg') : $('boardPreviewImg');
-    btn.disabled = true;
-    status.classList.remove('err');
-    status.textContent = '카드를 만드는 중이에요.';
+    var p = parts(kind);
+    p.btn.disabled = true;
+    p.status.classList.remove('err');
+    p.status.textContent = '카드를 만드는 중이에요.';
     fontsReady().then(function () {
       var cv = kind === 'friend' ? drawFriendCard() : drawOwnCard();
-      return canvasToBlob(cv).then(function (blob) {
-        var url = URL.createObjectURL(blob);
-        var fname = 'taste-bingo-' + (kind === 'friend' ? 'match' : 'mine') + '-2026.png';
-        if (IN_APP) {
-          img.src = url;
-          box.hidden = false;
-          status.textContent = '이미지를 길게 눌러 저장해주세요.';
-          return;
-        }
-        try {
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = fname;
-          a.rel = 'noopener';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          status.textContent = '카드를 저장했어요.';
-          setTimeout(function () { URL.revokeObjectURL(url); }, 20000);
-        } catch (e) {
-          img.src = url;
-          box.hidden = false;
-          status.textContent = '저장이 막혔어요. 아래 이미지를 길게 눌러 저장해주세요.';
-        }
-      });
+      var fname = 'taste-bingo-' + (kind === 'friend' ? 'match' : 'mine') + '-2026.png';
+      return deliverCard(kind, cv, fname);
     }).catch(function () {
-      status.classList.add('err');
-      status.textContent = '카드를 만들지 못했어요. 한 번 더 눌러주세요.';
-    }).then(function () { btn.disabled = false; });
+      p.status.classList.add('err');
+      p.status.textContent = '카드를 만들지 못했어요. 한 번 더 눌러주세요.';
+    }).then(function () { p.btn.disabled = false; });
   }
 
   /* ================= 이벤트 ================= */

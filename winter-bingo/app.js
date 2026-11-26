@@ -598,6 +598,73 @@
   var IN_APP = /KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/\d|DaumApps|BAND\//i.test(navigator.userAgent)
     || /[?&]qa_inapp=1/.test(location.search || '');
 
+  function canvasToBlob(cv) {
+    return new Promise(function (res, rej) {
+      if (cv.toBlob) {
+        cv.toBlob(function (b) { if (b) { res(b); } else { rej(new Error('blob')); } }, 'image/png');
+      } else {
+        rej(new Error('no toBlob'));
+      }
+    });
+  }
+
+  /* 카톡·인스타 인앱 웹뷰는 blob: 주소 그림을 길게 눌러도 저장을 못 한다.
+     미리보기에는 그림을 통째로 품은 data: 주소를 넣어 웹뷰가 바로 저장하게 한다. */
+  function toDataUrl(cv) {
+    try {
+      var u = cv.toDataURL('image/png');
+      return u && u.indexOf('data:image/png') === 0 ? u : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function showPreview(url, cap) {
+    $('savePreviewImg').src = url;
+    var p = $('savePreview').querySelector('p');
+    if (p) { p.textContent = cap; }
+    var tip = $('saveTip');
+    if (tip) { tip.hidden = !IN_APP; }
+    $('savePreview').hidden = false;
+    $('statusMsg').textContent = '';
+    try { $('savePreview').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+  }
+
+  function downloadBlob(url, fname) {
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = fname;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  /* 미리보기를 띄우는 같은 자리를 모든 저장 경로가 같이 쓴다. */
+  function deliverCard(cv, fname, doneMsg) {
+    if (IN_APP) {
+      var dataUrl = toDataUrl(cv);
+      if (dataUrl) {
+        showPreview(dataUrl, '이미지를 길게 눌러 저장해주세요.');
+        return Promise.resolve();
+      }
+      return canvasToBlob(cv).then(function (blob) {
+        showPreview(URL.createObjectURL(blob), '이미지를 길게 눌러 저장해주세요.');
+      });
+    }
+
+    return canvasToBlob(cv).then(function (blob) {
+      var url = URL.createObjectURL(blob);
+      try {
+        downloadBlob(url, fname);
+        $('statusMsg').textContent = doneMsg;
+        setTimeout(function () { URL.revokeObjectURL(url); }, 20000);
+      } catch (e) {
+        showPreview(url, '저장이 막혔어요. 이미지를 길게 눌러 저장해주세요.');
+      }
+    });
+  }
+
   $('saveBtn').addEventListener('click', function () {
     var btn = $('saveBtn');
     btn.disabled = true;
@@ -605,44 +672,11 @@
     $('savePreview').hidden = true;
 
     var imgs = MISSIONS.map(function (m) { return artImg(m.art); });
+    var fname = 'winter-bingo-' + checkedCount() + 'of16.png';
 
     fontsReady()
       .then(function () { return Promise.all(imgs.map(waitImg)); })
-      .then(function () {
-        var cv = drawCard();
-        return new Promise(function (res, rej) {
-          if (cv.toBlob) {
-            cv.toBlob(function (b) { if (b) { res(b); } else { rej(new Error('blob')); } }, 'image/png');
-          } else {
-            rej(new Error('no toBlob'));
-          }
-        });
-      })
-      .then(function (blob) {
-        var url = URL.createObjectURL(blob);
-        var fname = 'winter-bingo-' + checkedCount() + 'of16.png';
-        if (IN_APP) {
-          $('savePreviewImg').src = url;
-          $('savePreview').hidden = false;
-          $('statusMsg').textContent = '이미지를 길게 눌러 저장해주세요.';
-          return;
-        }
-        try {
-          var a = document.createElement('a');
-          a.href = url;
-          a.download = fname;
-          a.rel = 'noopener';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          $('statusMsg').textContent = '카드를 저장했어요.';
-          setTimeout(function () { URL.revokeObjectURL(url); }, 20000);
-        } catch (e) {
-          $('savePreviewImg').src = url;
-          $('savePreview').hidden = false;
-          $('statusMsg').textContent = '저장이 안 됐어요. 이미지를 길게 눌러 저장해주세요.';
-        }
-      })
+      .then(function () { return deliverCard(drawCard(), fname, '카드를 저장했어요.'); })
       .catch(function () {
         $('statusMsg').textContent = '저장이 안 됐어요. 한 번 더 눌러주세요.';
       })

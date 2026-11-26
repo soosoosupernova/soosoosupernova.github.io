@@ -351,9 +351,11 @@ h2{margin:0 0 8px; font-family:var(--px); font-size:16px; line-height:1.4; lette
 .status{margin:9px 0 0; min-height:16px; font-size:11px; font-weight:700; color:var(--ink2); line-height:1.55}
 .status:empty{display:none}
 .status.err{color:#B4234F}
-.save-preview{margin-top:10px; padding:9px; border:2px dashed var(--line2); background:#FFF7FB}
+.save-preview{margin-top:10px; padding:9px; border:2px dashed var(--line2); background:#FFF7FB; -webkit-touch-callout:default}
 .save-preview p{margin:0 0 7px; font-size:11px; font-weight:700; color:var(--ink2)}
-.save-preview img{width:100%; border:2px solid var(--line2)}
+/* 카톡·인스타 웹뷰에서 길게 눌러 저장이 살아나도록 그림의 기본 동작을 막지 않는다 */
+.save-preview img{width:100%; border:2px solid var(--line2); display:block; -webkit-touch-callout:default; -webkit-user-select:auto; user-select:auto; -webkit-user-drag:auto; pointer-events:auto}
+.save-preview .save-tip{margin:7px 0 0; font-size:9.5px; font-weight:700; line-height:1.7; color:var(--ink2); word-break:keep-all}
 
 /* ---------- 토스트·컨페티 ---------- */
 .toast{
