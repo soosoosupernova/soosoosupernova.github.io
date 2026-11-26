@@ -194,7 +194,7 @@ window.TALISMAN = (function () {
     id: 'bonus-sheep', img: 'sheep-mascot.webp', no: 'BONUS',
     label: '丁未 · 정미년', tag: '모두에게',
     name: '복실양', keyword: '복이 복실복실',
-    spell: '어느 부적을 뽑았든 이 한 장은 같이 와요',
+    spell: '올해는 좋은 소식이 많이 찾아올 거예요',
     rx: '엉킨 일이 한 번에 풀리고, 만나고 싶던 사람이 먼저 연락해요.'
   };
 
