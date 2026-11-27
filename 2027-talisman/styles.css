@@ -1094,6 +1094,8 @@ body {
 .nw { white-space: nowrap; }
 
 .tools-grid { display: grid; gap: 8px; margin: 20px 0 0; }
+.info .tools-note { margin: 22px 0 0; }
+.info .tools-note a { color: var(--pink-deep); text-decoration: underline; text-underline-offset: 2px; }
 .tool {
   display: block;
   text-decoration: none;
