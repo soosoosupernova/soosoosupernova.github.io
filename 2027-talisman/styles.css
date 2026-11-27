@@ -1112,9 +1112,8 @@ body {
 .foot-links a { font-size: 11px; color: var(--ink-soft); }
 .foot .addr { margin: 10px 0 0; font-size: 10px; color: var(--ink-faint); }
 
-/* 하단 애드핏 자리 (승인 후 사용)
+/* 하단 애드핏 배너 (매체: 2027 부적 카드) */
 .adfit-wrap { padding: 10px 0 18px; display: flex; justify-content: center; }
-*/
 
 @media (min-width: 600px) {
   body { padding: 26px 0 40px; }
