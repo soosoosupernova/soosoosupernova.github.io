@@ -88,6 +88,16 @@
           "@type": "Question",
           "name": "결과를 친구에게 보낼 수 있나요?",
           "acceptedAnswer": { "@type": "Answer", "text": "겨울취향표, 취향 빙고, 부적 카드, 수비학 리포트는 결과를 링크나 PNG 카드로 보낼 수 있어요. 친구가 링크를 열면 내가 고른 결과가 그대로 보이고, 그 화면에서 자기 결과를 새로 만들 수 있습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "광고가 결과를 가리지 않나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "광고는 도구 화면 아래쪽에 붙어 있고, 계산 결과와 리포트는 광고를 보지 않아도 처음부터 끝까지 열려요. 결과를 보려고 결제하거나 회원가입할 일은 없습니다." }
+        },
+        {
+          "@type": "Question",
+          "name": "오류를 발견하면 어디에 알리나요?",
+          "acceptedAnswer": { "@type": "Answer", "text": "각 페이지 아래 GitHub 링크로 남겨 주세요. 계산이 이상하면 입사일·퇴사일처럼 문제가 된 값과 화면에 나온 숫자를 함께 적어 주시면 원인을 빨리 찾을 수 있어요. 이름이나 급여처럼 밝히고 싶지 않은 값은 빼고 적으셔도 됩니다." }
         }
       ]
     }
@@ -123,6 +133,12 @@ h2{font-size:19px;letter-spacing:-.02em;margin:38px 0 12px}
 .policy{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:12px}
 .policy h2{margin:0 0 10px;font-size:16px}
 .policy p{margin:0;font-size:14px;color:var(--soft);line-height:1.8}
+.policy p+p{margin-top:10px}
+.lead+.lead{margin-top:10px}
+.updates{margin:10px 0 0;padding-left:18px}
+.updates li{font-size:13.5px;line-height:1.8;color:var(--soft)}
+.updates li+li{margin-top:6px}
+.updates b{color:var(--ink);font-weight:700}
 .faq{background:#fff;border:1px solid var(--line);border-radius:18px;padding:6px 22px;margin-top:12px}
 .faq h2{font-size:16px;margin:16px 0 6px}
 .faq details{border-top:1px dashed var(--line)}
@@ -150,6 +166,7 @@ h2{font-size:19px;letter-spacing:-.02em;margin:38px 0 12px}
     <span class="kicker">무료 웹툴 모음</span>
     <h1>필요할 때 바로 꺼내 쓰는<br>작은 도구들</h1>
     <p class="lead">회사 규칙과 심리학 이론을 하나씩 확인해서 만든 무료 도구 일곱 가지예요. 회원가입도, 앱 설치도 없이 링크만 열면 쓸 수 있어요.</p>
+    <p class="lead">회사 생활에서 자꾸 다시 찾게 되는 계산과 점검을 하나씩 도구로 만들어 모았어요. 근로기준법 조문을 펴야 하는 연차 정산, 이력서 문장 다듬기, 연말에 한 해를 정리하는 빙고까지 성격은 조금씩 다르지만, 만든 방식은 같습니다. 기준이 되는 규칙을 먼저 확인하고, 화면에 계산 과정과 근거를 남기고, 입력값은 브라우저 밖으로 내보내지 않아요.</p>
     <p class="note">입력한 값은 서버로 보내지 않고 브라우저 안에서만 계산해요.</p>
   </section>
 
@@ -199,6 +216,40 @@ h2{font-size:19px;letter-spacing:-.02em;margin:38px 0 12px}
     </a>
   </div>
 
+  <h2 id="pick">지금 상황에 맞는 도구</h2>
+  <div class="policy">
+    <h2>연말에 한 해를 정리하고 싶다면</h2>
+    <p><a href="winter-bingo/">겨울취향표</a>로 이번 겨울에 뭘 즐겼는지 16칸을 채우고, <a href="taste-bingo/">2026 취향 빙고</a>로 올해 손이 간 음식·노래·장소를 모아 보세요. 두 도구 모두 결과를 PNG 카드로 저장할 수 있어서, 1년 뒤에 꺼내 보는 기록이 됩니다.</p>
+  </div>
+  <div class="policy">
+    <h2>새해 운을 가볍게 보고 싶다면</h2>
+    <p><a href="2027-talisman/">2027 부적 카드</a>로 열여섯 동물 가운데 내 부적을 뽑고, <a href="destiny-number/">생년월일 수비학</a>으로 2027년 개인년수와 타로 세 장을 이어서 볼 수 있어요. 부적 카드에 태어난 해를 넣으면 띠별 사주 한 줄과 오행 색이 함께 붙습니다.</p>
+  </div>
+  <div class="policy">
+    <h2>이직이나 퇴사를 앞두고 있다면</h2>
+    <p><a href="leave-calculator/">연차 정산 계산기</a>로 법정 연차와 미사용 수당을 확인한 뒤, <a href="resume-rebuilder/">이력서·링크드인 한 줄 개조기</a>로 헤드라인과 경력 문장을 다듬으세요. 계산기에는 회사가 안내한 잔여 연차와의 차액을 비교하는 칸도 있어요.</p>
+  </div>
+  <div class="policy">
+    <h2>내 관계 습관이 궁금하다면</h2>
+    <p><a href="relationship-report/">관계 패턴 리포트</a> 16문항으로 애착불안·애착회피 두 축과 갈등 대응을 살펴볼 수 있어요. 결과는 유형 판정이 아니라 이번 응답에서 나타난 경향이고, 응답 내용은 서버로 가지 않습니다.</p>
+  </div>
+
+  <div class="policy">
+    <h2>도구를 만드는 기준</h2>
+    <p><b>기준을 먼저 확인해요.</b> 연차 계산기는 근로기준법 제60조와 고용노동부 행정해석을 펴고 만들었고, 화면에 조문과 계산 예시를 함께 두었습니다. 수비학은 숫자를 줄이는 방식을, 관계 패턴 리포트는 애착 이론의 두 축을 참고했습니다.</p>
+    <p><b>계산 과정을 숨기지 않아요.</b> 결과만 던져 주지 않고 어떤 값으로 어떻게 계산했는지 화면에 남깁니다. 수비학 리포트는 계산 과정을 펼쳐 볼 수 있고, 연차 계산기는 발생·사용·잔여 일수를 한 화면에 나눠 보여 줍니다.</p>
+    <p><b>입력값은 브라우저 안에만 있어요.</b> 생년월일, 임금, 경력 문장은 서버로 보내지 않습니다. 공유 링크를 만들 때도 이름과 고른 칸처럼 결과를 보여 주는 값만 주소에 담깁니다.</p>
+  </div>
+
+  <div class="policy">
+    <h2>업데이트 기록</h2>
+    <ul class="updates">
+      <li><b>2026-11-25</b> 겨울취향표와 2026 취향 빙고를 공개하고, 부적 카드에 열여섯 동물과 12띠 2027 사주를 넣었어요.</li>
+      <li><b>2026-11-27</b> 도구 사이를 오가기 쉽게 추천 링크를 정리하고, 각 도구에 쓰는 방법과 자주 묻는 질문을 보강했어요.</li>
+      <li><b>2026-11-27</b> 카톡·인스타 안에서 결과 이미지가 저장되지 않던 문제를 고쳐, 화면에 뜬 카드를 길게 눌러 저장할 수 있게 했어요.</li>
+    </ul>
+  </div>
+
   <div class="policy">
     <h2>이 사이트에 대해</h2>
     <p>도구는 모두 무료로 제공해요. 계산 결과와 리포트는 참고용이며, 법률 자문이나 의학적 진단을 대신하지 않아요. 자세한 내용은 <a href="about.html">소개</a>와 <a href="privacy.html">개인정보처리방침</a>에서 확인할 수 있어요.</p>
@@ -222,6 +273,14 @@ h2{font-size:19px;letter-spacing:-.02em;margin:38px 0 12px}
       <summary>결과를 친구에게 보낼 수 있나요?</summary>
       <p><a href="winter-bingo/">겨울취향표</a>, <a href="taste-bingo/">취향 빙고</a>, <a href="2027-talisman/">부적 카드</a>, <a href="destiny-number/">수비학 리포트</a>는 결과를 링크나 PNG 카드로 보낼 수 있어요. 친구가 링크를 열면 내가 고른 결과가 그대로 보이고, 그 화면에서 자기 결과를 새로 만들 수 있습니다.</p>
     </details>
+    <details>
+      <summary>광고가 결과를 가리지 않나요?</summary>
+      <p>광고는 도구 화면 아래쪽에 붙어 있고, 계산 결과와 리포트는 광고를 보지 않아도 처음부터 끝까지 열려요. 결과를 보려고 결제하거나 회원가입할 일은 없습니다.</p>
+    </details>
+    <details>
+      <summary>오류를 발견하면 어디에 알리나요?</summary>
+      <p>각 페이지 아래 GitHub 링크로 남겨 주세요. 계산이 이상하면 입사일·퇴사일처럼 문제가 된 값과 화면에 나온 숫자를 함께 적어 주시면 원인을 빨리 찾을 수 있어요. 이름이나 급여처럼 밝히고 싶지 않은 값은 빼고 적으셔도 됩니다.</p>
+    </details>
   </section>
 
   <footer class="foot">
@@ -230,7 +289,7 @@ h2{font-size:19px;letter-spacing:-.02em;margin:38px 0 12px}
       <a href="about.html">운영자 안내</a>
       <a href="https://github.com/soosoosupernova" rel="noopener">GitHub</a>
     </div>
-    <p>© 2026 수수수 웹툴 · 수정일 2026-11-27</p>
+    <p>© 2026 수수수 웹툴 · 수정일 2026-11-28</p>
   </footer>
 </main>
 </body>
